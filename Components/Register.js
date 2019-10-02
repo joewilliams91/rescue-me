@@ -17,7 +17,6 @@ import {
   Button
 } from "react-native";
 import { bindActionCreators } from "redux";
-import Geolocation from '@react-native-community/geolocation';
 import { connect } from "react-redux";
 import { updateEmail, updatePassword, signup } from "../actions/user";
 import HasDogRadioComponents from "./HasDogRadioComponents";
@@ -29,19 +28,14 @@ import NameComponent from "./NameComponent";
 import GenderComponent from "./GenderComponent";
 import DOBComponent from "./DOBComponent";
 import PhotoComponent from "./PhotoComponent";
-import MapComponent from "./MapComponent";
+import RadiusComponent from "./RadiusComponent";
 
 class Register extends React.Component {
   state = {
     userId: "",
     firstName: "",
     surname: "",
-    location: {
-      latitude: 53.78825,
-      longitude: -2.4324,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421
-    },
+    coordinates: [],
     hasChildren: "",
     hasDogs: "",
     gender: "",
@@ -123,8 +117,16 @@ class Register extends React.Component {
     }
   };
 
-  componentDidMount(){
-    Geolocation.getCurrentPosition(info => console.log(info));
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          coordinates: [position.coords.latitude, position.coords.longitude]
+        });
+      },
+      error => Alert.alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
   }
 
   componentDidUpdate(prevProps) {
@@ -132,6 +134,10 @@ class Register extends React.Component {
       this.setState({ userId: this.props.user.id });
     }
   }
+
+  updateRadius = radius => {
+    this.setState({ radius });
+  };
 
   handleRegister = () => {
     const {
@@ -144,27 +150,30 @@ class Register extends React.Component {
       hasDogs,
       dob,
       sizePrefs,
-      gender
+      coordinates,
+      gender,
+      radius
     } = this.state;
     const geofirestore = new GeoFirestore(db);
     const geocollection = geofirestore.collection("users");
 
-    geocollection
-      .doc(userId)
-      .set({
-        coordinates: new firebase.firestore.GeoPoint(2.1222, 2.1111),
-        firstName: firstName,
-        surname: surname,
-        radiusPref: 30,
-        employmentStatus: employmentStatus,
-        activityLevel,
-        hasChildren: hasChildren,
-        hasDogs: hasDogs,
-        dob: dob,
-        sizePref: sizePrefs,
-        gender: gender,
-        likedDogs: []
-      });
+    geocollection.doc(userId).set({
+      coordinates: new firebase.firestore.GeoPoint(
+        coordinates[0],
+        coordinates[1]
+      ),
+      firstName: firstName,
+      surname: surname,
+      radiusPref: 30,
+      employmentStatus: employmentStatus,
+      activityLevel,
+      hasChildren: hasChildren,
+      hasDogs: hasDogs,
+      dob: dob,
+      sizePref: sizePrefs,
+      gender: gender,
+      likedDogs: []
+    });
   };
 
   render() {
@@ -181,7 +190,7 @@ class Register extends React.Component {
       employmentOptions,
       dob,
       genderOptions,
-      location
+      radius
     } = this.state;
     return (
       <ScrollView>
@@ -223,7 +232,7 @@ class Register extends React.Component {
           gender={gender}
         />
         {/* <PhotoComponent /> */}
-        {/* <MapComponent setLocation={this.setLocation} location={location} /> */}
+        <RadiusComponent radius={radius} updateRadius={this.updateRadius} />
         <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
