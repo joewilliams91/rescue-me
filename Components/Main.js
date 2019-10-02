@@ -3,9 +3,7 @@ import { StyleSheet, Platform, Image, Text, View } from "react-native";
 export default class Main extends React.Component {
   state = { currentUser: null };
   componentDidMount() {
-    return fetch(
-      "https://us-central1-rescuemetest-4a629.cloudfunctions.net/getDogs"
-    ).then(console.log);
+    // 
   }
   render() {
     const { currentUser } = this.state;
