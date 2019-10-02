@@ -13,17 +13,42 @@ import {
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
 import axios from "axios";
 
-export default class SwipeList extends React.Component {
+class SwipeList extends React.Component {
   state = {
     currentUser: null,
     dogs: [],
     isLoading: true,
     currentIndex: 0,
-    dogId: null
+    dogId: null,
+    user: {
+      activityLevel: 5,
+      coordinates: [53.4808, -2.2426],
+      radiusPref: 30,
+      hasChildren: "false",
+      hasDogs: "true"
+    }
   };
+  componentDidMount() {
+    const {
+      activityLevel,
+      coordinates,
+      radiusPref,
+      hasChildren,
+      hasDogs
+    } = this.state.user;
+    return axios
+      .get(
+        `https://us-central1-rescuemetest-4a629.cloudfunctions.net/getDogs?children=${hasChildren}&dogs=${hasDogs}&activityLevel=${activityLevel}&lat=${
+          coordinates[0]
+        }&lon=${coordinates[1]}&radius=${radiusPref}}`
+      )
+      .then(({ data }) => this.setState({ dogs: data.dogs, isLoading: false }));
+  }
+
   dogID = null;
   position = new Animated.ValueXY();
   rotate = this.position.x.interpolate({
@@ -54,12 +79,6 @@ export default class SwipeList extends React.Component {
     outputRange: [1, 0, 0],
     extrapolate: "clamp"
   });
-
-  componentDidMount() {
-    return axios
-      .get("https://us-central1-rescuemetest-4a629.cloudfunctions.net/getDogs")
-      .then(({ data }) => this.setState({ dogs: data.dogs, isLoading: false }));
-  }
 
   componentWillMount() {
     this.PanResponder = PanResponder.create({
@@ -105,9 +124,11 @@ export default class SwipeList extends React.Component {
     });
   }
 
+  componentDidUpdate() {}
+
   render() {
     const { currentUser, dogs, isLoading, currentIndex } = this.state;
-
+    console.log(dogs, "<--- array of dogs");
     if (isLoading) {
       return (
         <View style={[styles.container, styles.horizontal]}>
@@ -265,6 +286,9 @@ export default class SwipeList extends React.Component {
     }
   }
 }
+
+const mapStateToProps = state => ({ ...state });
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -277,3 +301,5 @@ const styles = StyleSheet.create({
     padding: 10
   }
 });
+
+export default connect(mapStateToProps)(SwipeList);
