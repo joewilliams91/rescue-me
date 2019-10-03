@@ -96,6 +96,11 @@ class Register extends React.Component {
     }
   };
 
+
+  updateDescription = description => {
+    this.setState({ description });
+  };
+
   setDate = dob => {
     this.setState({ dob });
   };
@@ -171,6 +176,11 @@ class Register extends React.Component {
     const geofirestore = new GeoFirestore(db);
     const geocollection = geofirestore.collection("users");
 
+    const parts = dob.split("-");
+    const newDob = firebase.firestore.Timestamp.fromDate(
+      new Date(+parts[2], +parts[1] - 1, +parts[0])
+    );
+
     geocollection.doc(userId).set({
       coordinates: new firebase.firestore.GeoPoint(
         coordinates[0],
@@ -184,7 +194,7 @@ class Register extends React.Component {
       activityLevel,
       hasChildren: hasChildren,
       hasDogs: hasDogs,
-      dob: dob,
+      dob: newDob,
       telephone: telephone,
       sizePref: sizePrefs,
       gender: gender,
@@ -213,7 +223,7 @@ class Register extends React.Component {
     return (
       <ScrollView>
         <Text>Hi there ${userId}! Please enter your details to register.</Text>
-        {/* <NameComponent
+        <NameComponent
           firstName={firstName}
           surname={surname}
           updateName={this.updateName}
@@ -224,17 +234,17 @@ class Register extends React.Component {
         />
         <ActivityLevelRadioComponents
           options={activityOptions}
-          setHasProperty={this.updateDetails}
+          updateDetails={this.updateDetails}
           activityLevel={this.state.activityLevel}
         />
         <HasDogRadioComponents
           options={hasOptions}
-          setHasProperty={this.updateDetails}
+          updateDetails={this.updateDetails}
           hasDogs={this.state.hasDogs}
         />
         <HasChildrenRadioComponents
           options={hasOptions}
-          setHasProperty={this.updateDetails}
+          updateDetails={this.updateDetails}
           hasChildren={this.state.hasChildren}
         />
         <DogPreferenceRadioComponents
@@ -243,7 +253,7 @@ class Register extends React.Component {
           setSizePrefs={this.setSizePrefs}
         />
         <EmploymentStatusRadioComponents
-          setHasProperty={this.updateDetails}
+          updateDetails={this.updateDetails}
           employmentStatus={employmentStatus}
           options={employmentOptions}
         />
@@ -253,12 +263,12 @@ class Register extends React.Component {
           setTelephone={this.setTelephone}
         />
         <GenderComponent
-          setHasProperty={this.updateDetails}
+          updateDetails={this.updateDetails}
           options={genderOptions}
           gender={gender}
         />
         <PhotoComponent />
-        <RadiusComponent radius={radius} updateRadius={this.updateRadius} /> */}
+        <RadiusComponent radius={radius} updateRadius={this.updateRadius} />
         <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>

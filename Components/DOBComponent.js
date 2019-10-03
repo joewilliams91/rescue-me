@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 import DatePicker from "react-native-datepicker";
 
-export default class MyDatePicker extends Component {
+class DOBComponent extends Component {
   render() {
     const { setDate, dob } = this.props;
     return (
@@ -45,3 +45,5 @@ const styles = StyleSheet.create({
     padding: 16
   }
 });
+
+export default DOBComponent;

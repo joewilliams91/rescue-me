@@ -38,21 +38,24 @@ class CentreRegister extends React.Component {
 
   getCoordinates = event => {
     const postcode = event.nativeEvent.text.replace(/ /g, "");
-    fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=AIzaSyA0NPRN93V8yRyOeg4IPwPuy-qQAXDBf2Q`
-    )
-      .then(response => response.json())
-      .then(responseJson => {
-        const coords = responseJson.results[0].geometry.location;
-        const coordinates = [coords.lat, coords.lng];
-        this.setState({ coordinates });
+    if (/\w{1,2}\d{2,3}\w{2}/.test(postcode)) {
+      console.log(postcode)
+      fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=AIzaSyA0NPRN93V8yRyOeg4IPwPuy-qQAXDBf2Q`
+      )
+        .then(response => response.json())
+        .then(responseJson => {
+          const coords = responseJson.results[0].geometry.location;
+          const coordinates = [coords.lat, coords.lng];
+          this.setState({ coordinates });
 
-        return coordinates;
-      })
-      .then(coordinates => {
-        this.props.updateLocation(coordinates);
-      })
-      .catch(error => console.log(error));
+          return coordinates;
+        })
+        .then(coordinates => {
+          this.props.updateLocation(coordinates);
+        })
+        .catch(error => console.log(error));
+    }
   };
 
   componentDidUpdate(prevProps) {
@@ -69,7 +72,7 @@ class CentreRegister extends React.Component {
     this.setState({ telephone });
   };
 
-  updateDetails = description => {
+  updateDescription = description => {
     this.setState({ description });
   };
 
@@ -89,7 +92,7 @@ class CentreRegister extends React.Component {
     const geofirestore = new GeoFirestore(db);
     const geocollection = geofirestore.collection("centres");
 
-    console.log(coordinates)
+    console.log(coordinates);
 
     geocollection.doc(userId).set({
       coordinates: new firebase.firestore.GeoPoint(
@@ -133,7 +136,7 @@ class CentreRegister extends React.Component {
         />
         <DescriptionComponent
           description={description}
-          updateDetails={this.updateDetails}
+          updateDescription={this.updateDescription}
         />
         <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
           <Text style={styles.buttonText}>Register</Text>

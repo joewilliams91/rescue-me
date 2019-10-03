@@ -7,7 +7,7 @@ import {
   Text
 } from "react-native";
 
-export const NameComponent = props => {
+const NameComponent = props => {
   const { updateName, firstName, surname } = props;
   return (
     <View>
@@ -26,3 +26,5 @@ export const NameComponent = props => {
     </View>
   );
 };
+
+export default NameComponent

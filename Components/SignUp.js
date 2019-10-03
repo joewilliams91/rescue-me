@@ -19,7 +19,7 @@ class SignUp extends React.Component {
 
   handleSignUp = () => {
     this.props.signup();
-    this.props.navigation.navigate("CentreRegister");
+    this.props.navigation.navigate("Register");
   };
 
   render() {

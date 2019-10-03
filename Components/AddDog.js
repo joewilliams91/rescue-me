@@ -68,8 +68,15 @@ class AddDog extends React.Component {
     this.setState({ [type]: text });
   };
 
+  updateDescription = description => {
+    this.setState({ description });
+  };
+
   componentDidMount() {
-    this.setState({ centreId: this.props.user.id });
+    this.setState({
+      centreId: this.props.user.id,
+      coordinates: this.props.user.coordinates
+    });
   }
 
   setDate = dob => {
@@ -79,6 +86,7 @@ class AddDog extends React.Component {
   handleAdd = () => {
     const {
       centreId,
+      coordinates,
       breed,
       name,
       description,
@@ -90,21 +98,35 @@ class AddDog extends React.Component {
       photos: [],
       size
     } = this.state;
+    const parts = dob.split("-");
+    const newDob = firebase.firestore.Timestamp.fromDate(
+      new Date(+parts[2], +parts[1] - 1, +parts[0])
+    );
     const geofirestore = new GeoFirestore(db);
-    const geocollection = geofirestore.collection("dogs");
+    const dogsCollection = geofirestore.collection("dogs");
+    const centreDoc = geofirestore.collection("centres").doc(centreId);
 
-    geocollection.add({
-      coordinates: new firebase.firestore.GeoPoint(0, 0),
+    const newDog = dogsCollection.doc();
+    const newDogId = newDog.id;
+
+    centreDoc.update({ ["availableDogs." + newDogId]: { name, photos: [] } });
+
+    newDog.set({
+      coordinates: new firebase.firestore.GeoPoint(
+        coordinates[0],
+        coordinates[1]
+      ),
       name: name,
       description: description,
       exerciseLevel: exerciseLevel,
       goodWithChildren: goodWithChildren,
       goodWithOtherDogs: goodWithOtherDogs,
-      dob: dob,
+      dob: newDob,
       gender: gender,
       centreId: centreId,
       size: size,
-      breed: breed
+      breed: breed,
+      photos: []
     });
   };
 
@@ -134,7 +156,7 @@ class AddDog extends React.Component {
         <DogBreedComponent breed={breed} updateDetails={this.updateDetails} />
         <DescriptionComponent
           description={description}
-          updateDetails={this.updateDetails}
+          updateDescription={this.updateDescription}
         />
         <DOBComponent setDate={this.setDate} dob={dob} />
         <ExerciseLevelComponent
