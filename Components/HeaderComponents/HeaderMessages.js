@@ -4,7 +4,7 @@ import { View, Image, TouchableOpacity } from "react-native";
 const HeaderMessages = () => {
   return (
     <View>
-      <TouchableOpacity title="message" onPress={() => console.log("heart")}>
+      <TouchableOpacity title="message" onPress={() => console.log("message")}>
         <Image
           source={require("./chat.png")}
           style={{ width: 50, height: 50 }}

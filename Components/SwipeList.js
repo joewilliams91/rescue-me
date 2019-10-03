@@ -16,6 +16,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import axios from "axios";
+import HeaderApp from "./HeaderApp";
 
 class SwipeList extends React.Component {
   state = {
@@ -30,7 +31,8 @@ class SwipeList extends React.Component {
       radiusPref: 30,
       hasChildren: "false",
       hasDogs: "true"
-    }
+    },
+    header: "swipeList"
   };
   // componentDidMount() {
     
@@ -133,7 +135,7 @@ class SwipeList extends React.Component {
   componentDidUpdate() {}
 
   render() {
-    const { currentUser, dogs, isLoading, currentIndex } = this.state;
+    const { currentUser, dogs, isLoading, currentIndex, header } = this.state;
     if (isLoading) {
       console.log(Date.now())
       return (
@@ -148,10 +150,9 @@ class SwipeList extends React.Component {
         <View style={{ flex: 1 }}>
           <View style={{ height: 60 }}></View>
           <View>
-            <Text>Header must go here</Text>
+            <HeaderApp header={header} />
           </View>
           <View style={{ flex: 1 }}>
-            
             {dogs
               .map((dog, i) => {
                 // console.log("mapping", i, "<---- i", this.currentIndex, "<---this.currentIndex")
@@ -271,7 +272,7 @@ class SwipeList extends React.Component {
                       />
                     </Animated.View>
                   );
-                } else if(i === currentIndex + 1) {
+                } else if (i === currentIndex + 1) {
                   // console.log(Date.now())
                   return (
                     <Animated.View
@@ -311,11 +312,9 @@ class SwipeList extends React.Component {
                       </Text>
                     </Animated.View>
                   );
-                }
-                else return null;
+                } else return null;
               })
-              .reverse()
-              }
+              .reverse()}
           </View>
           <View style={{ height: 60 }}></View>
           <View>

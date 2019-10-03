@@ -30,7 +30,7 @@ const SwitchNavigator = createSwitchNavigator(
     }
   },
   {
-    initialRouteName: "SplashPage"
+    initialRouteName: "SwipeList"
   }
 );
 
