@@ -18,7 +18,12 @@ import {
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { updateEmail, updatePassword, signup } from "../actions/user";
+import {
+  updateEmail,
+  updatePassword,
+  signup,
+  updateLocation
+} from "../actions/user";
 import HasDogRadioComponents from "./HasDogRadioComponents";
 import HasChildrenRadioComponents from "./HasChildrenRadioComponents";
 import ActivityLevelRadioComponents from "./ActivityLevelRadioComponents";
@@ -29,6 +34,8 @@ import GenderComponent from "./GenderComponent";
 import DOBComponent from "./DOBComponent";
 import PhotoComponent from "./PhotoComponent";
 import RadiusComponent from "./RadiusComponent";
+import TelephoneComponent from "./TelephoneComponent";
+import DescriptionComponent from "./DescriptionComponent";
 
 class Register extends React.Component {
   state = {
@@ -40,9 +47,11 @@ class Register extends React.Component {
     hasDogs: "",
     gender: "",
     sizePrefs: [],
+    description: "",
     activityLevel: "",
     radius: 0,
     dob: "",
+    telephone: "",
     employmentStatus: "",
     sizeOptions: [
       { key: 1, text: "Small" },
@@ -71,7 +80,7 @@ class Register extends React.Component {
     ]
   };
 
-  setHasProperty = (has, key) => {
+  updateDetails = (has, key) => {
     if (has === "dogs") {
       this.setState({ hasDogs: key });
     } else if (has === "children") {
@@ -82,6 +91,8 @@ class Register extends React.Component {
       this.setState({ employmentStatus: key });
     } else if (has === "gender") {
       this.setState({ gender: key });
+    } else if (has === "description"){
+      this.setState({description: key})
     }
   };
 
@@ -103,10 +114,6 @@ class Register extends React.Component {
         return currentState;
       });
     }
-  };
-
-  setLocation = location => {
-    this.setState({ location });
   };
 
   updateName = (type, name) => {
@@ -139,6 +146,11 @@ class Register extends React.Component {
     this.setState({ radius });
   };
 
+  setTelephone = telephone => {
+    this.setState({ telephone });
+  };
+
+
   handleRegister = () => {
     const {
       userId,
@@ -149,10 +161,12 @@ class Register extends React.Component {
       hasChildren,
       hasDogs,
       dob,
+      description,
       sizePrefs,
       coordinates,
       gender,
-      radius
+      radius,
+      telephone
     } = this.state;
     const geofirestore = new GeoFirestore(db);
     const geocollection = geofirestore.collection("users");
@@ -164,12 +178,14 @@ class Register extends React.Component {
       ),
       firstName: firstName,
       surname: surname,
-      radiusPref: 30,
+      description: description,
+      radiusPref: radius,
       employmentStatus: employmentStatus,
       activityLevel,
       hasChildren: hasChildren,
       hasDogs: hasDogs,
       dob: dob,
+      telephone: telephone,
       sizePref: sizePrefs,
       gender: gender,
       likedDogs: []
@@ -190,29 +206,35 @@ class Register extends React.Component {
       employmentOptions,
       dob,
       genderOptions,
-      radius
+      radius,
+      telephone,
+      description
     } = this.state;
     return (
       <ScrollView>
         <Text>Hi there ${userId}! Please enter your details to register.</Text>
-        <NameComponent
+        {/* <NameComponent
           firstName={firstName}
           surname={surname}
           updateName={this.updateName}
         />
+        <DescriptionComponent
+          description={description}
+          updateDescription={this.updateDescription}
+        />
         <ActivityLevelRadioComponents
           options={activityOptions}
-          setHasProperty={this.setHasProperty}
+          setHasProperty={this.updateDetails}
           activityLevel={this.state.activityLevel}
         />
         <HasDogRadioComponents
           options={hasOptions}
-          setHasProperty={this.setHasProperty}
+          setHasProperty={this.updateDetails}
           hasDogs={this.state.hasDogs}
         />
         <HasChildrenRadioComponents
           options={hasOptions}
-          setHasProperty={this.setHasProperty}
+          setHasProperty={this.updateDetails}
           hasChildren={this.state.hasChildren}
         />
         <DogPreferenceRadioComponents
@@ -221,18 +243,22 @@ class Register extends React.Component {
           setSizePrefs={this.setSizePrefs}
         />
         <EmploymentStatusRadioComponents
-          setHasProperty={this.setHasProperty}
+          setHasProperty={this.updateDetails}
           employmentStatus={employmentStatus}
           options={employmentOptions}
         />
         <DOBComponent dob={dob} setDate={this.setDate} />
+        <TelephoneComponent
+          telephone={telephone}
+          setTelephone={this.setTelephone}
+        />
         <GenderComponent
-          setHasProperty={this.setHasProperty}
+          setHasProperty={this.updateDetails}
           options={genderOptions}
           gender={gender}
         />
-        {/* <PhotoComponent /> */}
-        <RadiusComponent radius={radius} updateRadius={this.updateRadius} />
+        <PhotoComponent />
+        <RadiusComponent radius={radius} updateRadius={this.updateRadius} /> */}
         <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
@@ -242,7 +268,10 @@ class Register extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ updateEmail, updatePassword, signup }, dispatch);
+  return bindActionCreators(
+    { updateEmail, updatePassword, updateLocation, signup },
+    dispatch
+  );
 };
 
 const mapStateToProps = state => ({

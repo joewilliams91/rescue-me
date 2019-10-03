@@ -4,6 +4,8 @@ import Login from '../Components/Login'
 import SignUp from '../Components/SignUp'
 import Main from '../Components/Main'
 import Register from '../Components/Register'
+import CentreRegister from '../Components/CentreRegister'
+import AddDog from '../Components/AddDog';
 
 const SwitchNavigator = createSwitchNavigator(
     {
@@ -18,6 +20,12 @@ const SwitchNavigator = createSwitchNavigator(
         },
         Register: {
             screen: Register
+        },
+        CentreRegister: {
+            screen: CentreRegister
+        },
+        AddDog: {
+            screen: AddDog
         }
     },
     {

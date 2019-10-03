@@ -10,13 +10,13 @@ import {
 class GenderComponent extends React.Component {
 
   render() {
-    const { options, setHasProperty, gender } = this.props;
+    const { options, updateDetails, gender } = this.props;
     
     {
       return (
         <View>
           <Text>
-            What is your gender?
+            Gender:
           </Text>
           {options.map(item => {
             return (
@@ -24,7 +24,7 @@ class GenderComponent extends React.Component {
                 <Text>{item.text}</Text>
                 <TouchableOpacity
                   style={styles.circle}
-                  onPress={() => setHasProperty("gender", item.key)}
+                  onPress={() => updateDetails("gender", item.key)}
                 >
                   {gender === item.key && (
                     <View style={styles.checkedCircle} />

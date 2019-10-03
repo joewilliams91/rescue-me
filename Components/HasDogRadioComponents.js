@@ -8,12 +8,8 @@ import {
 } from "react-native";
 
 class HasDogRadioComponents extends React.Component {
-  state = {
-    value: ""
-  };
   render() {
-    const { options, setHasProperty, hasDogs } = this.props;
-    const { value } = this.state;
+    const { options, updateDetails, hasDogs } = this.props;
 
     {
       return (
@@ -25,7 +21,7 @@ class HasDogRadioComponents extends React.Component {
                 <Text>{item.text}</Text>
                 <TouchableOpacity
                   style={styles.circle}
-                  onPress={() => setHasProperty("dogs", item.key)}
+                  onPress={() => updateDetails("dogs", item.key)}
                 >
                   {hasDogs === item.key && (
                     <View style={styles.checkedCircle} />

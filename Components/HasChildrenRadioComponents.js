@@ -8,12 +8,8 @@ import {
 } from "react-native";
 
 class HasChildrenRadioComponents extends React.Component {
-  state = {
-    value: ""
-  };
-  render() {
-    const { options, setHasProperty, hasChildren } = this.props;
-    const { value } = this.state;
+    render() {
+    const { options, updateDetails, hasChildren } = this.props;
     {
         return (
           <View>
@@ -24,7 +20,7 @@ class HasChildrenRadioComponents extends React.Component {
                   <Text>{item.text}</Text>
                   <TouchableOpacity
                     style={styles.circle}
-                    onPress={() => setHasProperty("children", item.key)}
+                    onPress={() => updateDetails("children", item.key)}
                   >
                     {hasChildren === item.key && (
                       <View style={styles.checkedCircle} />

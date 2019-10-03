@@ -9,7 +9,7 @@ import {
 
 class ActivityLevelRadioComponents extends React.Component {
   render() {
-    const { options, setHasProperty, activityLevel } = this.props;
+    const { options, updateDetails, activityLevel } = this.props;
 
     {
       return (
@@ -21,7 +21,7 @@ class ActivityLevelRadioComponents extends React.Component {
                 <Text>{item.text}</Text>
                 <TouchableOpacity
                   style={styles.circle}
-                  onPress={() => setHasProperty("activity", item.key)}
+                  onPress={() => updateDetails("activity", item.key)}
                 >
                   {activityLevel === item.key && (
                     <View style={styles.checkedCircle} />

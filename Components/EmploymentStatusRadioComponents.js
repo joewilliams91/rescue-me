@@ -9,7 +9,7 @@ import {
 
 class EmploymentStatusRadioComponents extends React.Component {
   render() {
-    const { options, setHasProperty, employmentStatus } = this.props;
+    const { options, updateDetails, employmentStatus } = this.props;
 
     {
       return (
@@ -21,7 +21,7 @@ class EmploymentStatusRadioComponents extends React.Component {
                 <Text>{item.text}</Text>
                 <TouchableOpacity
                   style={styles.circle}
-                  onPress={() => setHasProperty("employment", item.key)}
+                  onPress={() => updateDetails("employment", item.key)}
                 >
                   {employmentStatus === item.key && (
                     <View style={styles.checkedCircle} />
