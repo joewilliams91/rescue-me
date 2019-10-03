@@ -81,6 +81,7 @@ class DogProfile extends React.Component {
         </View>
       );
     } else {
+      const barWidth = SCREEN_WIDTH * 0.8;
       return (
         <Animated.View
         {...this.PanResponder.panHandlers}
@@ -120,7 +121,16 @@ class DogProfile extends React.Component {
           >
             {dog.name}
           </Text>
+          <View
+          style={{width: barWidth, height: 5, backgroundColor:  '#ccc', overflow: 'hidden'}}>
+          </View>
+          <View
+          style={{ /*position: 'absolute', */top: 0, left: this.state.i * barWidth / dog.photos.length, width: barWidth / dog.photos.length, backgroundColor:  '#5294d6', height: 5 }}
+          >
+          </View>
           <Text>{dog.description}</Text>
+         
+          
         </Animated.View>
       );
     }
