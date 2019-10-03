@@ -32,6 +32,80 @@ class DogProfile extends React.Component {
     i: 0
   };
 
+  activityLevel() {
+    const { exerciseLevel } = this.state.dog;
+    let activityLevel = null;
+    switch (exerciseLevel) {
+      case 5:
+        activityLevel = "Extremely Active";
+        break;
+      case 4:
+        activityLevel = "Fairly Active";
+        break;
+      case 3:
+        activityLevel = "Moderately Active";
+        break;
+      case 2:
+        activityLevel = "Leisurely";
+        break;
+      case 1:
+        activityLevel = "Inactive";
+    }
+    return activityLevel;
+  }
+
+  getAge() {
+    const { dob } = this.state.dog;
+    const currentDate = Math.round(new Date().getTime() / 1000);
+    const ageUnix = currentDate - dob.seconds;
+    const age = ageUnix / (60 * 60 * 24 * 365);
+    return Math.round(age);
+  }
+
+  goodWithKids() {
+    const { goodWithChildren } = this.state.dog;
+    let statement = null;
+    switch (goodWithChildren) {
+      case true:
+        statement = "Good with children";
+        break;
+      case false:
+        statement = "Uncomfortable with children";
+        break;
+    }
+    return statement;
+  }
+
+  size() {
+    const { size } = this.state.dog;
+    let statement = null;
+    switch (size) {
+      case 1:
+        statement = "Small";
+        break;
+      case 2:
+        statement = "Medium";
+        break;
+      case 3:
+        statement = "Large";
+        break;
+    }
+    return statement;
+  }
+  goodWithDogs() {
+    const { goodWithOtherDogs } = this.state.dog;
+    let statement = null;
+    switch (goodWithOtherDogs) {
+      case true:
+        statement = "Good with Dogs";
+        break;
+      case false:
+        statement = "Not so good with dogs";
+        break;
+    }
+    return statement;
+  }
+
   componentDidMount() {
     dogsCollection
       .doc("jLUAzKxfLX2IFFS0H86k")
@@ -60,68 +134,58 @@ class DogProfile extends React.Component {
         </View>
       );
     } else {
-      //   console.log(dog, "<---dog", dog.id, "<---dog id");
       return (
-        <Animated.View
-          key={dog.id}
-          style={[
-            {
-              height: SCREEN_HEIGHT - 210,
-              width: SCREEN_WIDTH,
-              padding: 20,
-              paddingTop: 50,
-              position: "absolute"
-            }
-          ]}
-        >
-          <Image
-            style={{
-              flex: 1,
-              height: null,
-              width: null,
-              resizeMode: "cover",
-              borderRadius: 20
-            }}
-            source={{ uri: dog.photos[i] }}
-          />
-          {/* {dog.photos.map(photo => {
-            return (
-              <Image
-                style={{
-                  flex: 1,
-                  height: null,
-                  width: null,
-                  resizeMode: "cover",
-                  borderRadius: 20
-                }}
-                source={{ uri: photo }}
-              />
-            );
-          })} */}
-
-          <Text
-            style={{
-              position: "absolute",
-              bottom: 50,
-              left: 120,
-              zIndex: 1000,
-              color: "white",
-              fontSize: 32,
-              fontWeight: "800"
-            }}
+        <>
+          <View
+            key={dog.id}
+            style={[
+              {
+                height: SCREEN_HEIGHT - 210,
+                width: SCREEN_WIDTH,
+                padding: 20,
+                paddingTop: 50,
+                position: "absolute"
+              }
+            ]}
           >
-            {dog.name}
-          </Text>
-          <Text>{dog.description}</Text>
-          <Button
-            onPress={() => this.incrementIndex(1)}
-            title="next photo"
-          ></Button>
-          <Button
-            onPress={() => this.incrementIndex(-1)}
-            title="previous photo"
-          ></Button>
-        </Animated.View>
+            <Image
+              style={{
+                flex: 1,
+                height: null,
+                width: null,
+                resizeMode: "cover",
+                borderRadius: 20
+              }}
+              source={{ uri: dog.photos[i] }}
+            />
+            <Button
+              onPress={() => this.incrementIndex(1)}
+              title="next photo"
+            ></Button>
+            <Button
+              onPress={() => this.incrementIndex(-1)}
+              title="previous photo"
+            ></Button>
+
+            <View>
+              <Text>{dog.name}</Text>
+              <Text>{dog.gender}</Text>
+              <Text>{dog.description}</Text>
+              <Text>Details</Text>
+              <Text>Breed</Text>
+              <Text>{dog.breed}</Text>
+              <Text>Size</Text>
+              <Text>{this.size()}</Text>
+              <Text>Activity Levels</Text>
+              <Text>{this.activityLevel()}</Text>
+              <Text>Age</Text>
+              <Text>{this.getAge()}</Text>
+              <Text>Good With:</Text>
+              <Text>{this.goodWithKids()}</Text>
+              <Text>{this.goodWithDogs()}</Text>
+            </View>
+          </View>
+        </>
       );
     }
   }
