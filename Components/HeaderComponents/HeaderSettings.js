@@ -1,11 +1,12 @@
 import React from 'react';
 import { Image, View, TouchableOpacity } from "react-native";
-const HeaderGoBack = () => {
+
+const HeaderSettings = () => {
   return (
     <View>
-      <TouchableOpacity title="back" onPress={() => console.log("back")}>
+      <TouchableOpacity title="gear" onPress={() => console.log("gear")}>
         <Image
-          source={require("./back.png")}
+          source={require("./gear.png")}
           style={{ width: 50, height: 50 }}
         />
       </TouchableOpacity>
@@ -13,4 +14,4 @@ const HeaderGoBack = () => {
   );
 }
  
-export default HeaderGoBack;
+export default HeaderSettings;
