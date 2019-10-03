@@ -33,7 +33,7 @@ class SwipeList extends React.Component {
     }
   };
   // componentDidMount() {
-    
+
   // }
 
   dogID = null;
@@ -78,8 +78,7 @@ class SwipeList extends React.Component {
         if (gestureState.dx > 120) {
           Animated.spring(this.position, {
             toValue: { x: SCREEN_WIDTH + 150, y: gestureState.dy }
-          })
-          .start(() => {
+          }).start(() => {
             // this.currentIndex += 1;
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
@@ -135,15 +134,12 @@ class SwipeList extends React.Component {
   render() {
     const { currentUser, dogs, isLoading, currentIndex } = this.state;
     if (isLoading) {
-      console.log(Date.now())
       return (
         <View style={[styles.container, styles.horizontal]}>
           <ActivityIndicator size="large" color="#e64664" />
         </View>
       );
     } else {
-      console.log(Date.now())
-
       return (
         <View style={{ flex: 1 }}>
           <View style={{ height: 60 }}></View>
@@ -151,7 +147,6 @@ class SwipeList extends React.Component {
             <Text>Header must go here</Text>
           </View>
           <View style={{ flex: 1 }}>
-            
             {dogs
               .map((dog, i) => {
                 // console.log("mapping", i, "<---- i", this.currentIndex, "<---this.currentIndex")
@@ -271,7 +266,7 @@ class SwipeList extends React.Component {
                       />
                     </Animated.View>
                   );
-                } else if(i === currentIndex + 1) {
+                } else {
                   // console.log(Date.now())
                   return (
                     <Animated.View
@@ -312,10 +307,8 @@ class SwipeList extends React.Component {
                     </Animated.View>
                   );
                 }
-                else return null;
               })
-              .reverse()
-              }
+              .reverse()}
           </View>
           <View style={{ height: 60 }}></View>
           <View>
