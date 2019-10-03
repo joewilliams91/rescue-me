@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import axios from "axios";
+// import axios from "axios";
 import firebase from "firebase";
 // import { Button } from "react-native-paper";
 // import { GeoCollectionReference } from "geofirestore";
@@ -32,7 +32,28 @@ class DogProfile extends React.Component {
     i: 0
   };
 
+  setImageWidth(event) {
+    this.imageWidth = event.nativeEvent.layout.width;
+  }
+  imageWidth = null;
+  
+
   componentDidMount() {
+    this.PanResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (event, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (event, gestureState) =>  true,
+      onMoveShouldSetPanResponder: (event, gestureState) => false,
+      onMoveShouldSetPanResponderCapture: (event, gestureState) => false,
+      onPanResponderGrant: (event, gestureState) => false,
+      onPanResponderMove: (event, gestureState) => false,
+      onPanResponderRelease: (event, gestureState) =>{
+        const { locationX } = event.nativeEvent;
+        if (locationX < this.imageWidth / 2) {
+          this.incrementIndex(-1)
+        }
+        else this.incrementIndex(1)
+      }
+    })
     dogsCollection
       .doc("jLUAzKxfLX2IFFS0H86k")
       .get()
@@ -60,10 +81,11 @@ class DogProfile extends React.Component {
         </View>
       );
     } else {
-      //   console.log(dog, "<---dog", dog.id, "<---dog id");
       return (
         <Animated.View
+        {...this.PanResponder.panHandlers}
           key={dog.id}
+       
           style={[
             {
               height: SCREEN_HEIGHT - 210,
@@ -82,23 +104,9 @@ class DogProfile extends React.Component {
               resizeMode: "cover",
               borderRadius: 20
             }}
+            onLayout={(event) => this.setImageWidth(event)}
             source={{ uri: dog.photos[i] }}
           />
-          {/* {dog.photos.map(photo => {
-            return (
-              <Image
-                style={{
-                  flex: 1,
-                  height: null,
-                  width: null,
-                  resizeMode: "cover",
-                  borderRadius: 20
-                }}
-                source={{ uri: photo }}
-              />
-            );
-          })} */}
-
           <Text
             style={{
               position: "absolute",
@@ -113,14 +121,6 @@ class DogProfile extends React.Component {
             {dog.name}
           </Text>
           <Text>{dog.description}</Text>
-          <Button
-            onPress={() => this.incrementIndex(1)}
-            title="next photo"
-          ></Button>
-          <Button
-            onPress={() => this.incrementIndex(-1)}
-            title="previous photo"
-          ></Button>
         </Animated.View>
       );
     }
