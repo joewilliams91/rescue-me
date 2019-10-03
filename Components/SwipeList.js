@@ -102,7 +102,7 @@ class SwipeList extends React.Component {
           }).start(() => {
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
-              console.log(this.dogID, "<-- Swiped Left - Dog ID");
+              console.log(this.dogID, "<-- Swiped Left - Dog ID"); // Swipe left hefty
             });
           });
         } else if (gestureState.dy < -300) {
@@ -111,7 +111,7 @@ class SwipeList extends React.Component {
           }).start(() => {
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
-              console.log(this.dogID, "<-- Superlike - Dog ID");
+              console.log(this.dogID, "<-- Superlike - Dog ID"); // swipe uppy super likey
             });
           });
         } else {
@@ -128,7 +128,6 @@ class SwipeList extends React.Component {
 
   render() {
     const { currentUser, dogs, isLoading, currentIndex } = this.state;
-    console.log(dogs, "<--- array of dogs");
     if (isLoading) {
       return (
         <View style={[styles.container, styles.horizontal]}>
@@ -234,6 +233,19 @@ class SwipeList extends React.Component {
                           SuperLike
                         </Text>
                       </Animated.View>
+                      <Text
+                        style={{
+                          position: "absolute",
+                          bottom: 90,
+                          left: 40,
+                          zIndex: 1000,
+                          color: "white",
+                          fontSize: 40,
+                          fontWeight: "800"
+                        }}
+                      >
+                        {dog.name}
+                      </Text>
 
                       <Image
                         style={{
@@ -271,6 +283,19 @@ class SwipeList extends React.Component {
                         }}
                         source={{ uri: dog.photos[0] }}
                       />
+                      <Text
+                        style={{
+                          position: "absolute",
+                          bottom: 50,
+                          left: 120,
+                          zIndex: 1000,
+                          color: "white",
+                          fontSize: 32,
+                          fontWeight: "800"
+                        }}
+                      >
+                        {dog.name}
+                      </Text>
                     </Animated.View>
                   );
                 }
