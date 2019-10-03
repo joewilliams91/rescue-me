@@ -5,6 +5,8 @@ import SignUp from '../Components/SignUp'
 import Main from '../Components/Main'
 import Register from '../Components/Register'
 import SplashPage from '../Components/SplashPage'
+import SwipeList from "../Components/SwipeList";
+
 
 const SwitchNavigator = createSwitchNavigator(
   {
@@ -22,6 +24,9 @@ const SwitchNavigator = createSwitchNavigator(
     },
     SplashPage: {
       screen: SplashPage
+    },
+    SwipeList: {
+      screen: SwipeList
     }
   },
   {
@@ -29,4 +34,4 @@ const SwitchNavigator = createSwitchNavigator(
   }
 );
 
-export default createAppContainer(SwitchNavigator)
+export default createAppContainer(SwitchNavigator);
