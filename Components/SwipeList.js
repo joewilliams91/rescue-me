@@ -32,24 +32,12 @@ class SwipeList extends React.Component {
       hasDogs: "true"
     }
   };
-  componentDidMount() {
-    const {
-      activityLevel,
-      coordinates,
-      radiusPref,
-      hasChildren,
-      hasDogs
-    } = this.state.user;
-    return axios
-      .get(
-        `https://us-central1-rescuemetest-4a629.cloudfunctions.net/getDogs?children=${hasChildren}&dogs=${hasDogs}&activityLevel=${activityLevel}&lat=${
-          coordinates[0]
-        }&lon=${coordinates[1]}&radius=${radiusPref}}`
-      )
-      .then(({ data }) => this.setState({ dogs: data.dogs, isLoading: false }));
-  }
+  // componentDidMount() {
+    
+  // }
 
   dogID = null;
+  // currentIndex = 0;
   position = new Animated.ValueXY();
   rotate = this.position.x.interpolate({
     inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
@@ -80,7 +68,7 @@ class SwipeList extends React.Component {
     extrapolate: "clamp"
   });
 
-  componentWillMount() {
+  componentDidMount() {
     this.PanResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderMove: (evt, gestureState) => {
@@ -90,7 +78,9 @@ class SwipeList extends React.Component {
         if (gestureState.dx > 120) {
           Animated.spring(this.position, {
             toValue: { x: SCREEN_WIDTH + 150, y: gestureState.dy }
-          }).start(() => {
+          })
+          .start(() => {
+            // this.currentIndex += 1;
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
               console.log(this.dogID, "<-- Swiped Right - Dog ID"); // Swipe righty mctighty
@@ -100,6 +90,7 @@ class SwipeList extends React.Component {
           Animated.spring(this.position, {
             toValue: { x: -SCREEN_WIDTH - 200, y: gestureState.dy }
           }).start(() => {
+            // this.currentIndex += 1;
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
               console.log(this.dogID, "<-- Swiped Left - Dog ID"); // Swipe left hefty
@@ -109,6 +100,7 @@ class SwipeList extends React.Component {
           Animated.spring(this.position, {
             toValue: { y: -SCREEN_HEIGHT - 200, x: gestureState.dx }
           }).start(() => {
+            // this.currentIndex += 1;
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
               console.log(this.dogID, "<-- Superlike - Dog ID"); // swipe uppy super likey
@@ -122,6 +114,20 @@ class SwipeList extends React.Component {
         }
       }
     });
+    const {
+      activityLevel,
+      coordinates,
+      radiusPref,
+      hasChildren,
+      hasDogs
+    } = this.state.user;
+    return axios
+      .get(
+        `https://us-central1-rescuemetest-4a629.cloudfunctions.net/getDogs?children=${hasChildren}&dogs=${hasDogs}&activityLevel=${activityLevel}&lat=${
+          coordinates[0]
+        }&lon=${coordinates[1]}&radius=${radiusPref}}`
+      )
+      .then(({ data }) => this.setState({ dogs: data.dogs, isLoading: false }));
   }
 
   componentDidUpdate() {}
@@ -129,12 +135,15 @@ class SwipeList extends React.Component {
   render() {
     const { currentUser, dogs, isLoading, currentIndex } = this.state;
     if (isLoading) {
+      console.log(Date.now())
       return (
         <View style={[styles.container, styles.horizontal]}>
           <ActivityIndicator size="large" color="#e64664" />
         </View>
       );
     } else {
+      console.log(Date.now())
+
       return (
         <View style={{ flex: 1 }}>
           <View style={{ height: 60 }}></View>
@@ -142,13 +151,16 @@ class SwipeList extends React.Component {
             <Text>Header must go here</Text>
           </View>
           <View style={{ flex: 1 }}>
+            
             {dogs
               .map((dog, i) => {
+                // console.log("mapping", i, "<---- i", this.currentIndex, "<---this.currentIndex")
                 if (i < currentIndex) {
+                  // console.log(Date.now())
                   return null;
                 } else if (i == currentIndex) {
                   this.dogID = dog.id;
-
+                  // console.log(Date.now())
                   return (
                     <Animated.View
                       {...this.PanResponder.panHandlers}
@@ -259,7 +271,8 @@ class SwipeList extends React.Component {
                       />
                     </Animated.View>
                   );
-                } else {
+                } else if(i === currentIndex + 1) {
+                  // console.log(Date.now())
                   return (
                     <Animated.View
                       key={i}
@@ -299,8 +312,10 @@ class SwipeList extends React.Component {
                     </Animated.View>
                   );
                 }
+                else return null;
               })
-              .reverse()}
+              .reverse()
+              }
           </View>
           <View style={{ height: 60 }}></View>
           <View>
