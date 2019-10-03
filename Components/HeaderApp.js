@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-
+import HeaderGoBack from "./HeaderComponents/HeaderGoBack"
 class HeaderApp extends Component {
   
   render() { 
     return (
       <View style={styles.container}>
-        <Text>Header</Text>
+        <HeaderGoBack />
       </View>
     );
   }
