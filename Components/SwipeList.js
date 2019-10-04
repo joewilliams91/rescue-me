@@ -2,7 +2,6 @@ import React from "react";
 import {
   ActivityIndicator,
   StyleSheet,
-  Platform,
   Image,
   Text,
   View,
@@ -11,7 +10,6 @@ import {
   PanResponder,
   Button
 } from "react-native";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import axios from "axios";
 const SCREEN_HEIGHT = Dimensions.get("window").height;
@@ -36,8 +34,8 @@ class SwipeList extends React.Component {
 
   // }
 
-  componentDidUpdate () {
-    console.log('didupdate')
+  componentDidUpdate() {
+    console.log("didupdate");
   }
 
   dogID = null;
@@ -48,6 +46,7 @@ class SwipeList extends React.Component {
     outputRange: ["-30deg", "0deg", "10deg"],
     extrapolate: "clamp"
   });
+
   rotateAndTranslate = {
     transform: [
       {
@@ -77,18 +76,26 @@ class SwipeList extends React.Component {
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderMove: (evt, gestureState) => {
         this.position.setValue({ x: gestureState.dx, y: gestureState.dy });
+        console.log("pickedup");
       },
       onPanResponderRelease: (evt, gestureState) => {
+        console.log("released");
         if (gestureState.dx > 120) {
-          Animated.spring(this.position, {
-            toValue: { x: SCREEN_WIDTH + 150, y: gestureState.dy }
-          }).start(() => {
-            // this.currentIndex += 1;
+          Animated.spring(
+            this.position,
+            {
+              toValue: { x: SCREEN_WIDTH + 150, y: gestureState.dy }
+            },
+            console.log("<-- Touchy Feely")
+          ).start(() => {
+            console.log("<-- Pooper - Dog ID"); // Swipe righty mctighty
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
-              // console.log(this.dogID, "<-- Swiped Right - Dog ID"); // Swipe righty mctighty
+              console.log("<-- Swiped Right - Dog ID"); // Swipe righty mctighty
             });
           });
+        } else if (gestureState.dx > -5) {
+          console.log("The right");
         } else if (gestureState.dx < -120) {
           Animated.spring(this.position, {
             toValue: { x: -SCREEN_WIDTH - 200, y: gestureState.dy }
@@ -138,12 +145,14 @@ class SwipeList extends React.Component {
   render() {
     const { currentUser, dogs, isLoading, currentIndex } = this.state;
     if (isLoading) {
+      console.log("isloading");
       return (
         <View style={[styles.container, styles.horizontal]}>
           <ActivityIndicator size="large" color="#e64664" />
         </View>
       );
     } else {
+      console.log("Main Content");
       return (
         <View style={{ flex: 1 }}>
           <View style={{ height: 60 }}></View>
@@ -153,13 +162,12 @@ class SwipeList extends React.Component {
           <View style={{ flex: 1 }}>
             {dogs
               .map((dog, i) => {
-                // console.log("mapping", i, "<---- i", this.currentIndex, "<---this.currentIndex")
                 if (i < currentIndex) {
                   // console.log(Date.now())
                   return null;
                 } else if (i == currentIndex) {
                   this.dogID = dog.id;
-                  // console.log(Date.now())
+                  console.log("Top Card");
                   return (
                     <Animated.View
                       {...this.PanResponder.panHandlers}
@@ -272,7 +280,9 @@ class SwipeList extends React.Component {
                         title="Go to Dog Profile"
                         style={{ zIndex: 2000 }}
                         onPress={() =>
-                          this.props.navigation.navigate("DogProfile", { id: dog.id })
+                          this.props.navigation.navigate("DogProfile", {
+                            id: dog.id
+                          })
                         }
                       >
                         "I"
