@@ -8,6 +8,10 @@ import Register from '../Components/Register'
 import CentreRegister from '../Components/CentreRegister'
 import AddDog from '../Components/AddDog';
 import SplashPage from '../Components/SplashPage'
+import SwipeList from "../Components/SwipeList"
+import LikedDogsList from "../Components/LikedDogsList"
+
+const SwitchNavigator = createSwitchNavigator(
 import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
 
@@ -31,6 +35,9 @@ const SwitchNavigator = createStackNavigator(
     SwipeList: {
       screen: SwipeList
     },
+    LikedDogsList: {
+      screen: LikedDogsList
+  },
     DogProfile: {
       screen: DogProfile
     }
