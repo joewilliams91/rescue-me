@@ -72,6 +72,16 @@ class AddDog extends React.Component {
     this.setState({ description });
   };
 
+
+  addToPhotoArray = url => {
+    this.setState(currentState => {
+      const newPhotos = [...currentState.photos, url];
+      const newState = { ...currentState, photos: newPhotos };
+      return newState;
+    });
+  };
+
+
   componentDidMount() {
     this.setState({
       centreId: this.props.user.id,
@@ -184,7 +194,10 @@ class AddDog extends React.Component {
           size={size}
           updateDetails={this.updateDetails}
         />
-        <PhotoComponent />
+        <PhotoComponent
+          user={centreId}
+          addToPhotoArray={this.addToPhotoArray}
+        />
         <TouchableOpacity style={styles.button} onPress={this.handleAdd}>
           <Text style={styles.buttonText}>Add dog</Text>
         </TouchableOpacity>

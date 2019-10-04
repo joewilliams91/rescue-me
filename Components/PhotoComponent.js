@@ -2,7 +2,8 @@ import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
-import firebase from 'firebase';
+import * as firebase from "firebase/app";
+import "firebase/storage";
 
 export default class PhotoComponent extends React.Component {
   state = {
@@ -15,6 +16,65 @@ export default class PhotoComponent extends React.Component {
     this.setState({ hasCameraPermission: status === "granted" });
   }
 
+  uriToBlob = uri => {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      xhr.onload = function() {
+        resolve(xhr.response);
+      };
+
+      xhr.onerror = function() {
+        reject(new Error("uriToBlob failed"));
+      };
+
+      xhr.responseType = "blob";
+
+      xhr.open("GET", uri, true);
+      xhr.send(null);
+    });
+  };
+
+  uploadToFirebase = blob => {
+    return new Promise((resolve, reject) => {
+      const storageRef = firebase.storage().ref();
+
+      function uuid() {
+        const chars = "0123456789abcdef".split("");
+        let uuid = [],
+          rnd = Math.random,
+          r;
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = "-";
+        uuid[14] = "4";
+        for (let i = 0; i < 36; i++) {
+          if (!uuid[i]) {
+            r = 0 | (rnd() * 16);
+            uuid[i] = chars[i == 19 ? (r & 0x3) | 0x8 : r & 0xf];
+          }
+        }
+        return uuid.join("");
+      }
+
+      const name = uuid();
+      const folder = this.props.user;
+      const imageRef = firebase.storage().ref(`${folder}`).child(`${name}.jpg`);
+
+      imageRef.put(blob, {
+          contentType: "image/jpeg"
+        })
+        .then(() => {
+          return imageRef.getDownloadURL()
+        })
+        .then(url => {
+          blob.close();
+          resolve(url);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  };
+
   async snapPhoto() {
     console.log("Button Pressed");
     if (this.camera) {
@@ -25,12 +85,25 @@ export default class PhotoComponent extends React.Component {
         fixOrientation: true,
         exif: true
       };
-      await this.camera.takePictureAsync(options).then(photo => {
-        console.log(photo.uri);
-      });
+      await this.camera
+        .takePictureAsync(options)
+        .then(photo => {
+          const { height, width, type, uri } = photo;
+          return this.uriToBlob(uri);
+        })
+        .then(blob => {
+          return this.uploadToFirebase(blob);
+        })
+        .then(url => {
+          this.props.addToPhotoArray(url)
+          console.log(url)
+          console.log("File uploaded");
+        })
+        .catch(error => {
+          throw error;
+        });
     }
   }
-  
 
   render() {
     const { hasCameraPermission } = this.state;

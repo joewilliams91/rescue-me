@@ -42,6 +42,7 @@ class Register extends React.Component {
     userId: "",
     firstName: "",
     surname: "",
+    photos: [],
     coordinates: [],
     hasChildren: "",
     hasDogs: "",
@@ -91,11 +92,10 @@ class Register extends React.Component {
       this.setState({ employmentStatus: key });
     } else if (has === "gender") {
       this.setState({ gender: key });
-    } else if (has === "description"){
-      this.setState({description: key})
+    } else if (has === "description") {
+      this.setState({ description: key });
     }
   };
-
 
   updateDescription = description => {
     this.setState({ description });
@@ -155,12 +155,20 @@ class Register extends React.Component {
     this.setState({ telephone });
   };
 
+  addToPhotoArray = url => {
+    this.setState(currentState => {
+      const newPhotos = [...currentState.photos, url];
+      const newState = { ...currentState, photos: newPhotos };
+      return newState;
+    });
+  };
 
   handleRegister = () => {
     const {
       userId,
       firstName,
       surname,
+      photos,
       employmentStatus,
       activityLevel,
       hasChildren,
@@ -187,6 +195,7 @@ class Register extends React.Component {
         coordinates[1]
       ),
       firstName: firstName,
+      photos: photos,
       surname: surname,
       description: description,
       radiusPref: radius,
@@ -267,7 +276,10 @@ class Register extends React.Component {
           options={genderOptions}
           gender={gender}
         />
-        <PhotoComponent />
+        <PhotoComponent
+          user={this.props.user.id}
+          addToPhotoArray={this.addToPhotoArray}
+        />
         <RadiusComponent radius={radius} updateRadius={this.updateRadius} />
         <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
           <Text style={styles.buttonText}>Register</Text>
