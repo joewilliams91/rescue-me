@@ -113,6 +113,7 @@ class DogProfile extends React.Component {
   }
 
   componentDidMount() {
+    const { id } = this.props.navigation.state.params;
     this.PanResponder = PanResponder.create({
       onStartShouldSetPanResponder: (event, gestureState) => true,
       onStartShouldSetPanResponderCapture: (event, gestureState) =>  true,
@@ -129,7 +130,7 @@ class DogProfile extends React.Component {
       }
     })
     dogsCollection
-      .doc("jLUAzKxfLX2IFFS0H86k")
+      .doc(id.slice(1))
       .get()
       .then(dog => {
         const dogData = dog.data();

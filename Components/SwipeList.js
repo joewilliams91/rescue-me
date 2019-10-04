@@ -11,12 +11,11 @@ import {
   PanResponder,
   Button
 } from "react-native";
-const SCREEN_HEIGHT = Dimensions.get("window").height;
-const SCREEN_WIDTH = Dimensions.get("window").width;
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-
 import axios from "axios";
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+const SCREEN_WIDTH = Dimensions.get("window").width;
 
 class SwipeList extends React.Component {
   state = {
@@ -36,6 +35,10 @@ class SwipeList extends React.Component {
   // componentDidMount() {
 
   // }
+
+  componentDidUpdate () {
+    console.log('didupdate')
+  }
 
   dogID = null;
   // currentIndex = 0;
@@ -269,7 +272,7 @@ class SwipeList extends React.Component {
                         title="Go to Dog Profile"
                         style={{ zIndex: 2000 }}
                         onPress={() =>
-                          this.props.navigation.navigate("DogProfile")
+                          this.props.navigation.navigate("DogProfile", { id: dog.id })
                         }
                       >
                         "I"
