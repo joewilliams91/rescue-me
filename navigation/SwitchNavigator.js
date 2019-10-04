@@ -3,28 +3,22 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { createStackNavigator } from "react-navigation-stack";
 import Login from '../Components/Login'
 import SignUp from '../Components/SignUp'
-import Main from "../Components/Main";
 import Register from '../Components/Register'
 import CentreRegister from '../Components/CentreRegister'
 import AddDog from '../Components/AddDog';
 import SplashPage from '../Components/SplashPage'
 import SwipeList from "../Components/SwipeList"
 import LikedDogsList from "../Components/LikedDogsList"
-
-const SwitchNavigator = createSwitchNavigator(
 import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
 
-const SwitchNavigator = createStackNavigator(
+const StackNavigator = createStackNavigator(
   {
     Login: {
       screen: Login
     },
     SignUp: {
       screen: SignUp
-    },
-    Main: {
-      screen: Main
     },
     Register: {
       screen: Register
@@ -40,11 +34,17 @@ const SwitchNavigator = createStackNavigator(
   },
     DogProfile: {
       screen: DogProfile
+    },
+    CentreRegister: {
+      screen: CentreRegister
+    },
+    AddDog: {
+      screen: AddDog
     }
   },
   {
-    initialRouteName: "SplashPage"
+    initialRouteName: "SwipeList"
   }
 );
 
-export default createAppContainer(SwitchNavigator);
+export default createAppContainer(StackNavigator);
