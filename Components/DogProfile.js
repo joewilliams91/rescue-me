@@ -15,6 +15,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 // import axios from "axios";
 import firebase from "firebase";
+import { Video } from 'expo-av';
 // import { Button } from "react-native-paper";
 // import { GeoCollectionReference } from "geofirestore";
 // firebase.initializeApp();
@@ -83,7 +84,7 @@ class DogProfile extends React.Component {
     } else {
       const barWidth = SCREEN_WIDTH * 0.8;
       return (
-        <Animated.View
+        <View
         {...this.PanResponder.panHandlers}
           key={dog.id}
        
@@ -97,6 +98,9 @@ class DogProfile extends React.Component {
             }
           ]}
         >
+          <View
+            style={{ flex: 2 }}
+          >
           <Image
             style={{
               flex: 1,
@@ -108,6 +112,19 @@ class DogProfile extends React.Component {
             onLayout={(event) => this.setImageWidth(event)}
             source={{ uri: dog.photos[i] }}
           />
+          <View
+          style={{position: 'absolute', flex: 1, left: 0.05 * SCREEN_WIDTH }}>
+          <View
+          style={{position: 'absolute', top: 5, width: barWidth, height: 5, backgroundColor:  '#ccc', overflow: 'hidden', left: 0 }}>
+          </View>
+          <View
+          style={{ position: 'absolute', top: 5, left: this.state.i * barWidth / dog.photos.length,width: barWidth / dog.photos.length, backgroundColor:  '#5294d6', height: 5, overflow: 'hidden' }}
+          >
+          </View>
+          </View>
+          
+          </View>
+         
           <Text
             style={{
               position: "absolute",
@@ -121,17 +138,20 @@ class DogProfile extends React.Component {
           >
             {dog.name}
           </Text>
-          <View
-          style={{width: barWidth, height: 5, backgroundColor:  '#ccc', overflow: 'hidden'}}>
-          </View>
-          <View
-          style={{ /*position: 'absolute', */top: 0, left: this.state.i * barWidth / dog.photos.length, width: barWidth / dog.photos.length, backgroundColor:  '#5294d6', height: 5 }}
-          >
-          </View>
+        
           <Text>{dog.description}</Text>
+          <Video
+  source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/rescuemetest-4a629.appspot.com/o/videos%2FVID-20190918-WA0001.mp4?alt=media&token=4901ea2a-fd0c-4065-ac5d-30ac724b0258' }}
+  rate={1.0}
+  volume={1.0}
+  isMuted={false}
+  resizeMode="cover"
+  useNativeControls
+  style={{ width: 300, height: 300 }}
+/>
          
           
-        </Animated.View>
+        </View>
       );
     }
   }
