@@ -5,8 +5,8 @@ import SignUp from '../Components/SignUp'
 import Main from '../Components/Main'
 import Register from '../Components/Register'
 import SplashPage from '../Components/SplashPage'
-import SwipeList from "../Components/SwipeList";
-
+import SwipeList from "../Components/SwipeList"
+import LikedDogsList from "../Components/LikedDogsList"
 
 const SwitchNavigator = createSwitchNavigator(
   {
@@ -27,10 +27,13 @@ const SwitchNavigator = createSwitchNavigator(
     },
     SwipeList: {
       screen: SwipeList
+    },
+    LikedDogsList: {
+      screen: LikedDogsList
     }
   },
   {
-    initialRouteName: "SwipeList"
+    initialRouteName: "SplashPage"
   }
 );
 
