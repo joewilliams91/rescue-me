@@ -2,11 +2,11 @@ import React from 'react'
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import Login from '../Components/Login'
 import SignUp from '../Components/SignUp'
-import Main from '../Components/Main'
 import Register from '../Components/Register'
+import CentreRegister from '../Components/CentreRegister'
+import AddDog from '../Components/AddDog';
 import SplashPage from '../Components/SplashPage'
 import SwipeList from "../Components/SwipeList";
-
 
 const SwitchNavigator = createSwitchNavigator(
   {
