@@ -8,7 +8,8 @@ import {
   View,
   Animated,
   Dimensions,
-  PanResponder
+  PanResponder,
+  Button
 } from "react-native";
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -264,6 +265,15 @@ class SwipeList extends React.Component {
                         }}
                         source={{ uri: dog.photos[0] }}
                       />
+                      <Button
+                        title="Go to Dog Profile"
+                        style={{ zIndex: 2000 }}
+                        onPress={() =>
+                          this.props.navigation.navigate("DogProfile")
+                        }
+                      >
+                        "I"
+                      </Button>
                     </Animated.View>
                   );
                 } else {

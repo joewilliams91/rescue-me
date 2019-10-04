@@ -38,6 +38,79 @@ class DogProfile extends React.Component {
   }
   imageWidth = null;
   
+  activityLevel() {
+    const { exerciseLevel } = this.state.dog;
+    let activityLevel = null;
+    switch (exerciseLevel) {
+      case 5:
+        activityLevel = "Extremely Active";
+        break;
+      case 4:
+        activityLevel = "Fairly Active";
+        break;
+      case 3:
+        activityLevel = "Moderately Active";
+        break;
+      case 2:
+        activityLevel = "Leisurely";
+        break;
+      case 1:
+        activityLevel = "Inactive";
+    }
+    return activityLevel;
+  }
+
+  getAge() {
+    const { dob } = this.state.dog;
+    const currentDate = Math.round(new Date().getTime() / 1000);
+    const ageUnix = currentDate - dob.seconds;
+    const age = ageUnix / (60 * 60 * 24 * 365);
+    return Math.round(age);
+  }
+
+  goodWithKids() {
+    const { goodWithChildren } = this.state.dog;
+    let statement = null;
+    switch (goodWithChildren) {
+      case true:
+        statement = "Good with children";
+        break;
+      case false:
+        statement = "Uncomfortable with children";
+        break;
+    }
+    return statement;
+  }
+
+  size() {
+    const { size } = this.state.dog;
+    let statement = null;
+    switch (size) {
+      case 1:
+        statement = "Small";
+        break;
+      case 2:
+        statement = "Medium";
+        break;
+      case 3:
+        statement = "Large";
+        break;
+    }
+    return statement;
+  }
+  goodWithDogs() {
+    const { goodWithOtherDogs } = this.state.dog;
+    let statement = null;
+    switch (goodWithOtherDogs) {
+      case true:
+        statement = "Good with Dogs";
+        break;
+      case false:
+        statement = "Not so good with dogs";
+        break;
+    }
+    return statement;
+  }
 
   componentDidMount() {
     this.PanResponder = PanResponder.create({
@@ -75,6 +148,7 @@ class DogProfile extends React.Component {
   };
   render() {
     const { dog, isLoading, i } = this.state;
+    const { goBack } = this.props.navigation;
     if (isLoading) {
       return (
         <View style={[styles.container, styles.horizontal]}>
@@ -140,6 +214,29 @@ class DogProfile extends React.Component {
           </Text>
         
           <Text>{dog.description}</Text>
+ <View>
+              <Text>{dog.name}</Text>
+              <Text>{dog.gender}</Text>
+              <Text>{dog.description}</Text>
+              <Text>Details</Text>
+              <Text>Breed</Text>
+              <Text>{dog.breed}</Text>
+              <Text>Size</Text>
+              <Text>{this.size()}</Text>
+              <Text>Activity Levels</Text>
+              <Text>{this.activityLevel()}</Text>
+              <Text>Age</Text>
+              <Text>{this.getAge()}</Text>
+              <Text>Good With:</Text>
+              <Text>{this.goodWithKids()}</Text>
+              <Text>{this.goodWithDogs()}</Text>
+              <Button
+                title="Go to Dog Profile"
+                style={{ zIndex: 2000 }}
+                onPress={() => goBack("DogProfile")}
+              >
+              </Button>
+            </View>
           <Video
   source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/rescuemetest-4a629.appspot.com/o/videos%2FVID-20190918-WA0001.mp4?alt=media&token=4901ea2a-fd0c-4065-ac5d-30ac724b0258' }}
   rate={1.0}
@@ -152,6 +249,7 @@ class DogProfile extends React.Component {
          
           
         </View>
+
       );
     }
   }
