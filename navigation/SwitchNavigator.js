@@ -5,28 +5,33 @@ import SignUp from '../Components/SignUp'
 import Register from '../Components/Register'
 import CentreRegister from '../Components/CentreRegister'
 import AddDog from '../Components/AddDog';
+import SplashPage from '../Components/SplashPage'
+import SwipeList from "../Components/SwipeList";
 
 const SwitchNavigator = createSwitchNavigator(
-    {
-        Login: {
-            screen: Login
-        },
-        SignUp: {
-            screen: SignUp
-        },       
-        Register: {
-            screen: Register
-        },
-        CentreRegister: {
-            screen: CentreRegister
-        },
-        AddDog: {
-            screen: AddDog
-        }
+  {
+    Login: {
+      screen: Login
     },
-    {
-        initialRouteName: 'SignUp'
+    SignUp: {
+      screen: SignUp
+    },
+    Main: {
+      screen: Main
+    },
+    Register: {
+      screen: Register
+    },
+    SplashPage: {
+      screen: SplashPage
+    },
+    SwipeList: {
+      screen: SwipeList
     }
-)
+  },
+  {
+    initialRouteName: "SplashPage"
+  }
+);
 
-export default createAppContainer(SwitchNavigator)
+export default createAppContainer(SwitchNavigator);
