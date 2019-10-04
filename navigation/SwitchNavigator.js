@@ -1,10 +1,13 @@
-import React from "react";
-import { createSwitchNavigator, createAppContainer } from "react-navigation";
+import React from 'react'
+import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { createStackNavigator } from "react-navigation-stack";
-import Login from "../Components/Login";
-import SignUp from "../Components/SignUp";
+import Login from '../Components/Login'
+import SignUp from '../Components/SignUp'
 import Main from "../Components/Main";
-import Register from "../Components/Register";
+import Register from '../Components/Register'
+import CentreRegister from '../Components/CentreRegister'
+import AddDog from '../Components/AddDog';
+import SplashPage from '../Components/SplashPage'
 import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
 
@@ -22,6 +25,9 @@ const SwitchNavigator = createStackNavigator(
     Register: {
       screen: Register
     },
+    SplashPage: {
+      screen: SplashPage
+    },
     SwipeList: {
       screen: SwipeList
     },
@@ -30,7 +36,7 @@ const SwitchNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "SwipeList"
+    initialRouteName: "SplashPage"
   }
 );
 
