@@ -83,7 +83,7 @@ class SwipeList extends React.Component {
             // this.currentIndex += 1;
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
-              console.log(this.dogID, "<-- Swiped Right - Dog ID"); // Swipe righty mctighty
+              // console.log(this.dogID, "<-- Swiped Right - Dog ID"); // Swipe righty mctighty
             });
           });
         } else if (gestureState.dx < -120) {
@@ -93,7 +93,7 @@ class SwipeList extends React.Component {
             // this.currentIndex += 1;
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
-              console.log(this.dogID, "<-- Swiped Left - Dog ID"); // Swipe left hefty
+              // console.log(this.dogID, "<-- Swiped Left - Dog ID"); // Swipe left hefty
             });
           });
         } else if (gestureState.dy < -300) {
@@ -103,7 +103,7 @@ class SwipeList extends React.Component {
             // this.currentIndex += 1;
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
-              console.log(this.dogID, "<-- Superlike - Dog ID"); // swipe uppy super likey
+              // console.log(this.dogID, "<-- Superlike - Dog ID"); // swipe uppy super likey
             });
           });
         } else {
@@ -130,7 +130,7 @@ class SwipeList extends React.Component {
       .then(({ data }) => this.setState({ dogs: data.dogs, isLoading: false }));
   }
 
-  componentDidUpdate() {}
+  // componentDidUpdate() {}
 
   render() {
     const { currentUser, dogs, isLoading, currentIndex } = this.state;
