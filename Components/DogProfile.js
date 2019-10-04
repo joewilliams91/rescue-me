@@ -127,6 +127,7 @@ class DogProfile extends React.Component {
   };
   render() {
     const { dog, isLoading, i } = this.state;
+    const { goBack } = this.props.navigation;
     if (isLoading) {
       return (
         <View style={[styles.container, styles.horizontal]}>
@@ -183,6 +184,13 @@ class DogProfile extends React.Component {
               <Text>Good With:</Text>
               <Text>{this.goodWithKids()}</Text>
               <Text>{this.goodWithDogs()}</Text>
+              <Button
+                title="Go to Dog Profile"
+                style={{ zIndex: 2000 }}
+                onPress={() => goBack("DogProfile")}
+              >
+                "I"
+              </Button>
             </View>
           </View>
         </>

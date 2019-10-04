@@ -1,5 +1,6 @@
 import React from "react";
 import { createSwitchNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
 import Login from "../Components/Login";
 import SignUp from "../Components/SignUp";
 import Main from "../Components/Main";
@@ -7,7 +8,7 @@ import Register from "../Components/Register";
 import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
 
-const SwitchNavigator = createSwitchNavigator(
+const SwitchNavigator = createStackNavigator(
   {
     Login: {
       screen: Login
@@ -29,7 +30,7 @@ const SwitchNavigator = createSwitchNavigator(
     }
   },
   {
-    initialRouteName: "DogProfile"
+    initialRouteName: "SwipeList"
   }
 );
 
