@@ -16,7 +16,9 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import axios from "axios";
-import HeaderApp from "./HeaderApp";
+import HeaderApp from "./HeaderComponents/HeaderApp";
+import MainFooter from "./FooterComponents/MainFooter";
+import FooterSwipe from "./FooterComponents/FooterSwipe";
 
 class SwipeList extends React.Component {
   state = {
@@ -31,8 +33,7 @@ class SwipeList extends React.Component {
       radiusPref: 30,
       hasChildren: "false",
       hasDogs: "true"
-    },
-    header: "swipeList"
+    }
   };
   // componentDidMount() {
     
@@ -150,7 +151,7 @@ class SwipeList extends React.Component {
         <View style={{ flex: 1 }}>
           <View style={{ height: 60 }}></View>
           <View>
-            <HeaderApp header={header} />
+            <HeaderApp />
           </View>
           <View style={{ flex: 1 }}>
             {dogs
@@ -318,7 +319,10 @@ class SwipeList extends React.Component {
           </View>
           <View style={{ height: 60 }}></View>
           <View>
-            <Text>Footer must go here</Text>
+            <FooterSwipe />
+          </View>
+          <View>
+            <MainFooter />
           </View>
         </View>
       );

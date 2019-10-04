@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import HeaderApp from './HeaderApp';
+import HeaderApp from './HeaderComponents/HeaderApp';
 
 class SplashPage extends Component {
 sate = {
@@ -39,7 +39,8 @@ sate = {
           style={styles.buttonStyle}
           value="company"
           title="Budding rescuer"
-          onPress={() => this.props.navigation.navigate("Login")}
+          onPress={() => {this.props.navigation.navigate("Login"),
+                            console.log(this.props.navigation);}}
         >
           <Text style={styles.button}>Rescue Center /Home</Text>
         </TouchableOpacity>

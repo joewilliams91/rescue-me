@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from "react-native";
-import HeaderGoBack from "./HeaderComponents/HeaderGoBack"
-import HeaderSettings from './HeaderComponents/HeaderSettings';
-import HeaderHeart from './HeaderComponents/HeaderHeart';
-import HeaderMessages from './HeaderComponents/HeaderMessages';
+import HeaderGoBack from "./HeaderGoBack"
+import HeaderSettings from './HeaderSettings';
+import HeaderHeart from './HeaderHeart';
+import HeaderMessages from './HeaderMessages';
 class HeaderApp extends Component {
   
   render() { 
-    console.log("HeaderApp",this.props.header)
     return (
       <View style={styles.container}>
         <HeaderGoBack />
