@@ -86,13 +86,18 @@ class SwipeList extends React.Component {
             {
               toValue: { x: SCREEN_WIDTH + 150, y: gestureState.dy }
             },
-            console.log("<-- Touchy Feely")
+            console.log("<-- Touchy")
           ).start(() => {
             console.log("<-- Pooper - Dog ID"); // Swipe righty mctighty
-            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-              this.position.setValue({ x: 0, y: 0 });
-              console.log("<-- Swiped Right - Dog ID"); // Swipe righty mctighty
-            });
+            this.setState(
+              currentState => ({
+                currentIndex: currentState.currentIndex + 1
+              }),
+              () => {
+                this.position.setValue({ x: 0, y: 0 });
+                console.log("<-- Swiped Right - Dog ID"); // Swipe righty mctighty
+              }
+            );
           });
         } else if (gestureState.dx > -5) {
           console.log("The right");
@@ -276,17 +281,6 @@ class SwipeList extends React.Component {
                         }}
                         source={{ uri: dog.photos[0] }}
                       />
-                      <Button
-                        title="Go to Dog Profile"
-                        style={{ zIndex: 2000 }}
-                        onPress={() =>
-                          this.props.navigation.navigate("DogProfile", {
-                            id: dog.id
-                          })
-                        }
-                      >
-                        "I"
-                      </Button>
                     </Animated.View>
                   );
                 } else {
