@@ -7,33 +7,31 @@ import {
   Text
 } from "react-native";
 
-class HasChildrenRadioComponents extends React.Component {
-    render() {
-    const { options, updateDetails, hasChildren } = this.props;
-    {
-        return (
-          <View>
-            <Text>Do you have children?</Text>
-            {options.map(item => {
-              return (
-                <View key={item.key} style={styles.buttonContainer}>
-                  <Text>{item.text}</Text>
-                  <TouchableOpacity
-                    style={styles.circle}
-                    onPress={() => updateDetails("hasChildren", item.key)}
-                  >
-                    {hasChildren === item.key && (
-                      <View style={styles.checkedCircle} />
-                    )}
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          </View>
-        );
-      }
+const HasChildrenRadioComponents = props => {
+  const { options, updateDetails, hasChildren } = props;
+  {
+    return (
+      <View>
+        <Text>Do you have children?</Text>
+        {options.map(item => {
+          return (
+            <View key={item.key} style={styles.buttonContainer}>
+              <Text>{item.text}</Text>
+              <TouchableOpacity
+                style={styles.circle}
+                onPress={() => updateDetails("hasChildren", item.key)}
+              >
+                {hasChildren === item.key && (
+                  <View style={styles.checkedCircle} />
+                )}
+              </TouchableOpacity>
+            </View>
+          );
+        })}
+      </View>
+    );
   }
-}
+};
 
 const styles = StyleSheet.create({
   buttonContainer: {

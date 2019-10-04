@@ -7,18 +7,18 @@ import {
   Text
 } from "react-native";
 
-export default class NameComponent extends React.Component {
-  render() {
-    const { updateDetails, name } = this.props;
-    return (
-      <View>
-        <TextInput
-          placeholder="Your centre name(s)"
-          maxLength={20}
-          onChangeText={text => updateDetails("name", text)}
-          value={name}
-        />
-      </View>
-    );
-  }
-}
+const NameComponent = props => {
+  const { updateDetails, name } = props;
+  return (
+    <View>
+      <TextInput
+        placeholder="Your centre name(s)"
+        maxLength={20}
+        onChangeText={text => updateDetails("name", text)}
+        value={name}
+      />
+    </View>
+  );
+};
+
+export default NameComponent;

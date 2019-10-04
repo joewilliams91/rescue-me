@@ -7,11 +7,10 @@ import {
   Text
 } from "react-native";
 
-class EmploymentStatusRadioComponents extends React.Component {
-  render() {
-    const { options, updateDetails, employmentStatus } = this.props;
+const EmploymentStatusRadioComponents = props => {
 
-    {
+    const { options, updateDetails, employmentStatus } = props;
+
       return (
         <View>
           <Text>What is your employment status?</Text>
@@ -33,8 +32,7 @@ class EmploymentStatusRadioComponents extends React.Component {
         </View>
       );
     }
-  }
-}
+  
 
 const styles = StyleSheet.create({
   buttonContainer: {

@@ -7,37 +7,29 @@ import {
   Text
 } from "react-native";
 
-class GenderComponent extends React.Component {
-
-  render() {
-    const { options, updateDetails, gender } = this.props;
-    
-    {
-      return (
-        <View>
-          <Text>
-            Gender:
-          </Text>
-          {options.map(item => {
-            return (
-              <View key={item.key} style={styles.buttonContainer}>
-                <Text>{item.text}</Text>
-                <TouchableOpacity
-                  style={styles.circle}
-                  onPress={() => updateDetails("gender", item.key)}
-                >
-                  {gender === item.key && (
-                    <View style={styles.checkedCircle} />
-                  )}
-                </TouchableOpacity>
-              </View>
-            );
-          })}
-        </View>
-      );
-    }
+const GenderComponent = props => {
+  const { options, updateDetails, gender } = props;
+  {
+    return (
+      <View>
+        <Text>Gender:</Text>
+        {options.map(item => {
+          return (
+            <View key={item.key} style={styles.buttonContainer}>
+              <Text>{item.text}</Text>
+              <TouchableOpacity
+                style={styles.circle}
+                onPress={() => updateDetails("gender", item.key)}
+              >
+                {gender === item.key && <View style={styles.checkedCircle} />}
+              </TouchableOpacity>
+            </View>
+          );
+        })}
+      </View>
+    );
   }
-}
+};
 
 const styles = StyleSheet.create({
   buttonContainer: {

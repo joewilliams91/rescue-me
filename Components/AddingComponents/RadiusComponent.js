@@ -7,20 +7,18 @@ import {
   Text
 } from "react-native";
 
-class RadiusComponent extends React.Component {
-  render() {
-    const { radius, updateDetails } = this.props;
-    return (
-      <View>
-        <TextInput
-          placeholder="Radius preferences"
-          maxLength={20}
-          onChangeText={number => updateDetails("radius", number)}
-          value={radius}
-        />
-      </View>
-    );
-  }
-}
+const RadiusComponent = props => {
+  const { radius, updateDetails } = props;
+  return (
+    <View>
+      <TextInput
+        placeholder="Radius preferences"
+        maxLength={20}
+        onChangeText={number => updateDetails("radius", number)}
+        value={radius}
+      />
+    </View>
+  );
+};
 
 export default RadiusComponent;

@@ -7,18 +7,18 @@ import {
   Text
 } from "react-native";
 
-export default class CharityNumComponent extends React.Component {
-  render() {
-    const { charityNum, updateDetails } = this.props;
-    return (
-      <View>
-        <TextInput
-          placeholder="What is your charity number?"
-          maxLength={20}
-          onChangeText={text => updateDetails("charityNum", text)}
-          value={charityNum}
-        />
-      </View>
-    );
-  }
-}
+const CharityNumComponent = props => {
+  const { charityNum, updateDetails } = props;
+  return (
+    <View>
+      <TextInput
+        placeholder="What is your charity number?"
+        maxLength={20}
+        onChangeText={text => updateDetails("charityNum", text)}
+        value={charityNum}
+      />
+    </View>
+  );
+};
+
+export default CharityNumComponent;

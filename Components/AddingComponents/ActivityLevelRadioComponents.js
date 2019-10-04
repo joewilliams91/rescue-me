@@ -7,34 +7,32 @@ import {
   Text
 } from "react-native";
 
-class ActivityLevelRadioComponents extends React.Component {
-  render() {
-    const { options, updateDetails, activityLevel } = this.props;
+const ActivityLevelRadioComponents = props => {
+  const { options, updateDetails, activityLevel } = props;
 
-    {
-      return (
-        <View>
-          <Text>What is your activity level (1 = lowest, 5 = highest)?</Text>
-          {options.map(item => {
-            return (
-              <View key={item.key} style={styles.buttonContainer}>
-                <Text>{item.text}</Text>
-                <TouchableOpacity
-                  style={styles.circle}
-                  onPress={() => updateDetails("activityLevel", item.key)}
-                >
-                  {activityLevel === item.key && (
-                    <View style={styles.checkedCircle} />
-                  )}
-                </TouchableOpacity>
-              </View>
-            );
-          })}
-        </View>
-      );
-    }
+  {
+    return (
+      <View>
+        <Text>What is your activity level (1 = lowest, 5 = highest)?</Text>
+        {options.map(item => {
+          return (
+            <View key={item.key} style={styles.buttonContainer}>
+              <Text>{item.text}</Text>
+              <TouchableOpacity
+                style={styles.circle}
+                onPress={() => updateDetails("activityLevel", item.key)}
+              >
+                {activityLevel === item.key && (
+                  <View style={styles.checkedCircle} />
+                )}
+              </TouchableOpacity>
+            </View>
+          );
+        })}
+      </View>
+    );
   }
-}
+};
 
 const styles = StyleSheet.create({
   buttonContainer: {

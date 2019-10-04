@@ -7,34 +7,30 @@ import {
   Text
 } from "react-native";
 
-class HasDogRadioComponents extends React.Component {
-  render() {
-    const { options, updateDetails, hasDogs } = this.props;
+const HasDogRadioComponents = props => {
+  const { options, updateDetails, hasDogs } = props;
 
-    {
-      return (
-        <View>
-          <Text>Do you have dogs?</Text>
-          {options.map(item => {
-            return (
-              <View key={item.key} style={styles.buttonContainer}>
-                <Text>{item.text}</Text>
-                <TouchableOpacity
-                  style={styles.circle}
-                  onPress={() => updateDetails("hasDogs", item.key)}
-                >
-                  {hasDogs === item.key && (
-                    <View style={styles.checkedCircle} />
-                  )}
-                </TouchableOpacity>
-              </View>
-            );
-          })}
-        </View>
-      );
-    }
+  {
+    return (
+      <View>
+        <Text>Do you have dogs?</Text>
+        {options.map(item => {
+          return (
+            <View key={item.key} style={styles.buttonContainer}>
+              <Text>{item.text}</Text>
+              <TouchableOpacity
+                style={styles.circle}
+                onPress={() => updateDetails("hasDogs", item.key)}
+              >
+                {hasDogs === item.key && <View style={styles.checkedCircle} />}
+              </TouchableOpacity>
+            </View>
+          );
+        })}
+      </View>
+    );
   }
-}
+};
 
 const styles = StyleSheet.create({
   buttonContainer: {
