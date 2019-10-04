@@ -9,13 +9,13 @@ import {
 
 export default class NameComponent extends React.Component {
   render() {
-    const { updateName, name } = this.props;
+    const { updateDetails, name } = this.props;
     return (
       <View>
         <TextInput
           placeholder="Your centre name(s)"
           maxLength={20}
-          onChangeText={text => updateName(text)}
+          onChangeText={text => updateDetails("name", text)}
           value={name}
         />
       </View>

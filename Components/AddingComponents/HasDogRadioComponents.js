@@ -21,7 +21,7 @@ class HasDogRadioComponents extends React.Component {
                 <Text>{item.text}</Text>
                 <TouchableOpacity
                   style={styles.circle}
-                  onPress={() => updateDetails("dogs", item.key)}
+                  onPress={() => updateDetails("hasDogs", item.key)}
                 >
                   {hasDogs === item.key && (
                     <View style={styles.checkedCircle} />

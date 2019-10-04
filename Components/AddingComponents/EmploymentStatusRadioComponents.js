@@ -7,23 +7,23 @@ import {
   Text
 } from "react-native";
 
-class ActivityLevelRadioComponents extends React.Component {
+class EmploymentStatusRadioComponents extends React.Component {
   render() {
-    const { options, updateDetails, activityLevel } = this.props;
+    const { options, updateDetails, employmentStatus } = this.props;
 
     {
       return (
         <View>
-          <Text>What is your activity level (1 = lowest, 5 = highest)?</Text>
+          <Text>What is your employment status?</Text>
           {options.map(item => {
             return (
               <View key={item.key} style={styles.buttonContainer}>
                 <Text>{item.text}</Text>
                 <TouchableOpacity
                   style={styles.circle}
-                  onPress={() => updateDetails("activity", item.key)}
+                  onPress={() => updateDetails("employmentStatus", item.key)}
                 >
-                  {activityLevel === item.key && (
+                  {employmentStatus === item.key && (
                     <View style={styles.checkedCircle} />
                   )}
                 </TouchableOpacity>
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ActivityLevelRadioComponents;
+export default EmploymentStatusRadioComponents;

@@ -19,27 +19,29 @@ const {
   GeoQuery,
   GeoQuerySnapshot
 } = require("geofirestore");
-import TelephoneComponent from "./TelephoneComponent";
-import DescriptionComponent from "./DescriptionComponent";
-import CharityNumComponent from "./CharityNumComponent";
-import CentreNameComponent from "./CentreNameComponent";
-import AddressComponent from "./AddressComponent";
+import TelephoneComponent from "./AddingComponents/TelephoneComponent";
+import DescriptionComponent from "./AddingComponents/DescriptionComponent";
+import CharityNumComponent from "./AddingComponents/CharityNumComponent";
+import CentreNameComponent from "./AddingComponents/CentreNameComponent";
+import AddressComponent from "./AddingComponents/AddressComponent";
 
 class CentreRegister extends React.Component {
   state = {
     userId: "",
     name: "",
     coordinates: [],
-    postcode: "",
     telephone: "",
     charityNum: "",
     description: ""
   };
 
+  updateDetails = (type, text) => {
+    this.setState({ [type]: text });
+  };
+
   getCoordinates = event => {
     const postcode = event.nativeEvent.text.replace(/ /g, "");
     if (/\w{1,2}\d{2,3}\w{2}/.test(postcode)) {
-      console.log(postcode)
       fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=AIzaSyA0NPRN93V8yRyOeg4IPwPuy-qQAXDBf2Q`
       )
@@ -48,7 +50,6 @@ class CentreRegister extends React.Component {
           const coords = responseJson.results[0].geometry.location;
           const coordinates = [coords.lat, coords.lng];
           this.setState({ coordinates });
-
           return coordinates;
         })
         .then(coordinates => {
@@ -64,22 +65,6 @@ class CentreRegister extends React.Component {
     }
   }
 
-  updateName = name => {
-    this.setState({ name });
-  };
-
-  setTelephone = telephone => {
-    this.setState({ telephone });
-  };
-
-  updateDescription = description => {
-    this.setState({ description });
-  };
-
-  updateCharityNum = charityNum => {
-    this.setState({ charityNum });
-  };
-
   handleRegister = () => {
     const {
       userId,
@@ -92,8 +77,6 @@ class CentreRegister extends React.Component {
     const geofirestore = new GeoFirestore(db);
     const geocollection = geofirestore.collection("centres");
 
-    console.log(coordinates);
-
     geocollection.doc(userId).set({
       coordinates: new firebase.firestore.GeoPoint(
         coordinates[0],
@@ -103,7 +86,7 @@ class CentreRegister extends React.Component {
       charityNum: charityNum,
       description: description,
       telephone: telephone,
-      availableDogs: []
+      availableDogs: {}
     });
 
     this.props.navigation.navigate("AddDog");
@@ -121,10 +104,10 @@ class CentreRegister extends React.Component {
     return (
       <ScrollView>
         <Text>Hi there ${userId}! Please enter your details to register.</Text>
-        <CentreNameComponent updateName={this.updateName} name={name} />
+        <CentreNameComponent updateDetails={this.updateDetails} name={name} />
         <TelephoneComponent
           telephone={telephone}
-          setTelephone={this.setTelephone}
+          updateDetails={this.updateDetails}
         />
         <AddressComponent
           postcode={postcode}
@@ -132,11 +115,11 @@ class CentreRegister extends React.Component {
         />
         <CharityNumComponent
           charityNum={charityNum}
-          updateCharityNum={this.updateCharityNum}
+          updateDetails={this.updateDetails}
         />
         <DescriptionComponent
           description={description}
-          updateDescription={this.updateDescription}
+          updateDetails={this.updateDetails}
         />
         <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
           <Text style={styles.buttonText}>Register</Text>

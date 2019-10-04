@@ -4,7 +4,7 @@ import DatePicker from "react-native-datepicker";
 
 class DOBComponent extends Component {
   render() {
-    const { setDate, dob } = this.props;
+    const { updateDetails, dob } = this.props;
     return (
       <View style={styles.container}>
         <DatePicker
@@ -29,7 +29,7 @@ class DOBComponent extends Component {
             }
           }}
           onDateChange={date => {
-            setDate(date);
+            updateDetails("dob", date)
           }}
         />
       </View>

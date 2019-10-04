@@ -57,7 +57,7 @@ export default class PhotoComponent extends React.Component {
 
       const name = uuid();
       const folder = this.props.user;
-      const imageRef = firebase.storage().ref(`${folder}`).child(`${name}.jpg`);
+      const imageRef = firebase.storage().ref(`${folder}`).child(`images/${name}.jpg`);
 
       imageRef.put(blob, {
           contentType: "image/jpeg"

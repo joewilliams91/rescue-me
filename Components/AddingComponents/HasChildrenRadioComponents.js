@@ -20,7 +20,7 @@ class HasChildrenRadioComponents extends React.Component {
                   <Text>{item.text}</Text>
                   <TouchableOpacity
                     style={styles.circle}
-                    onPress={() => updateDetails("children", item.key)}
+                    onPress={() => updateDetails("hasChildren", item.key)}
                   >
                     {hasChildren === item.key && (
                       <View style={styles.checkedCircle} />

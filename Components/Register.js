@@ -1,12 +1,7 @@
 import React from "react";
 import Firebase, { db } from "../config/Firebase.js";
 import firebase from "firebase";
-const {
-  GeoCollectionReference,
-  GeoFirestore,
-  GeoQuery,
-  GeoQuerySnapshot
-} = require("geofirestore");
+const { GeoFirestore } = require("geofirestore");
 import {
   View,
   TextInput,
@@ -24,18 +19,18 @@ import {
   signup,
   updateLocation
 } from "../actions/user";
-import HasDogRadioComponents from "./HasDogRadioComponents";
-import HasChildrenRadioComponents from "./HasChildrenRadioComponents";
-import ActivityLevelRadioComponents from "./ActivityLevelRadioComponents";
-import DogPreferenceRadioComponents from "./DogPreferenceRadioComponents";
-import EmploymentStatusRadioComponents from "./EmploymentStatusRadioComponents";
-import NameComponent from "./NameComponent";
-import GenderComponent from "./GenderComponent";
-import DOBComponent from "./DOBComponent";
-import PhotoComponent from "./PhotoComponent";
-import RadiusComponent from "./RadiusComponent";
-import TelephoneComponent from "./TelephoneComponent";
-import DescriptionComponent from "./DescriptionComponent";
+import HasDogRadioComponents from "./AddingComponents/HasDogRadioComponents";
+import HasChildrenRadioComponents from "./AddingComponents/HasChildrenRadioComponents";
+import ActivityLevelRadioComponents from "./AddingComponents/ActivityLevelRadioComponents";
+import DogPreferenceRadioComponents from "./AddingComponents/DogPreferenceRadioComponents";
+import EmploymentStatusRadioComponents from "./AddingComponents/EmploymentStatusRadioComponents";
+import NameComponent from "./AddingComponents/NameComponent";
+import GenderComponent from "./AddingComponents/GenderComponent";
+import DOBComponent from "./AddingComponents/DOBComponent";
+import PhotoComponent from "./AddingComponents/PhotoComponent";
+import RadiusComponent from "./AddingComponents/RadiusComponent";
+import TelephoneComponent from "./AddingComponents/TelephoneComponent";
+import DescriptionComponent from "./AddingComponents/DescriptionComponent";
 
 class Register extends React.Component {
   state = {
@@ -81,28 +76,8 @@ class Register extends React.Component {
     ]
   };
 
-  updateDetails = (has, key) => {
-    if (has === "dogs") {
-      this.setState({ hasDogs: key });
-    } else if (has === "children") {
-      this.setState({ hasChildren: key });
-    } else if (has === "activity") {
-      this.setState({ activityLevel: key });
-    } else if (has === "employment") {
-      this.setState({ employmentStatus: key });
-    } else if (has === "gender") {
-      this.setState({ gender: key });
-    } else if (has === "description") {
-      this.setState({ description: key });
-    }
-  };
-
-  updateDescription = description => {
-    this.setState({ description });
-  };
-
-  setDate = dob => {
-    this.setState({ dob });
+  updateDetails = (type, text) => {
+    this.setState({ [type]: text });
   };
 
   setSizePrefs = key => {
@@ -118,14 +93,6 @@ class Register extends React.Component {
         };
         return currentState;
       });
-    }
-  };
-
-  updateName = (type, name) => {
-    if (type === "firstName") {
-      this.setState({ firstName: name });
-    } else {
-      this.setState({ surname: name });
     }
   };
 
@@ -146,14 +113,6 @@ class Register extends React.Component {
       this.setState({ userId: this.props.user.id });
     }
   }
-
-  updateRadius = radius => {
-    this.setState({ radius });
-  };
-
-  setTelephone = telephone => {
-    this.setState({ telephone });
-  };
 
   addToPhotoArray = url => {
     this.setState(currentState => {
@@ -207,7 +166,7 @@ class Register extends React.Component {
       telephone: telephone,
       sizePref: sizePrefs,
       gender: gender,
-      likedDogs: []
+      likedDogs: {}
     });
   };
 
@@ -235,11 +194,11 @@ class Register extends React.Component {
         <NameComponent
           firstName={firstName}
           surname={surname}
-          updateName={this.updateName}
+          updateDetails={this.updateDetails}
         />
         <DescriptionComponent
           description={description}
-          updateDescription={this.updateDescription}
+          updateDetails={this.updateDetails}
         />
         <ActivityLevelRadioComponents
           options={activityOptions}
@@ -266,21 +225,18 @@ class Register extends React.Component {
           employmentStatus={employmentStatus}
           options={employmentOptions}
         />
-        <DOBComponent dob={dob} setDate={this.setDate} />
+        <DOBComponent dob={dob} updateDetails={this.updateDetails} />
         <TelephoneComponent
           telephone={telephone}
-          setTelephone={this.setTelephone}
+          updateDetails={this.updateDetails}
         />
         <GenderComponent
           updateDetails={this.updateDetails}
           options={genderOptions}
           gender={gender}
         />
-        <PhotoComponent
-          user={this.props.user.id}
-          addToPhotoArray={this.addToPhotoArray}
-        />
-        <RadiusComponent radius={radius} updateRadius={this.updateRadius} />
+        <PhotoComponent user={userId} addToPhotoArray={this.addToPhotoArray} />
+        <RadiusComponent radius={radius} updateDetails={this.updateDetails} />
         <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>

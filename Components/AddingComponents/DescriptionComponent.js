@@ -9,13 +9,13 @@ import {
 
 export default class DescriptionComponent extends React.Component {
   render() {
-    const { description, updateDescription } = this.props;
+    const { description, updateDetails } = this.props;
     return (
       <View>
         <TextInput
           placeholder="Add a short description"
           maxLength={20}
-          onChangeText={text => updateDescription(text)}
+          onChangeText={text => updateDetails("description", text)}
           value={description}
         />
       </View>

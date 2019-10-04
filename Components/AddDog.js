@@ -11,22 +11,17 @@ import {
 import { connect } from "react-redux";
 import Firebase, { db } from "../config/Firebase.js";
 import firebase from "firebase";
-const {
-  GeoCollectionReference,
-  GeoFirestore,
-  GeoQuery,
-  GeoQuerySnapshot
-} = require("geofirestore");
-import DogNameComponent from "./DogNameComponent";
-import DogBreedComponent from "./DogBreedComponent";
-import DescriptionComponent from "./DescriptionComponent";
-import DOBComponent from "./DOBComponent";
-import GenderComponent from "./GenderComponent";
-import ExerciseLevelComponent from "./ExerciseLevelComponent";
-import GoodWithDogsComponent from "./GoodWithDogsComponent";
-import GoodWithChildrenComponent from "./GoodWithChildrenComponent";
-import SizeComponent from "./SizeComponent";
-import PhotoComponent from "./PhotoComponent";
+const { GeoFirestore } = require("geofirestore");
+import DogNameComponent from "./AddingComponents/DogNameComponent";
+import DogBreedComponent from "./AddingComponents/DogBreedComponent";
+import DescriptionComponent from "./AddingComponents/DescriptionComponent";
+import DOBComponent from "./AddingComponents/DOBComponent";
+import GenderComponent from "./AddingComponents/GenderComponent";
+import ExerciseLevelComponent from "./AddingComponents/ExerciseLevelComponent";
+import GoodWithDogsComponent from "./AddingComponents/GoodWithDogsComponent";
+import GoodWithChildrenComponent from "./AddingComponents/GoodWithChildrenComponent";
+import SizeComponent from "./AddingComponents/SizeComponent";
+import PhotoComponent from "./AddingComponents/PhotoComponent";
 
 class AddDog extends React.Component {
   state = {
@@ -68,11 +63,6 @@ class AddDog extends React.Component {
     this.setState({ [type]: text });
   };
 
-  updateDescription = description => {
-    this.setState({ description });
-  };
-
-
   addToPhotoArray = url => {
     this.setState(currentState => {
       const newPhotos = [...currentState.photos, url];
@@ -81,17 +71,12 @@ class AddDog extends React.Component {
     });
   };
 
-
   componentDidMount() {
     this.setState({
       centreId: this.props.user.id,
       coordinates: this.props.user.coordinates
     });
   }
-
-  setDate = dob => {
-    this.setState({ dob });
-  };
 
   handleAdd = () => {
     const {
@@ -105,7 +90,7 @@ class AddDog extends React.Component {
       gender,
       goodWithChildren,
       goodWithOtherDogs,
-      photos: [],
+      photos,
       size
     } = this.state;
     const parts = dob.split("-");
@@ -115,11 +100,9 @@ class AddDog extends React.Component {
     const geofirestore = new GeoFirestore(db);
     const dogsCollection = geofirestore.collection("dogs");
     const centreDoc = geofirestore.collection("centres").doc(centreId);
-
     const newDog = dogsCollection.doc();
     const newDogId = newDog.id;
-
-    centreDoc.update({ ["availableDogs." + newDogId]: { name, photos: [] } });
+    centreDoc.update({ ["availableDogs." + newDogId]: { name, photos } });
 
     newDog.set({
       coordinates: new firebase.firestore.GeoPoint(
@@ -136,7 +119,8 @@ class AddDog extends React.Component {
       centreId: centreId,
       size: size,
       breed: breed,
-      photos: []
+      photos: photos,
+      videos: []
     });
   };
 
@@ -166,9 +150,9 @@ class AddDog extends React.Component {
         <DogBreedComponent breed={breed} updateDetails={this.updateDetails} />
         <DescriptionComponent
           description={description}
-          updateDescription={this.updateDescription}
+          updateDetails={this.updateDetails}
         />
-        <DOBComponent setDate={this.setDate} dob={dob} />
+        <DOBComponent updateDetails={this.updateDetails} dob={dob} />
         <ExerciseLevelComponent
           options={exerciseOptions}
           exerciseLevel={exerciseLevel}

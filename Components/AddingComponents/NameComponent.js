@@ -8,23 +8,23 @@ import {
 } from "react-native";
 
 const NameComponent = props => {
-  const { updateName, firstName, surname } = props;
+  const { updateDetails, firstName, surname } = props;
   return (
     <View>
       <TextInput
         placeholder="Your first name(s)"
         maxLength={20}
-        onChangeText={text => updateName("firstName", text)}
+        onChangeText={text => updateDetails("firstName", text)}
         value={firstName}
       />
       <TextInput
         placeholder="Your surname"
         maxLength={20}
-        onChangeText={text => updateName("surname", text)}
+        onChangeText={text => updateDetails("surname", text)}
         value={surname}
       />
     </View>
   );
 };
 
-export default NameComponent
+export default NameComponent;

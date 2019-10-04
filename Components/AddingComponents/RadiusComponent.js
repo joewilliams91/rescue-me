@@ -9,13 +9,13 @@ import {
 
 class RadiusComponent extends React.Component {
   render() {
-    const { radius, updateRadius } = this.props;
+    const { radius, updateDetails } = this.props;
     return (
       <View>
         <TextInput
           placeholder="Radius preferences"
           maxLength={20}
-          onChangeText={number => updateRadius(number)}
+          onChangeText={number => updateDetails("radius", number)}
           value={radius}
         />
       </View>
