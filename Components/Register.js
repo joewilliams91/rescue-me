@@ -1,7 +1,7 @@
 import React from "react";
 import Firebase, { db } from "../config/Firebase.js";
 import firebase from "firebase";
-
+​
 const { GeoFirestore } = require("geofirestore");
 import {
   View,
@@ -32,7 +32,7 @@ import PhotoComponent from "./AddingComponents/PhotoComponent";
 import RadiusComponent from "./AddingComponents/RadiusComponent";
 import TelephoneComponent from "./AddingComponents/TelephoneComponent";
 import DescriptionComponent from "./AddingComponents/DescriptionComponent";
-
+​
 class Register extends React.Component {
   state = {
     userId: "",
@@ -76,11 +76,11 @@ class Register extends React.Component {
       { key: "Female", text: "Female" }
     ]
   };
-
+​
   updateDetails = (type, text) => {
     this.setState({ [type]: text });
   };
-
+​
   setSizePrefs = key => {
     const { sizePrefs } = this.state;
     if (sizePrefs.includes(key)) {
@@ -96,8 +96,9 @@ class Register extends React.Component {
       });
     }
   };
-
+​
   componentDidMount() {
+    console.log(this.props.user)
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -108,13 +109,13 @@ class Register extends React.Component {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   }
-
+​
   componentDidUpdate(prevProps) {
     if (this.props.user !== prevProps.user) {
       this.setState({ userId: this.props.user.id });
     }
   }
-
+​
   addToPhotoArray = url => {
     this.setState(currentState => {
       const newPhotos = [...currentState.photos, url];
@@ -122,7 +123,7 @@ class Register extends React.Component {
       return newState;
     });
   };
-
+​
   handleRegister = () => {
     const {
       userId,
@@ -143,17 +144,18 @@ class Register extends React.Component {
     } = this.state;
     const geofirestore = new GeoFirestore(db);
     const geocollection = geofirestore.collection("users");
-
+​
     const parts = dob.split("-");
     const newDob = firebase.firestore.Timestamp.fromDate(
       new Date(+parts[2], +parts[1] - 1, +parts[0])
     );
-
+​
     geocollection.doc(userId).set({
       coordinates: new firebase.firestore.GeoPoint(
         coordinates[0],
         coordinates[1]
       ),
+      id: userId,
       firstName: firstName,
       photos: photos,
       surname: surname,
@@ -170,7 +172,7 @@ class Register extends React.Component {
       likedDogs: {}
     });
   };
-
+​
   render() {
     const {
       userId,
@@ -245,18 +247,18 @@ class Register extends React.Component {
     );
   }
 }
-
+​
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     { updateEmail, updatePassword, updateLocation, signup },
     dispatch
   );
 };
-
+​
 const mapStateToProps = state => ({
   ...state
 });
-
+​
 const styles = StyleSheet.create({
   button: {
     marginTop: 30,
@@ -270,7 +272,7 @@ const styles = StyleSheet.create({
     width: 200
   }
 });
-
+​
 export default connect(
   mapStateToProps,
   mapDispatchToProps
