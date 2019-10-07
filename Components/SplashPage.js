@@ -21,43 +21,42 @@ class SplashPage extends Component {
           end={[1.2, 0.1]}
           style={styles.gradient}
         >
-          <View>
+          <View style={{ alignItems: "center", flex: 1 }}>
             <Image
               style={{
                 width: 230,
                 height: 90,
-                marginBottom: 80,
-                marginTop: 160
+                marginBottom: 30,
+                marginTop: 100
               }}
               source={require("../assets/images/logo/logo.png")}
             />
           </View>
           <View style={styles.textTitle}>
-            <Text style={styles.heroMessage}>Power</Text>
-            <Text style={styles.heroMessage}>to</Text>
-            <Text style={styles.heroMessage}>the</Text>
-            <Text style={styles.heroMessage}>pooch</Text>
+            <Text style={styles.heroMessage}>
+              Power{"\n"}to{"\n"}the{"\n"}pooch
+            </Text>
           </View>
 
-          <View style={{ alignItems: "center" }}>
+          <View style={{ alignItems: "center", flex: 1 }}>
             <Text style={styles.welcomeMessage}>Who are you?</Text>
-          </View>
 
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            title="Budding rescuer"
-            onPress={() => this.props.navigation.navigate("Login")}
-          >
-            <Text style={styles.buttonText}>Dog Lover</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            value="company"
-            title="Budding rescuer"
-            onPress={() => this.props.navigation.navigate("Login")}
-          >
-            <Text style={styles.buttonText}>Rescue Centre</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              title="Budding rescuer"
+              onPress={() => this.props.navigation.navigate("Login")}
+            >
+              <Text style={styles.buttonText}>Dog Lover</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              value="company"
+              title="Budding rescuer"
+              onPress={() => this.props.navigation.navigate("Login")}
+            >
+              <Text style={styles.buttonText}>Rescue Centre</Text>
+            </TouchableOpacity>
+          </View>
         </LinearGradient>
       </View>
     );
@@ -71,20 +70,18 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
+    zIndex: -1000,
     alignSelf: "stretch",
     alignItems: "center"
   },
   textTitle: {
-    marginBottom: 80
+    flex: 2,
+
+    justifyContent: "center"
   },
   heroMessage: {
-    justifyContent: "center",
-    marginTop: 1,
-    paddingTop: 1,
-    marginBottom: 1,
-    paddingBottom: 1,
     color: "white",
-    fontSize: 35,
+    fontSize: 30,
     fontFamily: "poppins-bold"
   },
   welcomeMessage: {
@@ -92,19 +89,17 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontFamily: "poppins-bold",
-    marginBottom: 20,
+
     includeFontPadding: false,
-    textAlign: "justify",
-    lineHeight: 20
+    textAlign: "justify"
   },
   buttonStyle: {
     backgroundColor: "white",
     alignItems: "center",
     marginTop: 10,
-    marginBottom: 10,
     borderRadius: 25,
     overflow: "hidden",
-    padding: 12,
+    padding: 8,
     textAlign: "center",
     width: 250
   },
