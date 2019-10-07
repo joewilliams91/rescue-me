@@ -1,6 +1,7 @@
 import React from "react";
 import Firebase, { db } from "../config/Firebase.js";
 import firebase from "firebase";
+
 const { GeoFirestore } = require("geofirestore");
 import {
   View,

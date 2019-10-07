@@ -86,16 +86,19 @@ class SwipeList extends React.Component {
             {
               toValue: { x: SCREEN_WIDTH + 150, y: gestureState.dy }
             },
-            console.log("<-- Touchy Feely")
+            console.log("<-- Touchy")
           ).start(() => {
             console.log("<-- Pooper - Dog ID"); // Swipe righty mctighty
-            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-              this.position.setValue({ x: 0, y: 0 });
-              console.log("<-- Swiped Right - Dog ID"); // Swipe righty mctighty
-            });
+            this.setState(
+              currentState => ({
+                currentIndex: currentState.currentIndex + 1
+              }),
+              () => {
+                this.position.setValue({ x: 0, y: 0 });
+                console.log("<-- Swiped Right - Dog ID"); // Swipe righty mctighty
+              }
+            );
           });
-        } else if (gestureState.dx > -5) {
-          console.log("The right");
         } else if (gestureState.dx < -120) {
           Animated.spring(this.position, {
             toValue: { x: -SCREEN_WIDTH - 200, y: gestureState.dy }
@@ -140,30 +143,23 @@ class SwipeList extends React.Component {
       .then(({ data }) => this.setState({ dogs: data.dogs, isLoading: false }));
   }
 
-  // componentDidUpdate() {}
-
   render() {
     const { currentUser, dogs, isLoading, currentIndex } = this.state;
     if (isLoading) {
       console.log("isloading");
       return (
-        <View style={[styles.container, styles.horizontal]}>
+        <View style={[styles.loadingContainer, styles.loadingHorizontal]}>
           <ActivityIndicator size="large" color="#e64664" />
         </View>
       );
     } else {
       console.log("Main Content");
       return (
-        <View style={{ flex: 1 }}>
-          <View style={{ height: 60 }}></View>
-          <View>
-            <Text>Header must go here</Text>
-          </View>
-          <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+          <View style={{ flex: 2, alignItems: "center" }}>
             {dogs
               .map((dog, i) => {
                 if (i < currentIndex) {
-                  // console.log(Date.now())
                   return null;
                 } else if (i == currentIndex) {
                   this.dogID = dog.id;
@@ -176,11 +172,9 @@ class SwipeList extends React.Component {
                         this.rotateAndTranslate,
 
                         {
-                          height: SCREEN_HEIGHT - 210,
-                          width: SCREEN_WIDTH,
-                          padding: 20,
-                          paddingTop: 50,
-                          position: "absolute"
+                          height: SCREEN_HEIGHT - 250,
+                          width: SCREEN_WIDTH - 20,
+                          padding: 10
                         }
                       ]}
                     >
@@ -276,30 +270,17 @@ class SwipeList extends React.Component {
                         }}
                         source={{ uri: dog.photos[0] }}
                       />
-                      <Button
-                        title="Go to Dog Profile"
-                        style={{ zIndex: 2000 }}
-                        onPress={() =>
-                          this.props.navigation.navigate("DogProfile", {
-                            id: dog.id
-                          })
-                        }
-                      >
-                        "I"
-                      </Button>
                     </Animated.View>
                   );
                 } else {
-                  // console.log(Date.now())
                   return (
                     <Animated.View
                       key={i}
                       style={[
                         {
-                          height: SCREEN_HEIGHT - 210,
-                          width: SCREEN_WIDTH,
-                          padding: 20,
-                          paddingTop: 50,
+                          height: SCREEN_HEIGHT - 250,
+                          width: SCREEN_WIDTH - 20,
+                          padding: 10,
                           position: "absolute"
                         }
                       ]}
@@ -317,11 +298,10 @@ class SwipeList extends React.Component {
                       <Text
                         style={{
                           position: "absolute",
-                          bottom: 50,
-                          left: 120,
-                          zIndex: 1000,
+                          bottom: 90,
+                          left: 40,
                           color: "white",
-                          fontSize: 32,
+                          fontSize: 40,
                           fontWeight: "800"
                         }}
                       >
@@ -346,12 +326,12 @@ class SwipeList extends React.Component {
 const mapStateToProps = state => ({ ...state });
 
 const styles = StyleSheet.create({
-  container: {
+  loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center"
   },
-  horizontal: {
+  loadingHorizontal: {
     flexDirection: "row",
     justifyContent: "space-around",
     padding: 10

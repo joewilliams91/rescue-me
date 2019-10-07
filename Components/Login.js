@@ -9,12 +9,17 @@ import {
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { LinearGradient } from "expo-linear-gradient";
 import { updateEmail, updatePassword, login } from "../actions/user";
 
 class Login extends React.Component {
   state = {
     email: "",
     password: ""
+  };
+  static navigationOptions = {
+    headerTransparent: true,
+    headerTintColor: "#fff"
   };
 
   handleLogin = () => {
@@ -24,64 +29,136 @@ class Login extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.inputBox}
-          value={this.props.user.email}
-          onChangeText={email => this.props.updateEmail(email)}
-          placeholder="Email"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.inputBox}
-          value={this.props.user.password}
-          onChangeText={password => this.props.updatePassword(password)}
-          placeholder="Password"
-          secureTextEntry={true}
-        />
-        <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <Button
-          title="Don't have an account yet? Sign up"
-          onPress={() => this.props.navigation.navigate("SignUp")}
-        />
-      </View>
+      <LinearGradient
+        colors={["#f8789a", "#845efd"]}
+        start={[0.1, 1.5]}
+        end={[1.2, 0.1]}
+        style={styles.gradient}
+      >
+        <View style={styles.inputContainer}>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 30,
+              fontFamily: "poppins-semibold",
+              textAlign: "center",
+              marginBottom: 20
+            }}
+          >
+            Sign In
+          </Text>
+
+          <TextInput
+            style={styles.inputBox}
+            value={this.props.user.email}
+            onChangeText={email => this.props.updateEmail(email)}
+            placeholder="Email"
+            placeholderTextColor={"#c5c6ca"}
+            autoCapitalize="none"
+          />
+
+          <TextInput
+            style={styles.inputBox}
+            value={this.props.user.password}
+            onChangeText={password => this.props.updatePassword(password)}
+            placeholder="Password"
+            placeholderTextColor={"#c5c6ca"}
+            clearTextOnFocus={true}
+            secureTextEntry={true}
+          />
+          <View style={{ alignItems: "center", marginTop: 30 }}>
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={this.handleLogin}
+            >
+              <Text style={styles.loginButtonText}>LOGIN</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.signupContainer}>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 30,
+              fontFamily: "poppins-semibold",
+              marginBottom: 14
+            }}
+          >
+            Newbie?
+          </Text>
+          <TouchableOpacity
+            style={styles.signUpbutton}
+            onPress={() => this.props.navigation.navigate("SignUp")}
+          >
+            <Text style={styles.signUpbuttonText}>SIGN UP</Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  gradient: {
     flex: 1,
-    backgroundColor: "#fff",
+    alignSelf: "stretch",
     alignItems: "center",
     justifyContent: "center"
   },
+  inputContainer: {
+    flex: 1,
+    marginTop: 150,
+    marginBottom: 40,
+    width: 300,
+    justifyContent: "center"
+  },
   inputBox: {
-    width: "85%",
-    margin: 10,
-    padding: 15,
-    fontSize: 16,
-    borderColor: "#d3d3d3",
-    borderBottomWidth: 1,
-    textAlign: "center"
-  },
-  button: {
-    marginTop: 30,
-    marginBottom: 20,
-    paddingVertical: 5,
     alignItems: "center",
-    backgroundColor: "#F6820D",
-    borderColor: "#F6820D",
-    borderWidth: 1,
-    borderRadius: 5,
-    width: 200
+    marginTop: 5,
+    marginBottom: 10,
+    borderBottomColor: "#c5c6ca",
+    borderBottomWidth: 2,
+    overflow: "hidden",
+    padding: 12,
+    textAlign: "left",
+    alignSelf: "stretch",
+    fontFamily: "poppins-semibold"
   },
-  buttonText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#fff"
+  signupContainer: {
+    alignItems: "center",
+    flex: 1,
+    marginTop: 30
+  },
+  loginButton: {
+    marginBottom: 10,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: "#fff",
+    overflow: "hidden",
+    padding: 9,
+    textAlign: "center",
+    width: 280
+  },
+  loginButtonText: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 17,
+    fontFamily: "poppins-semibold"
+  },
+  signUpbutton: {
+    backgroundColor: "white",
+    marginBottom: 10,
+    borderRadius: 25,
+    overflow: "hidden",
+    padding: 9,
+    textAlign: "center",
+    width: 280
+  },
+  signUpbuttonText: {
+    color: "#f8789a",
+    textAlign: "center",
+    fontSize: 17,
+    fontFamily: "poppins-semibold"
   },
   buttonSignup: {
     fontSize: 12

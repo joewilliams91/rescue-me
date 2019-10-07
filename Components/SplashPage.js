@@ -1,86 +1,109 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import HeaderApp from './HeaderComponents/HeaderApp';
+import { LinearGradient } from "expo-linear-gradient";
+import { connect } from "react-redux";
 
 class SplashPage extends Component {
-sate = {
-  user: "user",
-  commpany: "company"
-}
-  
-  render() { 
+  state = {
+    user: "user",
+    commpany: "company"
+  };
+  static navigationOptions = {
+    header: null
+  };
+
+  render() {
     return (
       <View style={styles.container}>
-        <View>
-          <Image
-            style={{ width: 230, height: 90, marginBottom: 50, marginTop: 70 }}
-            source={require("../images/logo/logo.png")}
-          />
-        </View>
-        <View style={styles.textTitle}>
-          <Text style={styles.textStyles}>Power</Text>
-          <Text style={styles.textStyles}>to</Text>
-          <Text style={styles.textStyles}>the</Text>
-          <Text style={styles.textStyles}>pooch</Text>
-        </View>
-
-        <View>
-          <Text style={styles.textStyles}>Hi, Who are you?</Text>
-        </View>
-
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          title="Budding rescuer"
-          onPress={() => this.props.navigation.navigate("Login")}
+        <LinearGradient
+          colors={["#f8789a", "#845efd"]}
+          start={[0.1, 1.5]}
+          end={[1.2, 0.1]}
+          style={styles.gradient}
         >
-          <Text style={styles.button}>Budding rescuer</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          value="company"
-          title="Budding rescuer"
-          onPress={() => {this.props.navigation.navigate("Login"),
-                            console.log(this.props.navigation);}}
-        >
-          <Text style={styles.button}>Rescue Center /Home</Text>
-        </TouchableOpacity>
+          <View style={{ alignItems: "center", flex: 1 }}>
+            <Image
+              style={{
+                width: 230,
+                height: 90,
+                marginBottom: 30,
+                marginTop: 100
+              }}
+              source={require("../assets/images/logo/logo.png")}
+            />
+          </View>
+          <View style={styles.textTitle}>
+            <Text style={styles.heroMessage}>
+              Power{"\n"}to{"\n"}the{"\n"}pooch
+            </Text>
+          </View>
+
+          <View style={{ alignItems: "center", flex: 1 }}>
+            <Text style={styles.welcomeMessage}>Who are you?</Text>
+
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              title="Budding rescuer"
+              onPress={() => this.props.navigation.navigate("Login")}
+            >
+              <Text style={styles.buttonText}>Dog Lover</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              value="company"
+              title="Budding rescuer"
+              onPress={() => this.props.navigation.navigate("Login")}
+            >
+              <Text style={styles.buttonText}>Rescue Centre</Text>
+            </TouchableOpacity>
+          </View>
+        </LinearGradient>
       </View>
     );
-    
   }
 }
- const styles = StyleSheet.create({
-   container: {
-     flex: 1,
-     justifyContent: "center",
-     alignItems: "center",
-     backgroundColor: "#6E0A83",
-     flexDirection: "column"
-   },
-   textTitle: {
-     marginBottom: 80
-   },
-   textStyles: {
-     justifyContent: "center",
-     color: "white",
-     fontSize: 35,
-     fontWeight: "bold",
-     flexDirection: "column"
-   },
-   buttonStyle: {
-     backgroundColor: "white",
-     alignItems: "center",
-     marginTop: 15,
-     marginBottom: 20,
-     borderRadius: 25,
-     color: "white",
-     fontSize: 24,
-     fontWeight: "bold",
-     overflow: "hidden",
-     padding: 12,
-     textAlign: "center",
-     width: 250,
-   }
- });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  gradient: {
+    flex: 1,
+    zIndex: -1000,
+    alignSelf: "stretch",
+    alignItems: "center"
+  },
+  textTitle: {
+    flex: 2,
+
+    justifyContent: "center"
+  },
+  heroMessage: {
+    color: "white",
+    fontSize: 30,
+    fontFamily: "poppins-bold"
+  },
+  welcomeMessage: {
+    justifyContent: "center",
+    color: "white",
+    fontSize: 20,
+    fontFamily: "poppins-bold",
+
+    includeFontPadding: false,
+    textAlign: "justify"
+  },
+  buttonStyle: {
+    backgroundColor: "white",
+    alignItems: "center",
+    marginTop: 10,
+    borderRadius: 25,
+    overflow: "hidden",
+    padding: 8,
+    textAlign: "center",
+    width: 250
+  },
+  buttonText: { color: "#707070", fontSize: 15, fontFamily: "poppins-semibold" }
+});
 
 export default SplashPage;
