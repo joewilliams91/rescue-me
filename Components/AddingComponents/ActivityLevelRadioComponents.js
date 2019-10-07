@@ -8,16 +8,38 @@ import {
 } from "react-native";
 
 const ActivityLevelRadioComponents = props => {
+  function checkValue(value) {
+    let activityValue = null;
+    switch (value) {
+      case "1":
+        activityValue = "Never";
+        break;
+      case "2":
+        activityValue = "Sometimes";
+        break;
+      case "3":
+        activityValue = "Moderately";
+        break;
+      case "4":
+        activityValue = "Fairly";
+        break;
+      case "5":
+        activityValue = "Very";
+        break;
+    }
+    return activityValue;
+  }
   const { options, updateDetails, activityLevel } = props;
 
   {
     return (
-      <View>
-        <Text>What is your activity level (1 = lowest, 5 = highest)?</Text>
+      <View style={styles.inputContainer}>
         {options.map(item => {
+          let activityValue = checkValue(item.text);
+
           return (
             <View key={item.key} style={styles.buttonContainer}>
-              <Text>{item.text}</Text>
+              <Text style={styles.value}>{activityValue}</Text>
               <TouchableOpacity
                 style={styles.circle}
                 onPress={() => updateDetails("activityLevel", item.key)}
@@ -46,7 +68,7 @@ const styles = StyleSheet.create({
     width: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ACACAC",
+    borderColor: "#fff",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -54,7 +76,19 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: "#794F9B"
+    backgroundColor: "#fff"
+  },
+  value: {
+    color: "#fff",
+    fontSize: 17,
+    fontFamily: "poppins-regular"
+  },
+  inputContainer: {
+    flex: 1,
+    marginTop: 20,
+    marginBottom: 40,
+    width: 250,
+    justifyContent: "center"
   }
 });
 

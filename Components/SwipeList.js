@@ -12,34 +12,66 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import axios from "axios";
+import firebase from "firebase";
+import Firebase, { db } from "../config/Firebase.js";
+const { GeoFirestore } = require("geofirestore");
+const geofirestore = new GeoFirestore(db);
+const usersCollection = geofirestore.collection("users");
+
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 class SwipeList extends React.Component {
   state = {
-    currentUser: null,
+    currentUserID: "",
     dogs: [],
     isLoading: true,
     currentIndex: 0,
     dogId: null,
     user: {
-      activityLevel: 5,
-      coordinates: [53.4808, -2.2426],
-      radiusPref: 30,
-      hasChildren: "false",
-      hasDogs: "true"
+      activityLevel: null,
+      coordinates: [null, null],
+      radiusPref: null,
+      hasChildren: "",
+      hasDogs: "",
+      likedDogs: {}
     }
   };
-  // componentDidMount() {
-
-  // }
 
   componentDidUpdate() {
     console.log("didupdate");
   }
 
-  dogID = null;
+  currentDog = {};
   // currentIndex = 0;
+
+  storeToLikedList(dog) {
+    this.setState(
+      currentState => {
+        const newDog = dog.id;
+
+        const newLikedDogs = { ...currentState.user.likedDogs, [newDog]: dog };
+
+        const newUser = { ...currentState.user, likedDogs: newLikedDogs };
+
+        const newState = { ...currentState, user: newUser };
+
+        return newState;
+      },
+      () => {
+        const { user, currentUserID } = this.state;
+        const { likedDogs } = user;
+        const userToUpdate = usersCollection
+          .doc(currentUserID)
+          .update({ likedDogs: likedDogs })
+          .then(() => {
+            console.log("Update to liked list successful");
+          })
+          .catch(console.log("Update unsuccessful"));
+      }
+    );
+  }
+
   position = new Animated.ValueXY();
   rotate = this.position.x.interpolate({
     inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
@@ -76,19 +108,19 @@ class SwipeList extends React.Component {
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderMove: (evt, gestureState) => {
         this.position.setValue({ x: gestureState.dx, y: gestureState.dy });
-        console.log("pickedup");
+        console.log("The Card has been picked up");
       },
       onPanResponderRelease: (evt, gestureState) => {
-        console.log("released");
+        console.log("Card has been released");
         if (gestureState.dx > 120) {
           Animated.spring(
             this.position,
             {
               toValue: { x: SCREEN_WIDTH + 150, y: gestureState.dy }
             },
-            console.log("<-- Touchy")
+            console.log("<-- Just before the start part of the animation")
           ).start(() => {
-            console.log("<-- Pooper - Dog ID"); // Swipe righty mctighty
+            this.storeToLikedList(this.currentDog);
             this.setState(
               currentState => ({
                 currentIndex: currentState.currentIndex + 1
@@ -127,20 +159,66 @@ class SwipeList extends React.Component {
         }
       }
     });
-    const {
-      activityLevel,
-      coordinates,
-      radiusPref,
-      hasChildren,
-      hasDogs
-    } = this.state.user;
-    return axios
-      .get(
-        `https://us-central1-rescuemetest-4a629.cloudfunctions.net/getDogs?children=${hasChildren}&dogs=${hasDogs}&activityLevel=${activityLevel}&lat=${
-          coordinates[0]
-        }&lon=${coordinates[1]}&radius=${radiusPref}}`
-      )
-      .then(({ data }) => this.setState({ dogs: data.dogs, isLoading: false }));
+
+    const { id } = this.props.user;
+    console.log(id, "<---- id");
+    this.setState({ currentUserID: id }, () => {
+      const { currentUserID } = this.state;
+      console.log(currentUserID, "<<<<------- undefinded?");
+      usersCollection
+        .doc(currentUserID)
+        .get()
+        .then(user => {
+          const {
+            activityLevel,
+            coordinates,
+            radiusPref,
+            hasChildren,
+            hasDogs,
+            likedDogs
+          } = user.data();
+
+          this.setState(
+            {
+              user: {
+                activityLevel,
+                coordinates,
+                radiusPref,
+                hasChildren,
+                hasDogs,
+                likedDogs
+              }
+            },
+            () => {
+              const {
+                activityLevel,
+                coordinates,
+                radiusPref,
+                hasChildren,
+                hasDogs
+              } = this.state.user;
+              console.log(
+                hasChildren,
+                "<-----same answerrs?",
+                this.state.user,
+                "<----------The pissing user"
+              );
+
+              return axios
+                .get(
+                  `https://us-central1-rescuemetest-4a629.cloudfunctions.net/getDogs?children=${hasChildren}&dogs=${hasDogs}&activityLevel=${activityLevel}&lat=${
+                    coordinates[0]
+                  }&lon=${coordinates[1]}&radius=${radiusPref}}`
+                )
+                .then(({ data }) =>
+                  this.setState({ dogs: data.dogs, isLoading: false }, () => {
+                    console.log(data.dogs);
+                  })
+                );
+            }
+          );
+        });
+    });
   }
 
   render() {
@@ -162,7 +240,7 @@ class SwipeList extends React.Component {
                 if (i < currentIndex) {
                   return null;
                 } else if (i == currentIndex) {
-                  this.dogID = dog.id;
+                  this.currentDog = dog;
                   console.log("Top Card");
                   return (
                     <Animated.View

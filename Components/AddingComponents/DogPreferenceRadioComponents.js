@@ -10,15 +10,12 @@ import {
 const DogPreferenceRadioComponents = props => {
   const { options, setSizePrefs, sizePrefs } = props;
   return (
-    <View>
-      <Text>
-        What size of dog are you looking for (1 = smallest, 3 = largest; please
-        select more than one if applicable)?
-      </Text>
+    <View style={styles.inputContainer}>
+      <Text style={styles.question}>What size of dog are you looking for?</Text>
       {options.map(item => {
         return (
           <View key={item.key} style={styles.buttonContainer}>
-            <Text>{item.text}</Text>
+            <Text style={styles.value}>{item.text}</Text>
             <TouchableOpacity
               style={styles.circle}
               onPress={() => setSizePrefs(item.key)}
@@ -46,7 +43,7 @@ const styles = StyleSheet.create({
     width: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ACACAC",
+    borderColor: "#fff",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -54,7 +51,26 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: "#794F9B"
+    backgroundColor: "#fff"
+  },
+  question: {
+    color: "#fff",
+    fontSize: 17,
+    textAlign: "center",
+    fontFamily: "poppins-regular"
+  },
+  value: {
+    color: "#fff",
+    fontSize: 17,
+    textAlign: "center",
+    fontFamily: "poppins-regular"
+  },
+  inputContainer: {
+    flex: 1,
+    marginTop: 20,
+    marginBottom: 40,
+    width: 250,
+    justifyContent: "center"
   }
 });
 

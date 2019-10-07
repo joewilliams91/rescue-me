@@ -37,7 +37,7 @@ export const updateType = type => {
 export const signup = () => {
   return async (dispatch, getState) => {
     try {
-      const { email, password } = getState().user;
+      const { email, password, type } = getState().user;
 
       const response = await Firebase.auth().createUserWithEmailAndPassword(
         email,

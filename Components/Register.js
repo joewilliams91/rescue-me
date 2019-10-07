@@ -3,7 +3,7 @@ import Firebase, { db } from "../config/Firebase.js";
 import firebase from "firebase";
 const { GeoFirestore } = require("geofirestore");
 import {
-  View,
+  Image,
   TextInput,
   StyleSheet,
   TouchableOpacity,
@@ -19,6 +19,7 @@ import {
   signup,
   updateLocation
 } from "../actions/user";
+import { LinearGradient } from "expo-linear-gradient";
 import HasDogRadioComponents from "./AddingComponents/HasDogRadioComponents";
 import HasChildrenRadioComponents from "./AddingComponents/HasChildrenRadioComponents";
 import ActivityLevelRadioComponents from "./AddingComponents/ActivityLevelRadioComponents";
@@ -74,6 +75,7 @@ class Register extends React.Component {
       { key: "Female", text: "Female" }
     ]
   };
+
   updateDetails = (type, text) => {
     this.setState({ [type]: text });
   };
@@ -93,7 +95,7 @@ class Register extends React.Component {
     }
   };
   componentDidMount() {
-    console.log(this.props.user);
+    console.log(this.props.user, "-----did mount ");
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -106,6 +108,7 @@ class Register extends React.Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.user !== prevProps.user) {
+      console.log(this.props.user, "-----did mount ");
       this.setState({ userId: this.props.user.id });
     }
   }
@@ -142,27 +145,32 @@ class Register extends React.Component {
       new Date(+parts[2], +parts[1] - 1, +parts[0])
     );
 
-    geocollection.doc(userId).set({
-      coordinates: new firebase.firestore.GeoPoint(
-        coordinates[0],
-        coordinates[1]
-      ),
-      id: userId,
-      firstName: firstName,
-      photos: photos,
-      surname: surname,
-      description: description,
-      radiusPref: radius,
-      employmentStatus: employmentStatus,
-      activityLevel,
-      hasChildren: hasChildren,
-      hasDogs: hasDogs,
-      dob: newDob,
-      telephone: telephone,
-      sizePref: sizePrefs,
-      gender: gender,
-      likedDogs: {}
-    });
+    geocollection
+      .doc(userId)
+      .set({
+        coordinates: new firebase.firestore.GeoPoint(
+          coordinates[0],
+          coordinates[1]
+        ),
+        id: userId,
+        firstName: firstName,
+        photos: photos,
+        surname: surname,
+        description: description,
+        radiusPref: radius,
+        employmentStatus: employmentStatus,
+        activityLevel,
+        hasChildren: hasChildren,
+        hasDogs: hasDogs,
+        dob: newDob,
+        telephone: telephone,
+        sizePref: sizePrefs,
+        gender: gender,
+        likedDogs: {}
+      })
+      .then(() => {
+        this.props.navigation.navigate("SwipeList");
+      });
   };
 
   render() {
@@ -185,56 +193,94 @@ class Register extends React.Component {
     } = this.state;
     return (
       <ScrollView>
-        <Text>Hi there ${userId}! Please enter your details to register.</Text>
-        <NameComponent
-          firstName={firstName}
-          surname={surname}
-          updateDetails={this.updateDetails}
-        />
-        <DescriptionComponent
-          description={description}
-          updateDetails={this.updateDetails}
-        />
-        <ActivityLevelRadioComponents
-          options={activityOptions}
-          updateDetails={this.updateDetails}
-          activityLevel={this.state.activityLevel}
-        />
-        <HasDogRadioComponents
-          options={hasOptions}
-          updateDetails={this.updateDetails}
-          hasDogs={this.state.hasDogs}
-        />
-        <HasChildrenRadioComponents
-          options={hasOptions}
-          updateDetails={this.updateDetails}
-          hasChildren={this.state.hasChildren}
-        />
-        <DogPreferenceRadioComponents
-          sizePrefs={sizePrefs}
-          options={sizeOptions}
-          setSizePrefs={this.setSizePrefs}
-        />
-        <EmploymentStatusRadioComponents
-          updateDetails={this.updateDetails}
-          employmentStatus={employmentStatus}
-          options={employmentOptions}
-        />
-        <DOBComponent dob={dob} updateDetails={this.updateDetails} />
-        <TelephoneComponent
-          telephone={telephone}
-          updateDetails={this.updateDetails}
-        />
-        <GenderComponent
-          updateDetails={this.updateDetails}
-          options={genderOptions}
-          gender={gender}
-        />
-        <PhotoComponent user={userId} addToPhotoArray={this.addToPhotoArray} />
-        <RadiusComponent radius={radius} updateDetails={this.updateDetails} />
-        <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
+        <LinearGradient
+          colors={["#f8789a", "#845efd"]}
+          start={[0.1, 1.5]}
+          end={[1.2, 0.1]}
+          style={styles.gradient}
+        >
+          <Image
+            style={{
+              width: 80,
+              height: 80,
+              marginBottom: 30,
+              marginTop: 100
+            }}
+            source={require("../assets/images/logo/rescueMe_logo_dog.png")}
+          />
+          <Text style={styles.heroMessage}>Tell us about yourself?</Text>
+          <Text style={styles.guideMessage}>
+            Help us find the best matches for you, by answering a few questions.
+          </Text>
+          <NameComponent
+            firstName={firstName}
+            surname={surname}
+            updateDetails={this.updateDetails}
+          />
+          <Text style={styles.guideMessage}>
+            Give us a little description about what makes you, you. This will go
+            onto your profile.
+          </Text>
+          <DescriptionComponent
+            description={description}
+            updateDetails={this.updateDetails}
+          />
+          <Text style={styles.guideMessage}>How active are you?</Text>
+          <ActivityLevelRadioComponents
+            options={activityOptions}
+            updateDetails={this.updateDetails}
+            activityLevel={this.state.activityLevel}
+          />
+          <Text style={styles.guideMessage}>
+            Not all dogs are equal, some need a bit more patience before they're
+            ready to hang out with other dogs.
+          </Text>
+          <HasDogRadioComponents
+            options={hasOptions}
+            updateDetails={this.updateDetails}
+            hasDogs={this.state.hasDogs}
+          />
+          <Text style={styles.guideMessage}>
+            Some doggo's find kids a bit too much.
+          </Text>
+          <HasChildrenRadioComponents
+            options={hasOptions}
+            updateDetails={this.updateDetails}
+            hasChildren={this.state.hasChildren}
+          />
+          <Text style={styles.guideMessage}>
+            Think carefully here, big dogs are cool - but do you have guns like
+            arnie and enough room on the sofa?
+          </Text>
+          <DogPreferenceRadioComponents
+            sizePrefs={sizePrefs}
+            options={sizeOptions}
+            setSizePrefs={this.setSizePrefs}
+          />
+          <EmploymentStatusRadioComponents
+            updateDetails={this.updateDetails}
+            employmentStatus={employmentStatus}
+            options={employmentOptions}
+          />
+          <DOBComponent dob={dob} updateDetails={this.updateDetails} />
+          <TelephoneComponent
+            telephone={telephone}
+            updateDetails={this.updateDetails}
+          />
+          <GenderComponent
+            updateDetails={this.updateDetails}
+            options={genderOptions}
+            gender={gender}
+          />
+          <PhotoComponent
+            user={userId}
+            addToPhotoArray={this.addToPhotoArray}
+          />
+          <RadiusComponent radius={radius} updateDetails={this.updateDetails} />
+          <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
+            <Text style={styles.buttonText}>Register</Text>
+          </TouchableOpacity>
+        </LinearGradient>
       </ScrollView>
     );
   }
@@ -262,6 +308,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     width: 200
+  },
+  gradient: {
+    flex: 1,
+    zIndex: -1000,
+    alignSelf: "stretch",
+    alignItems: "center"
+  },
+  heroMessage: {
+    color: "white",
+    fontSize: 30,
+    fontFamily: "poppins-bold"
+  },
+  guideMessage: {
+    padding: 20,
+    textAlign: "center",
+    color: "white",
+    fontSize: 18,
+    fontFamily: "poppins-regular"
   }
 });
 

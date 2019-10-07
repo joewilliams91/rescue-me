@@ -114,15 +114,17 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     alignItems: "center",
+    color: "#fff",
     marginTop: 5,
     marginBottom: 10,
     borderBottomColor: "#c5c6ca",
     borderBottomWidth: 2,
     overflow: "hidden",
     padding: 12,
+    fontSize: 14,
     textAlign: "left",
     alignSelf: "stretch",
-    fontFamily: "poppins-semibold"
+    fontFamily: "poppins-regular"
   },
   signupContainer: {
     alignItems: "center",
