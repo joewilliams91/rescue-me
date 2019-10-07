@@ -130,10 +130,11 @@ class DogProfile extends React.Component {
       }
     })
     dogsCollection
-      .doc(id.slice(1))
+      .doc(id.replace(/ /g, ""))
       .get()
       .then(dog => {
         const dogData = dog.data();
+        console.log(">>>>>>>>>>>>",dogData);
         this.setState({ dog: dogData.d, isLoading: false });
       });
   }

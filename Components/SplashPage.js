@@ -39,8 +39,7 @@ sate = {
           style={styles.buttonStyle}
           value="company"
           title="Budding rescuer"
-          onPress={() => {this.props.navigation.navigate("Login"),
-                            console.log(this.props.navigation);}}
+          onPress={() => {this.props.navigation.navigate("Login")}}
         >
           <Text style={styles.button}>Rescue Center /Home</Text>
         </TouchableOpacity>

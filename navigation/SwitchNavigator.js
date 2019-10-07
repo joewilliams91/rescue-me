@@ -9,7 +9,6 @@ import AddDog from '../Components/AddDog';
 import SplashPage from '../Components/SplashPage'
 import SwipeList from "../Components/SwipeList"
 import LikedDogsList from "../Components/LikedDogsList"
-import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
 
 const StackNavigator = createStackNavigator(
@@ -31,7 +30,7 @@ const StackNavigator = createStackNavigator(
     },
     LikedDogsList: {
       screen: LikedDogsList
-  },
+    },
     DogProfile: {
       screen: DogProfile
     },
@@ -43,7 +42,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "SwipeList"
+    initialRouteName: "LikedDogsList"
   }
 );
 
