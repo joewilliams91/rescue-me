@@ -38,7 +38,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "SplashPage"
+    initialRouteName: "SwipeList"
   }
 );
 

@@ -12,6 +12,8 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import axios from "axios";
+import HeaderHeart from "./HeaderComponents/HeaderHeart.js";
+import HeaderGoBack from "./HeaderComponents/HeaderGoBack.js";
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -29,6 +31,14 @@ class SwipeList extends React.Component {
       hasChildren: "false",
       hasDogs: "true"
     }
+  };
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerRight: <HeaderHeart />,
+      headerTitle: <HeaderHeart />,
+      headerLeft: <HeaderGoBack />
+    };
   };
   // componentDidMount() {
 
