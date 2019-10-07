@@ -37,13 +37,11 @@ class LikedDogsList extends Component {
       );
     } else {
       return (
-        <View>
+        <View style={styles.container}>
           {likedDogsList.map(dog => {
             return (
               <View style={styles.row}>
                 <View style={styles.column}>
-                  <Text key={dog.dogId}> {dog.name}</Text>
-
                   <TouchableOpacity
                     onPress={() => {
                       this.props.navigation.navigate("DogProfile", {
@@ -53,9 +51,16 @@ class LikedDogsList extends Component {
                   >
                     <Image
                       source={{ uri: dog.image }}
-                      style={{ width: 100, height: 100 }}
+                      style={{
+                        width: 160,
+                        height: 160,
+                        margin: 10,
+                        padding: 10,
+                        borderRadius: 10
+                      }}
                     />
                   </TouchableOpacity>
+                  <Text key={dog.dogId}> {dog.name}</Text>
                 </View>
               </View>
             );
@@ -79,18 +84,19 @@ class LikedDogsList extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "center",
-    flexDirection: "column"
+    padding: 10
   },
   row: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    width: 150
+    width: 190,
+    alignItems: "center"
   },
   column: {
-    flexDirection: "column",
-    flexBasis: 150,
-    flex: 1
+    flexDirection: "column"
   }
 });
 
