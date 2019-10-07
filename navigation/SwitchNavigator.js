@@ -10,6 +10,7 @@ import SplashPage from '../Components/SplashPage'
 import LikedDogsList from "../Components/LikedDogsList"
 import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
+import Donations from '../Components/Donations';
 
 const StackNavigator = createStackNavigator(
   {
@@ -39,6 +40,9 @@ const StackNavigator = createStackNavigator(
     },
     AddDog: {
       screen: AddDog
+    },
+    Donations: {
+      screen: Donations
     }
   },
   {
