@@ -97,6 +97,7 @@ class Register extends React.Component {
   };
 
   componentDidMount() {
+    console.log(this.props.user)
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({

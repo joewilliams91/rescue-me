@@ -27,17 +27,17 @@ export const updateLocation = coordinates => {
   };
 };
 
-// export const updateType = type => {
-//   return {
-//     type: UPDATE_TYPE,
-//     payload: type
-//   };
-// };
+export const updateType = type => {
+  return {
+    type: UPDATE_TYPE,
+    payload: type
+  };
+};
 
 export const signup = () => {
   return async (dispatch, getState) => {
     try {
-      const { email, password } = getState().user;
+      const { email, password, type } = getState().user;
 
       const response = await Firebase.auth().createUserWithEmailAndPassword(
         email,
@@ -46,7 +46,8 @@ export const signup = () => {
       if (response.user.uid) {
         const user = {
           id: response.user.uid,
-          email: email
+          email: email,
+          type: type
         };
 
         dispatch({ type: SIGNUP, payload: user });

@@ -18,8 +18,13 @@ class SignUp extends React.Component {
   };
 
   handleSignUp = () => {
+    const { type } = this.props.user;
     this.props.signup();
-    this.props.navigation.navigate("Register");
+    if (type === "user") {
+      this.props.navigation.navigate("Register");
+    } else if (type === "centre") {
+      this.props.navigation.navigate("CentreRegister");
+    }
   };
 
   render() {

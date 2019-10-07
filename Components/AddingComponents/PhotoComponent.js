@@ -96,8 +96,6 @@ export default class PhotoComponent extends React.Component {
         })
         .then(url => {
           this.props.addToPhotoArray(url)
-          console.log(url)
-          console.log("File uploaded");
         })
         .catch(error => {
           throw error;

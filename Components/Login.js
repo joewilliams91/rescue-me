@@ -18,8 +18,14 @@ class Login extends React.Component {
   };
 
   handleLogin = () => {
+    const {type} = this.props.user
     this.props.login();
-    this.props.navigation.navigate("Main");
+    if(type === "user"){
+      this.props.navigation.navigate("SwipeList");
+    } else if(type === "centre"){
+      this.props.navigation.navigate("CentreDashboard")
+    }
+    
   };
 
   render() {

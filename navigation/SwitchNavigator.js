@@ -10,6 +10,7 @@ import SplashPage from '../Components/SplashPage'
 import LikedDogsList from "../Components/LikedDogsList"
 import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
+import RescueCentreDogProfile from '../Components/RescueCentreDogProfile'
 
 const StackNavigator = createStackNavigator(
   {
@@ -34,6 +35,9 @@ const StackNavigator = createStackNavigator(
     DogProfile: {
       screen: DogProfile
     },
+    RescueCentreDogProfile: {
+      screen: RescueCentreDogProfile
+    },
     CentreRegister: {
       screen: CentreRegister
     },
@@ -42,7 +46,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "SwipeList"
+    initialRouteName: "RescueCentreDogProfile"
   }
 );
 

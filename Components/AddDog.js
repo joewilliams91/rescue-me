@@ -37,8 +37,8 @@ class AddDog extends React.Component {
     photos: [],
     size: "",
     goodWithOptions: [
-      { key: "true", text: "True" },
-      { key: "false", text: "False" }
+      { key: true, text: "True" },
+      { key: false, text: "False" }
     ],
 
     genderOptions: [
