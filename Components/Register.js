@@ -154,6 +154,7 @@ class Register extends React.Component {
         coordinates[0],
         coordinates[1]
       ),
+      id: userId,
       firstName: firstName,
       photos: photos,
       surname: surname,

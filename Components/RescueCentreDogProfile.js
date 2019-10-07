@@ -39,9 +39,9 @@ export default class RescueCentreDogProfile extends React.Component {
   };
 
   componentDidMount() {
-    // const { id } = this.props;
+    const { id } = this.props.navigation.state.params;
     dogsCollection
-      .doc("2CQUAPfWg9LhuvfaLBcP")
+      .doc(id)
       .get()
       .then(dog => {
         const {
@@ -53,7 +53,7 @@ export default class RescueCentreDogProfile extends React.Component {
         } = dog.data();
 
         this.setState({
-          id: "2CQUAPfWg9LhuvfaLBcP",
+          id,
           isLoading: false,
           photos,
           description,
@@ -72,10 +72,10 @@ export default class RescueCentreDogProfile extends React.Component {
         return newState;
       },
       () => {
-        const { photos } = this.state;
+        const { photos, id } = this.state;
 
         const dogToUpdate = dogsCollection
-          .doc("2CQUAPfWg9LhuvfaLBcP")
+          .doc(id)
           .update({
             photos: photos
           })
@@ -105,8 +105,9 @@ export default class RescueCentreDogProfile extends React.Component {
   };
 
   updateDetails = (type, updateDetail) => {
+    const {id} = this.state
     this.setState({ [type]: updateDetail });
-    const dogToUpdate = dogsCollection.doc("2CQUAPfWg9LhuvfaLBcP");
+    const dogToUpdate = dogsCollection.doc(id);
     dogToUpdate
       .update({
         [type]: updateDetail

@@ -10,6 +10,7 @@ import SplashPage from '../Components/SplashPage'
 import LikedDogsList from "../Components/LikedDogsList"
 import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
+import MessageThread from "../Components/MessageThread"
 import RescueCentreDogProfile from '../Components/RescueCentreDogProfile'
 
 const StackNavigator = createStackNavigator(
@@ -43,10 +44,13 @@ const StackNavigator = createStackNavigator(
     },
     AddDog: {
       screen: AddDog
+    },
+    MessageThread: {
+      screen: MessageThread
     }
   },
   {
-    initialRouteName: "RescueCentreDogProfile"
+    initialRouteName: "MessageThread"
   }
 );
 

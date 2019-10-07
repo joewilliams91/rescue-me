@@ -82,6 +82,7 @@ class CentreRegister extends React.Component {
         coordinates[0],
         coordinates[1]
       ),
+      id: userId,
       name: name,
       charityNum: charityNum,
       description: description,
