@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
+import { updateType } from "../actions/user";
+import { bindActionCreaters, bindActionCreators } from "redux";
 
 class SplashPage extends Component {
   navigate = type => {
@@ -106,4 +108,17 @@ const styles = StyleSheet.create({
   buttonText: { color: "#707070", fontSize: 15, fontFamily: "poppins-semibold" }
 });
 
-export default SplashPage;
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ updateType }, dispatch);
+};
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SplashPage);

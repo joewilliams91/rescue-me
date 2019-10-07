@@ -9,14 +9,12 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { updateEmail, updatePassword, signup } from "../actions/user";
-​
 class SignUp extends React.Component {
   state = {
     name: "",
     email: "",
     password: ""
   };
-​
   handleSignUp = () => {
     const { type } = this.props.user;
     this.props.signup();
@@ -26,7 +24,6 @@ class SignUp extends React.Component {
       this.props.navigation.navigate("CentreRegister");
     }
   };
-​
   render() {
     return (
       <View style={styles.container}>
@@ -51,7 +48,6 @@ class SignUp extends React.Component {
     );
   }
 }
-​
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -88,17 +84,14 @@ const styles = StyleSheet.create({
     fontSize: 12
   }
 });
-​
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ updateEmail, updatePassword, signup }, dispatch);
 };
-​
 const mapStateToProps = state => {
   return {
     user: state.user
   };
 };
-​
 export default connect(
   mapStateToProps,
   mapDispatchToProps

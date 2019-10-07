@@ -24,7 +24,6 @@ import DescriptionComponent from "./AddingComponents/DescriptionComponent";
 import CharityNumComponent from "./AddingComponents/CharityNumComponent";
 import CentreNameComponent from "./AddingComponents/CentreNameComponent";
 import AddressComponent from "./AddingComponents/AddressComponent";
-​
 class CentreRegister extends React.Component {
   state = {
     userId: "",
@@ -34,11 +33,9 @@ class CentreRegister extends React.Component {
     charityNum: "",
     description: ""
   };
-​
   updateDetails = (type, text) => {
     this.setState({ [type]: text });
   };
-​
   getCoordinates = event => {
     const postcode = event.nativeEvent.text.replace(/ /g, "");
     if (/\w{1,2}\d{2,3}\w{2}/.test(postcode)) {
@@ -58,13 +55,11 @@ class CentreRegister extends React.Component {
         .catch(error => console.log(error));
     }
   };
-​
   componentDidUpdate(prevProps) {
     if (this.props.user !== prevProps.user) {
       this.setState({ userId: this.props.user.id });
     }
   }
-​
   handleRegister = () => {
     const {
       userId,
@@ -76,7 +71,6 @@ class CentreRegister extends React.Component {
     } = this.state;
     const geofirestore = new GeoFirestore(db);
     const geocollection = geofirestore.collection("centres");
-​
     geocollection.doc(userId).set({
       coordinates: new firebase.firestore.GeoPoint(
         coordinates[0],
@@ -89,10 +83,8 @@ class CentreRegister extends React.Component {
       telephone: telephone,
       availableDogs: {}
     });
-​
     this.props.navigation.navigate("AddDog");
   };
-​
   render() {
     const {
       userId,
@@ -129,7 +121,6 @@ class CentreRegister extends React.Component {
     );
   }
 }
-​
 const styles = StyleSheet.create({
   button: {
     marginTop: 30,
@@ -146,11 +137,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   ...state
 });
-​
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ updateLocation }, dispatch);
 };
-​
 export default connect(
   mapStateToProps,
   mapDispatchToProps

@@ -22,7 +22,6 @@ import GoodWithDogsComponent from "./AddingComponents/GoodWithDogsComponent";
 import GoodWithChildrenComponent from "./AddingComponents/GoodWithChildrenComponent";
 import SizeComponent from "./AddingComponents/SizeComponent";
 import PhotoComponent from "./AddingComponents/PhotoComponent";
-​
 class AddDog extends React.Component {
   state = {
     centreId: "",
@@ -40,7 +39,6 @@ class AddDog extends React.Component {
       { key: true, text: "True" },
       { key: false, text: "False" }
     ],
-​
     genderOptions: [
       { key: "Male", text: "Male" },
       { key: "Female", text: "Female" }
@@ -58,11 +56,9 @@ class AddDog extends React.Component {
       { key: 5, text: "5" }
     ]
   };
-​
   updateDetails = (type, text) => {
     this.setState({ [type]: text });
   };
-​
   addToPhotoArray = url => {
     this.setState(currentState => {
       const newPhotos = [...currentState.photos, url];
@@ -70,14 +66,12 @@ class AddDog extends React.Component {
       return newState;
     });
   };
-​
   componentDidMount() {
     this.setState({
       centreId: this.props.user.id,
       coordinates: this.props.user.coordinates
     });
   }
-​
   handleAdd = () => {
     const {
       centreId,
@@ -103,7 +97,6 @@ class AddDog extends React.Component {
     const newDog = dogsCollection.doc();
     const newDogId = newDog.id;
     centreDoc.update({ ["availableDogs." + newDogId]: { name, photos } });
-​
     newDog.set({
       coordinates: new firebase.firestore.GeoPoint(
         coordinates[0],
@@ -123,7 +116,6 @@ class AddDog extends React.Component {
       videos: []
     });
   };
-​
   render() {
     const {
       centreId,
@@ -189,7 +181,6 @@ class AddDog extends React.Component {
     );
   }
 }
-​
 const styles = StyleSheet.create({
   button: {
     marginTop: 30,
@@ -203,9 +194,7 @@ const styles = StyleSheet.create({
     width: 200
   }
 });
-​
 const mapStateToProps = state => ({
   ...state
 });
-​
 export default connect(mapStateToProps)(AddDog);
