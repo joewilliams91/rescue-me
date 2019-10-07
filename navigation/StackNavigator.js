@@ -9,6 +9,9 @@ import AddDog from "../Components/AddDog";
 import SplashPage from "../Components/SplashPage";
 import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
+import LikedDogsList from '../Components/LikedDogsList'
+import CentreDogsList from '../Components/CentreDogsList'
+import MessageThread from 
 
 const StackNavigator = createStackNavigator(
   {
@@ -35,11 +38,20 @@ const StackNavigator = createStackNavigator(
     },
     DogProfile: {
       screen: DogProfile
+    },
+    LikedDogsList: {
+      screen: LikedDogsList
+    },
+    CentreDogsList: {
+      screen: CentreDogsList
+    },
+    MessageThread: {
+      screen: MessageThread
     }
   },
   {
-    initialRouteName: "SplashPage"
-  }
+    initialRouteName: "Login"
+  } 
 );
 
 export default createAppContainer(StackNavigator);

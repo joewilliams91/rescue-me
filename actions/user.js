@@ -66,9 +66,24 @@ export const login = () => {
         email,
         password
       );
-      dispatch({ type: LOGIN, payload: response.user });
+      dispatch(getUser(response.user.uid));
     } catch (e) {
       console.log(e);
+    }
+  };
+};
+
+export const getUser = uid => {
+  return async (dispatch, getState) => {
+    try {
+      const user = await db
+        .collection("users")
+        .doc(uid)
+        .get();
+
+      dispatch({ type: LOGIN, payload: user.data() });
+    } catch (e) {
+      alert(e);
     }
   };
 };

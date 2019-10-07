@@ -10,7 +10,8 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import { updateEmail, updatePassword, login } from "../actions/user";
+import { updateEmail, updatePassword, login, getUser } from "../actions/user";
+import Firebase from '../config/Firebase'
 
 class Login extends React.Component {
   state = {
@@ -22,12 +23,18 @@ class Login extends React.Component {
     headerTintColor: "#fff"
   };
 
-  handleLogin = () => {
-    this.props.login();
-    this.props.navigation.navigate("Main");
+  componentDidMount = () => {
+    Firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.props.getUser(user.uid);
+        if (this.props.user != null) {
+          this.props.navigation.navigate("SwipeList");
+        }
+      }
+    });
   };
 
-  render() {
+    render() {
     return (
       <LinearGradient
         colors={["#f8789a", "#845efd"]}
@@ -69,7 +76,7 @@ class Login extends React.Component {
           <View style={{ alignItems: "center", marginTop: 30 }}>
             <TouchableOpacity
               style={styles.loginButton}
-              onPress={this.handleLogin}
+              onPress={this.props.login()}
             >
               <Text style={styles.loginButtonText}>LOGIN</Text>
             </TouchableOpacity>

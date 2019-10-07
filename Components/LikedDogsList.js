@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import firebase from "firebase";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-​
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";​
 const firestore = firebase.firestore();
 const usersCollection = firestore.collection("users");
 ​
@@ -26,8 +25,6 @@ class LikedDogsList extends Component {
       list.name = dog[1].name;
       return list;
     });
-​
-    console.log(likedDogsList);
 ​
     if (isLoading) {
       return (
