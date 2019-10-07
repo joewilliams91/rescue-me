@@ -14,7 +14,6 @@ class CentreDogsList extends Component {
   render() {
     const { availableDogs, isLoading } = this.state;
     const { navigate } = this.props.navigation;
-     console.log(">>>>>>>>>>>>",availableDogs,"<<<<<<<");
 
     const entry = availableDogs;
     const dogs = Object.entries(entry)
@@ -42,7 +41,7 @@ class CentreDogsList extends Component {
                 <View style={styles.row}>
                   <Image source={{ uri: dog.image }} style={styles.image} />
                   <View style={styles.insideFieled}>
-                    <Text key={dog.dogId}> {dog.name}</Text>
+                    <Text > {dog.name}</Text>
                     <TouchableOpacity
                       style={styles.buttonStyle}
                       title="Enter the link here"
