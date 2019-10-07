@@ -4,9 +4,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 
 class SplashPage extends Component {
-  state = {
-    user: "user",
-    commpany: "company"
+  navigate = type => {
+    console.log(type);
+    this.props.updateType(type);
+    this.props.navigation.navigate("Login");
   };
   static navigationOptions = {
     header: null
@@ -44,15 +45,14 @@ class SplashPage extends Component {
             <TouchableOpacity
               style={styles.buttonStyle}
               title="Budding rescuer"
-              onPress={() => this.props.navigation.navigate("Login")}
+              onPress={() => this.navigate("user")}
             >
               <Text style={styles.buttonText}>Dog Lover</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.buttonStyle}
-              value="company"
-              title="Budding rescuer"
-              onPress={() => this.props.navigation.navigate("Login")}
+              title="centre"
+              onPress={() => this.navigate("centre")}
             >
               <Text style={styles.buttonText}>Rescue Centre</Text>
             </TouchableOpacity>

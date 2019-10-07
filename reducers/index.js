@@ -21,8 +21,8 @@ const user = (state = {}, action) => {
       return { ...state, password: action.payload };
     case UPDATE_LOCATION: 
       return {...state, coordinates: action.payload}
-    //   case UPDATE_TYPE: 
-    //   return {...state, type: action.payload}
+      case UPDATE_TYPE: 
+      return {...state, type: action.payload}
     default:
       return state;
   }

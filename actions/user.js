@@ -27,12 +27,12 @@ export const updateLocation = coordinates => {
   };
 };
 
-// export const updateType = type => {
-//   return {
-//     type: UPDATE_TYPE,
-//     payload: type
-//   };
-// };
+export const updateType = type => {
+  return {
+    type: UPDATE_TYPE,
+    payload: type
+  };
+};
 
 export const signup = () => {
   return async (dispatch, getState) => {
@@ -46,7 +46,8 @@ export const signup = () => {
       if (response.user.uid) {
         const user = {
           id: response.user.uid,
-          email: email
+          email: email,
+          type: type
         };
 
         dispatch({ type: SIGNUP, payload: user });
