@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import {getUsers} from 'axios';
 import firebase from "firebase";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
@@ -21,7 +20,7 @@ class LikedDogsList extends Component {
 
     const likedDogsList = dogs.map(dog => {
       const list = {};
-      list.dogId = dog[0].replace(/ /g, "")
+      list.dogId = dog[0].replace(/ /g, "");
       list.centreId = dog[1].centreId;
       list.image = dog[1].image[0];
       list.name = dog[1].name;
@@ -46,16 +45,10 @@ class LikedDogsList extends Component {
                   <Text key={dog.dogId}> {dog.name}</Text>
 
                   <TouchableOpacity
-                    style={styles.buttonStyle}
-                    title="Apply"
                     onPress={() => {
-                     this.props.navigation.navigate(
-                       "DogProfile",
-                       {
-                         id: dog.dogId
-                       },
-                       console.log("DOGID>>>>>>>>>>",dog.dogId)
-                     );
+                      this.props.navigation.navigate("DogProfile", {
+                        id: dog.dogId
+                      });
                     }}
                   >
                     <Image
@@ -73,6 +66,7 @@ class LikedDogsList extends Component {
   }
 
   componentDidMount() {
+    // Database User Id <<<<<<<<
     usersCollection
       .doc("ohvb6aJhckdBNLCnCljIAsRmYDR2")
       .get()
