@@ -77,7 +77,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "CentreDogsList"
+    initialRouteName: "SplashPage"
   }
 );
 
