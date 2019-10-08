@@ -64,8 +64,12 @@ class LikedDogsList extends Component {
 
   render() {
     const { likedDogs, isLoading } = this.state;
+<<<<<<< HEAD
     const { navigate } = this.props.navigation;
 
+=======
+​
+>>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5
     const entry = likedDogs;
     let likedDogsList = [];
     

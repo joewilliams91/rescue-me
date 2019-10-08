@@ -11,6 +11,7 @@ import SplashPage from "../Components/SplashPage";
 import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Donations from '../Components/Donations';
 =======
 import LikedDogsList from '../Components/LikedDogsList'
@@ -20,6 +21,12 @@ import RescueCentreDogProfile from '../Components/RescueCentreDogProfile'
 import CentreDashboard from '../Components/CentreDashboard'
 >>>>>>> 13d6265937ad202f8dccc478eef4cb202d337707
 
+=======
+import InboxMessages from "../Components/InboxMessages";
+import MessageThread from "../Components/MessageThread";
+import CentreDashboard from "../Components/CentreDashboard"
+import CentreDogsList from "../Components/CentreDogsList";
+>>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5
 const StackNavigator = createStackNavigator(
   {
     Login: {
@@ -46,6 +53,7 @@ const StackNavigator = createStackNavigator(
     DogProfile: {
       screen: DogProfile
     },
+<<<<<<< HEAD
     CentreRegister: {
       screen: CentreRegister
     },
@@ -60,10 +68,15 @@ const StackNavigator = createStackNavigator(
     },
     CentreDogsList: {
       screen: CentreDogsList
+=======
+    InboxMessages: {
+      screen: InboxMessages
+>>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5
     },
     MessageThread: {
       screen: MessageThread
     },
+<<<<<<< HEAD
     RescueCentreDogProfile: {
       screen: RescueCentreDogProfile
     },
@@ -74,6 +87,18 @@ const StackNavigator = createStackNavigator(
   {
     initialRouteName: "SplashPage"
   } 
+=======
+    CentreDashboard: {
+      screen: CentreDashboard
+    },
+    CentreDogsList: {
+      screen: CentreDogsList
+    }
+  },
+  {
+    initialRouteName: "CentreDashboard"
+  }
+>>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5
 );
 
 export default createAppContainer(StackNavigator);

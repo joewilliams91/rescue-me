@@ -1,9 +1,14 @@
 import React, { Component } from "react";
+<<<<<<< HEAD
 import { StyleSheet } from "react-native";
+=======
+import { StyleSheet, Platform } from "react-native";
+>>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5
 import { connect } from "react-redux";
 import Firebase, { db } from "../config/Firebase";
 import firebase from "firebase";
 import { GiftedChat } from "react-native-gifted-chat";
+import KeyboardSpacer from "react-native-keyboard-spacer";
 const messagesCollection = db.collection("messages");
 
 class MessageThread extends Component {
@@ -13,12 +18,20 @@ class MessageThread extends Component {
   };
 
   componentDidMount() {
+<<<<<<< HEAD
     const { id } = this.props.user;
     this.setState({ userId: id });
     const { messageId } = this.props.navigation.state.params;
     console.log(messageId, "----");
     messagesCollection
       .doc(messageId)
+=======
+    const userId = "L2QZactccSQ6b0TjdKurdWSBSHy2"; 
+    this.setState({userId});
+    const { messageId } = this.props.navigation.state.params;
+    messagesCollection
+      .doc(messageId.replace(/ /g, ""))
+>>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5
       .collection("messages")
       .orderBy("timestamp", "desc")
       .onSnapshot(this.onCollectionUpdate);
@@ -56,7 +69,11 @@ class MessageThread extends Component {
         timestamp: this.timestamp()
       };
       messagesCollection
+<<<<<<< HEAD
         .doc(messageId)
+=======
+        .doc(messageId.replace(/ /g, ""))
+>>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5
         .collection("messages")
         .add(message)
         .catch(error => {
@@ -68,11 +85,14 @@ class MessageThread extends Component {
   render() {
     const { messages, userId } = this.state;
     return (
+      <>
       <GiftedChat
         messages={messages}
         onSend={messages => this.onSend(messages)}
         user={{ _id: userId }}
       />
+      {Platform.OS === 'android' ? <KeyboardSpacer /> : null }
+      </>
     );
   }
 }
