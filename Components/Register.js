@@ -148,34 +148,6 @@ class Register extends React.Component {
       new Date(+parts[2], +parts[1] - 1, +parts[0])
     );
 
-<<<<<<< HEAD
-    geocollection
-      .doc(userId)
-      .set({
-        coordinates: new firebase.firestore.GeoPoint(
-          coordinates[0],
-          coordinates[1]
-        ),
-        id: userId,
-        firstName: firstName,
-        photos: photos,
-        surname: surname,
-        description: description,
-        radiusPref: radius,
-        employmentStatus: employmentStatus,
-        activityLevel,
-        hasChildren: hasChildren,
-        hasDogs: hasDogs,
-        dob: newDob,
-        telephone: telephone,
-        sizePref: sizePrefs,
-        gender: gender,
-        likedDogs: {}
-      })
-      .then(() => {
-        this.props.navigation.navigate("SwipeList");
-      });
-=======
     geocollection.doc(userId).set({
       coordinates: new firebase.firestore.GeoPoint(
         coordinates[0],
@@ -198,8 +170,7 @@ class Register extends React.Component {
       likedDogs: {}
     });
 
-    this.props.navigation.navigate("SwipeList")
->>>>>>> 13d6265937ad202f8dccc478eef4cb202d337707
+    this.props.navigation.navigate("SwipeList");
   };
 
   render() {

@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { updateLocation } from "../actions/user";
 import { LinearGradient } from "expo-linear-gradient";
 import { updateLocation, updateName } from "../actions/user";
 import Firebase, { db } from "../config/Firebase.js";
