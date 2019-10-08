@@ -34,6 +34,7 @@ const ActivityLevelRadioComponents = props => {
   {
     return (
       <View style={styles.inputContainer}>
+        <Text style={styles.question}>How active are you?</Text>
         {options.map(item => {
           let activityValue = checkValue(item.text);
 
@@ -89,6 +90,13 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     width: 250,
     justifyContent: "center"
+  },
+  question: {
+    color: "#fff",
+    fontSize: 17,
+    marginBottom: 15,
+    textAlign: "center",
+    fontFamily: "poppins-semibold"
   }
 });
 

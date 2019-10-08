@@ -70,8 +70,9 @@ const styles = StyleSheet.create({
   question: {
     color: "#fff",
     fontSize: 17,
+    marginBottom: 15,
     textAlign: "center",
-    fontFamily: "poppins-regular"
+    fontFamily: "poppins-semibold"
   },
   value: {
     color: "#fff",

@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   ScrollView,
   Text,
-  Button
+  Button,
+  Image
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { updateLocation } from "../actions/user";
+import { LinearGradient } from "expo-linear-gradient";
 import Firebase, { db } from "../config/Firebase.js";
 import firebase from "firebase";
 const {
@@ -96,27 +98,52 @@ class CentreRegister extends React.Component {
     } = this.state;
     return (
       <ScrollView>
-        <Text>Hi there ${userId}! Please enter your details to register.</Text>
-        <CentreNameComponent updateDetails={this.updateDetails} name={name} />
-        <TelephoneComponent
-          telephone={telephone}
-          updateDetails={this.updateDetails}
-        />
-        <AddressComponent
-          postcode={postcode}
-          getCoordinates={this.getCoordinates}
-        />
-        <CharityNumComponent
-          charityNum={charityNum}
-          updateDetails={this.updateDetails}
-        />
-        <DescriptionComponent
-          description={description}
-          updateDetails={this.updateDetails}
-        />
-        <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>
+        <LinearGradient
+          colors={["#f8789a", "#845efd"]}
+          start={[0.1, 1.5]}
+          end={[1.2, 0.1]}
+          style={styles.gradient}
+        >
+          <Image
+            style={{
+              width: 80,
+              height: 80,
+              marginBottom: 30,
+              marginTop: 100
+            }}
+            source={require("../assets/images/logo/rescueMe_logo_dog.png")}
+          />
+          <Text style={styles.heroMessage}>
+            Tell us about your organisation?
+          </Text>
+          <CentreNameComponent updateDetails={this.updateDetails} name={name} />
+          <TelephoneComponent
+            telephone={telephone}
+            updateDetails={this.updateDetails}
+          />
+          <AddressComponent
+            postcode={postcode}
+            getCoordinates={this.getCoordinates}
+          />
+          <CharityNumComponent
+            charityNum={charityNum}
+            updateDetails={this.updateDetails}
+          />
+          <Text style={styles.guideMessage}>
+            Give us a little description about your centre. This will go onto
+            your profile.
+          </Text>
+          <DescriptionComponent
+            description={description}
+            updateDetails={this.updateDetails}
+          />
+          <TouchableOpacity
+            style={styles.signMeUpbutton}
+            onPress={this.handleRegister}
+          >
+            <Text style={styles.signMeUpbuttonText}>Register</Text>
+          </TouchableOpacity>
+        </LinearGradient>
       </ScrollView>
     );
   }
@@ -132,6 +159,39 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     width: 200
+  },
+  gradient: {
+    flex: 1,
+    zIndex: -1000,
+    alignSelf: "stretch",
+    alignItems: "center"
+  },
+  heroMessage: {
+    color: "white",
+    fontSize: 30,
+    fontFamily: "poppins-bold"
+  },
+  guideMessage: {
+    padding: 20,
+    textAlign: "center",
+    color: "white",
+    fontSize: 18,
+    fontFamily: "poppins-regular"
+  },
+  signMeUpbutton: {
+    backgroundColor: "white",
+    marginBottom: 100,
+    borderRadius: 25,
+    overflow: "hidden",
+    padding: 9,
+    textAlign: "center",
+    width: 280
+  },
+  signMeUpbuttonText: {
+    color: "#f8789a",
+    textAlign: "center",
+    fontSize: 17,
+    fontFamily: "poppins-semibold"
   }
 });
 const mapStateToProps = state => ({

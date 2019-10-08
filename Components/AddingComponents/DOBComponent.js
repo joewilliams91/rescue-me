@@ -1,13 +1,16 @@
 import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import DatePicker from "react-native-datepicker";
 
 const DOBComponent = props => {
   const { updateDetails, dob } = props;
   return (
-    <View style={styles.container}>
+    <View style={styles.inputContainer}>
+      <Text style={styles.question}>When were you born?</Text>
       <DatePicker
-        style={{ width: 200 }}
+        style={{
+          width: 280
+        }}
         date={dob}
         mode="date"
         placeholder="select date"
@@ -24,7 +27,13 @@ const DOBComponent = props => {
             marginLeft: 0
           },
           dateInput: {
-            marginLeft: 36
+            marginLeft: 40,
+            borderColor: "#FFf",
+            borderRadius: 5,
+            borderWidth: 1
+          },
+          placeholderText: {
+            color: "#fff"
           }
         }}
         onDateChange={date => {
@@ -41,7 +50,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 50,
+    marginBottom: 50,
     padding: 16
+  },
+  question: {
+    color: "#fff",
+    fontSize: 17,
+    marginBottom: 15,
+    textAlign: "center",
+    fontFamily: "poppins-semibold"
   }
 });
 

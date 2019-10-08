@@ -39,7 +39,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "Register"
+    initialRouteName: "SplashPage"
   }
 );
 

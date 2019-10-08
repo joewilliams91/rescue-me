@@ -57,13 +57,17 @@ export default class PhotoComponent extends React.Component {
 
       const name = uuid();
       const folder = this.props.user;
-      const imageRef = firebase.storage().ref(`${folder}`).child(`images/${name}.jpg`);
+      const imageRef = firebase
+        .storage()
+        .ref(`${folder}`)
+        .child(`images/${name}.jpg`);
 
-      imageRef.put(blob, {
+      imageRef
+        .put(blob, {
           contentType: "image/jpeg"
         })
         .then(() => {
-          return imageRef.getDownloadURL()
+          return imageRef.getDownloadURL();
         })
         .then(url => {
           blob.close();
@@ -95,8 +99,8 @@ export default class PhotoComponent extends React.Component {
           return this.uploadToFirebase(blob);
         })
         .then(url => {
-          this.props.addToPhotoArray(url)
-          console.log(url)
+          this.props.addToPhotoArray(url);
+          console.log(url);
           console.log("File uploaded");
         })
         .catch(error => {
@@ -115,7 +119,7 @@ export default class PhotoComponent extends React.Component {
       return (
         <View style={{ flex: 1 }}>
           <Camera
-            style={{ flex: 1 }}
+            style={{ flex: 4, width: 350, height: 450, marginBottom: 80 }}
             ref={ref => {
               this.camera = ref;
             }}

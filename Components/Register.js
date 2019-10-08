@@ -225,7 +225,32 @@ class Register extends React.Component {
             description={description}
             updateDetails={this.updateDetails}
           />
-          <Text style={styles.guideMessage}>How active are you?</Text>
+
+          <DOBComponent dob={dob} updateDetails={this.updateDetails} />
+          <TelephoneComponent
+            telephone={telephone}
+            updateDetails={this.updateDetails}
+          />
+
+          <EmploymentStatusRadioComponents
+            updateDetails={this.updateDetails}
+            employmentStatus={employmentStatus}
+            options={employmentOptions}
+          />
+          <Text style={styles.guideMessage}>
+            Will you walk 500 miles? Give us a distance radius to look for dogs.
+          </Text>
+          <RadiusComponent radius={radius} updateDetails={this.updateDetails} />
+
+          <Text style={styles.guideMessage}>
+            Say Cheese! We need a picture for your profile please.
+          </Text>
+
+          <PhotoComponent
+            user={userId}
+            addToPhotoArray={this.addToPhotoArray}
+          />
+
           <ActivityLevelRadioComponents
             options={activityOptions}
             updateDetails={this.updateDetails}
@@ -257,28 +282,11 @@ class Register extends React.Component {
             options={sizeOptions}
             setSizePrefs={this.setSizePrefs}
           />
-          <EmploymentStatusRadioComponents
-            updateDetails={this.updateDetails}
-            employmentStatus={employmentStatus}
-            options={employmentOptions}
-          />
-          <DOBComponent dob={dob} updateDetails={this.updateDetails} />
-          <TelephoneComponent
-            telephone={telephone}
-            updateDetails={this.updateDetails}
-          />
-          <GenderComponent
-            updateDetails={this.updateDetails}
-            options={genderOptions}
-            gender={gender}
-          />
-          <PhotoComponent
-            user={userId}
-            addToPhotoArray={this.addToPhotoArray}
-          />
-          <RadiusComponent radius={radius} updateDetails={this.updateDetails} />
-          <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
-            <Text style={styles.buttonText}>Register</Text>
+          <TouchableOpacity
+            style={styles.signMeUpbutton}
+            onPress={this.handleRegister}
+          >
+            <Text style={styles.signMeUpbuttonText}>Sign me up!</Text>
           </TouchableOpacity>
         </LinearGradient>
       </ScrollView>
@@ -326,6 +334,21 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontFamily: "poppins-regular"
+  },
+  signMeUpbutton: {
+    backgroundColor: "white",
+    marginBottom: 100,
+    borderRadius: 25,
+    overflow: "hidden",
+    padding: 9,
+    textAlign: "center",
+    width: 280
+  },
+  signMeUpbuttonText: {
+    color: "#f8789a",
+    textAlign: "center",
+    fontSize: 17,
+    fontFamily: "poppins-semibold"
   }
 });
 

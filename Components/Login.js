@@ -5,7 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  Button
+  Button,
+  Image
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -35,6 +36,16 @@ class Login extends React.Component {
         end={[1.2, 0.1]}
         style={styles.gradient}
       >
+        <Image
+          style={{
+            width: 80,
+            height: 80,
+            marginBottom: 30,
+            marginTop: 100
+          }}
+          source={require("../assets/images/logo/rescueMe_logo_dog.png")}
+        />
+        <Text style={styles.heroMessage}>Hello!</Text>
         <View style={styles.inputContainer}>
           <Text
             style={{
@@ -104,6 +115,11 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     alignItems: "center",
     justifyContent: "center"
+  },
+  heroMessage: {
+    color: "white",
+    fontSize: 30,
+    fontFamily: "poppins-bold"
   },
   inputContainer: {
     flex: 1,

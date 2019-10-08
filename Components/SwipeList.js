@@ -24,7 +24,6 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 class SwipeList extends React.Component {
   state = {
     currentUserID: "",
-    dogs: [],
     isLoading: true,
     currentIndex: 0,
     dogId: null,
@@ -161,12 +160,12 @@ class SwipeList extends React.Component {
     });
 
     const { id } = this.props.user;
-    console.log(id, "<---- id");
+
     this.setState({ currentUserID: id }, () => {
       const { currentUserID } = this.state;
-      console.log(currentUserID, "<<<<------- undefinded?");
+
       usersCollection
-        .doc(currentUserID)
+        .doc(currentUserID) // Change the below baxk to currebntUserID IAN
         .get()
         .then(user => {
           const {
