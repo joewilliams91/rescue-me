@@ -1,31 +1,30 @@
 import React, { Component } from "react";
 import firebase from "firebase";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-​
+
 const firestore = firebase.firestore();
 const centresCollection = firestore.collection("centres");
-​
+
 class CentreDogsList extends Component {
   state = {
     availableDogs: "",
     isLoading: true
   };
-​
+
   render() {
     const { availableDogs, isLoading } = this.state;
     const { navigate } = this.props.navigation;
-​
+
     const entry = availableDogs;
-    const dogs = Object.entries(entry)
+    const dogs = Object.entries(entry);
     const dogsList = dogs.map(dog => {
       const list = {};
       list.dogId = dog[0].replace(/ /g, "");
       list.name = dog[1].name;
       list.image = dog[1].photos[0];
       return list;
-    })
-​
-    console.log(dogsList);
+    });
+
     if (isLoading) {
       return (
         <View>
@@ -41,14 +40,17 @@ class CentreDogsList extends Component {
                 <View style={styles.row}>
                   <Image source={{ uri: dog.image }} style={styles.image} />
                   <View style={styles.insideFieled}>
-                    <Text > {dog.name}</Text>
+                    <Text> {dog.name}</Text>
                     <TouchableOpacity
                       style={styles.buttonStyle}
                       title="Enter the link here"
                       onPress={() => {
-                        this.props.navigation.navigate("Enter the link here", {
-                          id: dog.dogId
-                        });
+                        this.props.navigation.navigate(
+                          "RescueCentreDogProfile",
+                          {
+                            id: dog.dogId
+                          }
+                        );
                       }}
                     >
                       <Text>Insert a settings icon here</Text>
@@ -62,7 +64,7 @@ class CentreDogsList extends Component {
       );
     }
   }
-​
+
   componentDidMount() {
     //Database Centre ID
     centresCollection
@@ -70,7 +72,7 @@ class CentreDogsList extends Component {
       .get()
       .then(centre => {
         const centreData = centre.data();
-        
+
         this.setState({
           availableDogs: centreData.d.availableDogs,
           isLoading: false
@@ -78,7 +80,7 @@ class CentreDogsList extends Component {
       });
   }
 }
-​
+
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
   },
   column: {
     flexDirection: "column",
-    flexBasis: 150,
+    flexBasis: 150
   },
   row: {
     flexDirection: "row",
@@ -106,6 +108,5 @@ const styles = StyleSheet.create({
     width: 250
   }
 });
-​
-​
+
 export default CentreDogsList;

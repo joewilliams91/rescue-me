@@ -5,7 +5,8 @@ import {
   UPDATE_EMAIL,
   UPDATE_PASSWORD,
   UPDATE_LOCATION,
-  UPDATE_TYPE
+  UPDATE_TYPE,
+  UPDATE_NAME
 } from "../actions/user";
 
 const user = (state = {}, action) => {
@@ -22,6 +23,8 @@ const user = (state = {}, action) => {
       return { ...state, coordinates: action.payload };
     case UPDATE_TYPE:
       return { ...state, type: action.payload };
+    case UPDATE_NAME:
+      return { ...state, name: action.payload };
     default:
       return state;
   }

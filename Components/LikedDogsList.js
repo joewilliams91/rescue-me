@@ -13,7 +13,6 @@ class LikedDogsList extends Component {
 ​
   render() {
     const { likedDogs, isLoading } = this.state;
-    const { navigate } = this.props.navigation;
 ​
     const entry = likedDogs;
     const dogs = Object.entries(entry);

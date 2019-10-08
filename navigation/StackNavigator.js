@@ -9,7 +9,10 @@ import AddDog from "../Components/AddDog";
 import SplashPage from "../Components/SplashPage";
 import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
-
+import InboxMessages from "../Components/InboxMessages";
+import MessageThread from "../Components/MessageThread";
+import CentreDashboard from "../Components/CentreDashboard"
+import CentreDogsList from "../Components/CentreDogsList";
 const StackNavigator = createStackNavigator(
   {
     Login: {
@@ -35,10 +38,22 @@ const StackNavigator = createStackNavigator(
     },
     DogProfile: {
       screen: DogProfile
+    },
+    InboxMessages: {
+      screen: InboxMessages
+    },
+    MessageThread: {
+      screen: MessageThread
+    },
+    CentreDashboard: {
+      screen: CentreDashboard
+    },
+    CentreDogsList: {
+      screen: CentreDogsList
     }
   },
   {
-    initialRouteName: "SplashPage"
+    initialRouteName: "CentreDashboard"
   }
 );
 
