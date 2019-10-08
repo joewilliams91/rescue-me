@@ -247,7 +247,8 @@ class DogProfile extends React.Component {
             title="£1"
             // style={{ zIndex: 2000 }}
             onPress={() => this.props.navigation.navigate("Donations", {
-              amount: 1
+              amount: 1,
+              id: dog.centreId
             })}
           >
           </Button>
@@ -255,7 +256,8 @@ class DogProfile extends React.Component {
             title="£2"
             // style={{ zIndex: 2000 }}
             onPress={() => this.props.navigation.navigate("Donations", {
-              amount: 2
+              amount: 2,
+              id: dog.centreId
             })}
           >
           </Button>
@@ -263,7 +265,8 @@ class DogProfile extends React.Component {
             title="£5"
             // style={{ zIndex: 2000 }}
             onPress={() => this.props.navigation.navigate("Donations", {
-              amount: 5
+              amount: 5,
+              id: dog.centreId
             })}
           >
           </Button>
@@ -278,7 +281,8 @@ class DogProfile extends React.Component {
           title="Submit"
           onPress={() => {
             this.props.navigation.navigate("Donations", {
-              amount: Number(this.state.input).toFixed(2)
+              amount: Number(this.state.input).toFixed(2),
+              id: dog.centreId
             });
             this.setState({ input: ""})
           }

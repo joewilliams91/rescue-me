@@ -31,7 +31,7 @@ class Donations extends React.Component {
 
   render() {
     const { isLoading } = this.state;
-    const { amount } = this.props.navigation.state.params;
+    const { amount, id } = this.props.navigation.state.params;
     return (
       <Modal
         onRequestClose={() => this.props.navigation.navigate("DogProfile")}
@@ -41,7 +41,7 @@ class Donations extends React.Component {
           onNavigationStateChange={data =>
             this.handleResponse(data)}
           source={{
-            uri: `https://us-central1-rescuemetest-4a629.cloudfunctions.net/pay?amount=${amount}`,
+            uri: `https://us-central1-rescuemetest-4a629.cloudfunctions.net/pay?amount=${amount}&id=${id}`,
             method: 'POST'
           }}
         />
