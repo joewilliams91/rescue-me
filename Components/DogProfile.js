@@ -10,7 +10,8 @@ import {
   Dimensions,
   PanResponder,
   Button,
-  ScrollView
+  ScrollView,
+  TextInput
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -31,7 +32,8 @@ class DogProfile extends React.Component {
   state = {
     dog: {},
     isLoading: true,
-    i: 0
+    i: 0,
+    input: ''
   };
 
   setImageWidth(event) {
@@ -263,6 +265,24 @@ class DogProfile extends React.Component {
               amount: 5
             })}
           >
+          </Button>
+          <TextInput 
+            clearButtonMode='always'
+            placeholder="Other amount"
+            value={this.state.input}
+            keyboardType='number-pad'
+            onChange={(event) => this.setState({ input: event.nativeEvent.text})}
+          />
+          <Button
+          title="Submit"
+          onPress={() => {
+            this.props.navigation.navigate("Donations", {
+              amount: Number(this.state.input).toFixed(2)
+            });
+            this.setState({ input: ""})
+          }
+           }>
+
           </Button>
           <Video
   source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/rescuemetest-4a629.appspot.com/o/videos%2FVID-20190918-WA0001.mp4?alt=media&token=4901ea2a-fd0c-4065-ac5d-30ac724b0258' }}
