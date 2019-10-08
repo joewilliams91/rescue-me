@@ -1,54 +1,38 @@
 import React, { Component } from "react";
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Image,
-  Text,
-  View,
-  Animated,
-  Dimensions,
-  PanResponder,
-  Button
-} from "react-native";
+import { StyleSheet } from "react-native";
 import { connect } from "react-redux";
-​
 import Firebase, { db } from "../config/Firebase";
 import firebase from "firebase";
 import { GiftedChat } from "react-native-gifted-chat";
 const messagesCollection = db.collection("messages");
-​
+
 class MessageThread extends Component {
   state = {
     messages: [],
     userId: ""
   };
+
   componentDidMount() {
-    console.log(this.props.user.id);
+    const { id } = this.props.user;
+    this.setState({ userId: id });
+    const { messageId } = this.props.navigation.state.params;
+    console.log(messageId, "----");
     messagesCollection
-      .doc("l720KbX6Ojk2lvRKbTlx")
+      .doc(messageId)
       .collection("messages")
       .orderBy("timestamp", "desc")
       .onSnapshot(this.onCollectionUpdate);
   }
-​
-  componentDidUpdate(prevProps) {
-    console.log(this.props)
-    if (this.props.user !== prevProps.user) {
-      this.setState({ userId: this.props.user.id });
-    }
-  }
-​
+
   onCollectionUpdate = querySnapshot => {
     const messages = [];
     querySnapshot.forEach(doc => {
       const { timestamp, user, text } = doc.data();
-      const {userId} = this.state
-​
       const timeStamp = new Date(timestamp.seconds * 1000);
-​
+
       messages.push({
-        key: this.timestamp(),
-        _id: userId,
+        key: timestamp.seconds,
+        _id: user._id,
         createdAt: timeStamp,
         text,
         user: user
@@ -56,31 +40,31 @@ class MessageThread extends Component {
     });
     this.setState({ messages });
   };
-​
+
   timestamp = () => {
     return firebase.firestore.Timestamp.fromDate(new Date());
   };
-​
+
   onSend = (messages = []) => {
+    const { messageId } = this.props.navigation.state.params;
     for (let i = 0; i < messages.length; i++) {
-      const { text, user } = messages[i];
+      const { text, user, _id } = messages[i];
       const message = {
-        key: this.timestamp(),
-        _id: user._id,
+        key: _id.toString() + this.timestamp().toString(),
         text: text,
         user: user,
         timestamp: this.timestamp()
       };
       messagesCollection
-        .doc("l720KbX6Ojk2lvRKbTlx")
+        .doc(messageId)
         .collection("messages")
         .add(message)
         .catch(error => {
-          console.log("ERROR", error);
+          console.log(error);
         });
     }
   };
-​
+
   render() {
     const { messages, userId } = this.state;
     return (
@@ -92,22 +76,9 @@ class MessageThread extends Component {
     );
   }
 }
-​
+
 const mapStateToProps = state => ({
   ...state
 });
-​
-const styles = StyleSheet.create({
-  button: {
-    marginTop: 30,
-    marginBottom: 20,
-    paddingVertical: 5,
-    alignItems: "center",
-    backgroundColor: "#FFA611",
-    borderColor: "#FFA611",
-    borderWidth: 1,
-    borderRadius: 5,
-    width: 200
-  }
-});
+
 export default connect(mapStateToProps)(MessageThread);

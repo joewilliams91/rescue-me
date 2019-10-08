@@ -11,7 +11,15 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import { updateEmail, updatePassword, login } from "../actions/user";
+import {
+  updateEmail,
+  updatePassword,
+  login,
+  getUser,
+  updateName,
+  updateLocation
+} from "../actions/user";
+import Firebase from "../config/Firebase";
 
 class Login extends React.Component {
   state = {
@@ -23,9 +31,25 @@ class Login extends React.Component {
     headerTintColor: "#fff"
   };
 
-  handleLogin = () => {
-    this.props.login();
-    this.props.navigation.navigate("Main");
+  componentDidMount = () => {
+    const { type } = this.props.user;
+    Firebase.auth().onAuthStateChanged(user => {
+      if (user.uid) {
+        this.props.getUser(user.uid, type).then(user => {
+          if (this.props.user.d) {
+            const { coordinates, firstName, centreName, id } = this.props.user.d;
+            const coords = [coordinates._lat, coordinates._long];
+            this.props.updateName(firstName || centreName);
+            this.props.updateLocation(coords);
+            if (this.props.user.type === "user") {
+              this.props.navigation.navigate("LikedDogsList");
+            } else if (this.props.user.type === "centre") {
+              this.props.navigation.navigate("CentreDashboard");
+            }
+          }
+        });
+      }
+    });
   };
 
   render() {
@@ -79,8 +103,8 @@ class Login extends React.Component {
           />
           <View style={{ alignItems: "center", marginTop: 30 }}>
             <TouchableOpacity
-              style={styles.loginButton}
-              onPress={this.handleLogin}
+              style={styles.button}
+              onPress={() => this.props.login()}
             >
               <Text style={styles.loginButtonText}>LOGIN</Text>
             </TouchableOpacity>
@@ -184,7 +208,10 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ updateEmail, updatePassword, login }, dispatch);
+  return bindActionCreators(
+    { updateEmail, updatePassword, login, getUser, updateName, updateLocation },
+    dispatch
+  );
 };
 
 const mapStateToProps = state => {

@@ -13,6 +13,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { updateLocation } from "../actions/user";
 import { LinearGradient } from "expo-linear-gradient";
+import { updateLocation, updateName } from "../actions/user";
 import Firebase, { db } from "../config/Firebase.js";
 import firebase from "firebase";
 const {
@@ -71,6 +72,9 @@ class CentreRegister extends React.Component {
       coordinates,
       telephone
     } = this.state;
+
+    this.props.updateName(name);
+
     const geofirestore = new GeoFirestore(db);
     const geocollection = geofirestore.collection("centres");
     geocollection.doc(userId).set({
@@ -198,7 +202,7 @@ const mapStateToProps = state => ({
   ...state
 });
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ updateLocation }, dispatch);
+  return bindActionCreators({ updateLocation, updateName }, dispatch);
 };
 export default connect(
   mapStateToProps,

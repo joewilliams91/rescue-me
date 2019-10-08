@@ -17,7 +17,8 @@ import {
   updateEmail,
   updatePassword,
   signup,
-  updateLocation
+  updateLocation,
+  updateName
 } from "../actions/user";
 import { LinearGradient } from "expo-linear-gradient";
 import HasDogRadioComponents from "./AddingComponents/HasDogRadioComponents";
@@ -95,7 +96,6 @@ class Register extends React.Component {
     }
   };
   componentDidMount() {
-    console.log(this.props.user, "-----did mount ");
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -137,6 +137,9 @@ class Register extends React.Component {
       radius,
       telephone
     } = this.state;
+
+    this.props.updateName(firstName);
+
     const geofirestore = new GeoFirestore(db);
     const geocollection = geofirestore.collection("users");
 
@@ -145,6 +148,7 @@ class Register extends React.Component {
       new Date(+parts[2], +parts[1] - 1, +parts[0])
     );
 
+<<<<<<< HEAD
     geocollection
       .doc(userId)
       .set({
@@ -171,6 +175,31 @@ class Register extends React.Component {
       .then(() => {
         this.props.navigation.navigate("SwipeList");
       });
+=======
+    geocollection.doc(userId).set({
+      coordinates: new firebase.firestore.GeoPoint(
+        coordinates[0],
+        coordinates[1]
+      ),
+      id: userId,
+      firstName: firstName,
+      photos: photos,
+      surname: surname,
+      description: description,
+      radiusPref: radius,
+      employmentStatus: employmentStatus,
+      activityLevel,
+      hasChildren: hasChildren,
+      hasDogs: hasDogs,
+      dob: newDob,
+      telephone: telephone,
+      sizePref: sizePrefs,
+      gender: gender,
+      likedDogs: {}
+    });
+
+    this.props.navigation.navigate("SwipeList")
+>>>>>>> 13d6265937ad202f8dccc478eef4cb202d337707
   };
 
   render() {
@@ -296,7 +325,7 @@ class Register extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { updateEmail, updatePassword, updateLocation, signup },
+    { updateEmail, updatePassword, updateLocation, signup, updateName },
     dispatch
   );
 };

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Text
 } from "react-native";
-​
+
 const ViewDescriptionComponent = props => {
   const { description, changeDescription, editDescription, updateDescription, toggleEdit } = props;
   return (
@@ -32,7 +32,7 @@ const ViewDescriptionComponent = props => {
     </View>
   );
 };
-​
+
 const styles = StyleSheet.create({
   button: {
     marginTop: 30,
@@ -46,5 +46,5 @@ const styles = StyleSheet.create({
     width: 200
   }
 });
-​
+
 export default ViewDescriptionComponent;

@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import firebase from "firebase";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-​
+
 const firestore = firebase.firestore();
 const centresCollection = firestore.collection("centres");
-​
+
 class CentreDogsList extends Component {
   state = {
     availableDogs: "",
     isLoading: true
   };
-​
+
   render() {
     const { availableDogs, isLoading } = this.state;
     const { navigate } = this.props.navigation;
-​
+
     const entry = availableDogs;
     const dogs = Object.entries(entry)
     const dogsList = dogs.map(dog => {
@@ -24,8 +24,8 @@ class CentreDogsList extends Component {
       list.image = dog[1].photos[0];
       return list;
     })
-​
-    console.log(dogsList);
+
+    
     if (isLoading) {
       return (
         <View>
@@ -46,7 +46,7 @@ class CentreDogsList extends Component {
                       style={styles.buttonStyle}
                       title="Enter the link here"
                       onPress={() => {
-                        this.props.navigation.navigate("Enter the link here", {
+                        this.props.navigation.navigate("RescueCentreDogProfile", {
                           id: dog.dogId
                         });
                       }}
@@ -62,7 +62,7 @@ class CentreDogsList extends Component {
       );
     }
   }
-​
+
   componentDidMount() {
     //Database Centre ID
     centresCollection
@@ -78,7 +78,7 @@ class CentreDogsList extends Component {
       });
   }
 }
-​
+
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
@@ -106,6 +106,6 @@ const styles = StyleSheet.create({
     width: 250
   }
 });
-​
-​
+
+
 export default CentreDogsList;
