@@ -21,10 +21,16 @@ class LikedDogsList extends Component {
   };
 
   createMessage = (centreId, centreName, dogName, dogId) => {
+    console.log("in here")
     const { id } = this.state;
-    const { name } = this.props.user;
+    console.log(id, "---id")
+    console.log(dogId)
+    const { name } = this.props.user
+    console.log(centreId, centreName, dogName, dogId)
+    // const newMessage = messagesCollection.doc();
+    
     const newMessage = messagesCollection.doc();
-    newMessage
+    let newDoc = newMessage
       .set({
         centreId: centreId,
         centreName: centreName,
@@ -35,13 +41,14 @@ class LikedDogsList extends Component {
       })
       .then(() => {
         this.props.navigation.navigate("MessageThread", {
-          messageId: newMessage
+          messageId: newMessage.id
         });
       });
   };
 
   componentDidMount() {
     const { id } = this.props.user;
+    console.log(id)
     usersCollection
       .doc(id)
       .get()
@@ -64,7 +71,7 @@ class LikedDogsList extends Component {
     
 
     for (let dog in likedDogs) {
-    
+      console.log(likedDogs)
       const list = {};
       list.dogId = likedDogs[dog].id
       list.centreId = likedDogs[dog].centreId;
@@ -114,7 +121,7 @@ class LikedDogsList extends Component {
                       this.createMessage(
                         dog.centreId,
                         dog.centreName,
-                        dog.dogName,
+                        dog.name,
                         dog.dogId
                       );
                     }}

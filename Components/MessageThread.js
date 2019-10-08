@@ -13,7 +13,10 @@ class MessageThread extends Component {
   };
 
   componentDidMount() {
-    const {messageId} = this.props.navigation.state.params;
+    const { id } = this.props.user;
+    this.setState({ userId: id });
+    const { messageId } = this.props.navigation.state.params;
+    console.log(messageId, "----");
     messagesCollection
       .doc(messageId)
       .collection("messages")
@@ -43,11 +46,11 @@ class MessageThread extends Component {
   };
 
   onSend = (messages = []) => {
-    const {messageId} = this.props;
+    const { messageId } = this.props.navigation.state.params;
     for (let i = 0; i < messages.length; i++) {
       const { text, user, _id } = messages[i];
       const message = {
-        key: _id.toString() + this.timeStamp().toString(),
+        key: _id.toString() + this.timestamp().toString(),
         text: text,
         user: user,
         timestamp: this.timestamp()
@@ -78,4 +81,4 @@ const mapStateToProps = state => ({
   ...state
 });
 
-export default connect(mapStateToProps)(MessageThread)
+export default connect(mapStateToProps)(MessageThread);
