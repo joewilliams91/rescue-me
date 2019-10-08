@@ -23,30 +23,30 @@ class LikedDogsList extends Component {
   createMessage = (centreId, centreName, dogName, dogId) => {
     const { id } = this.state;
     const { name } = this.props.user;
-    const newMessage = messagesCollection.doc()
-    newMessage.set({
-      centreId: centreId,
-      centreName: centreName,
-      dogName: dogName,
-      dogId: dogId,
-      user: id,
-      userName: name
-    }).then(() => {
-      this.props.navigation.navigate("MessageThread", {
-        messageId: newMessage
+    const newMessage = messagesCollection.doc();
+    newMessage
+      .set({
+        centreId: centreId,
+        centreName: centreName,
+        dogName: dogName,
+        dogId: dogId,
+        user: id,
+        userName: name
       })
-    })
+      .then(() => {
+        this.props.navigation.navigate("MessageThread", {
+          messageId: newMessage
+        });
+      });
   };
 
   componentDidMount() {
     const { id } = this.props.user;
-    console.log(this.props.user.id, "---userId")
     usersCollection
       .doc(id)
       .get()
       .then(user => {
-        const {likedDogs} = user.data();
-        console.log(likedDogs, "----")
+        const { likedDogs } = user.data().d;
         this.setState({
           id: id,
           likedDogs: likedDogs,
@@ -59,31 +59,22 @@ class LikedDogsList extends Component {
     const { likedDogs, isLoading } = this.state;
     const { navigate } = this.props.navigation;
 
-    const entry = likedDogs
+    const entry = likedDogs;
     let likedDogsList = [];
     
-    for(let dog in likedDogs){
-      const list = {}
-      list.dogId = dog.id.replace(/ /g, "");
-      list.centreId = dog.centreId;
-      list.image = dog.image[0];
-      list.name = dog.name;
-      list.centreName = dog.centreName;
 
-      likedDogsList.push(list)
+    for (let dog in likedDogs) {
+    
+      const list = {};
+      list.dogId = likedDogs[dog].id
+      list.centreId = likedDogs[dog].centreId;
+      list.image = likedDogs[dog].photos[0];
+      list.name = likedDogs[dog].name;
+      list.centreName = likedDogs[dog].centreName;
+
+      likedDogsList.push(list);
     }
 
-    console.log(likedDogsList)
-
-    // const likedDogsList = dogs.map(dog => {
-    //   const list = {};
-    //   list.dogId = dog[0].replace(/ /g, "");
-    //   list.centreId = dog[1].centreId;
-    //   list.image = dog[1].image[0];
-    //   list.name = dog[1].name;
-    //   list.centreName = dog[1].centreName;
-    //   return list;
-    // });
 
     if (isLoading) {
       return (
