@@ -87,6 +87,7 @@ class AddDog extends React.Component {
       photos,
       size
     } = this.state;
+    
     const parts = dob.split("-");
     const newDob = firebase.firestore.Timestamp.fromDate(
       new Date(+parts[2], +parts[1] - 1, +parts[0])
@@ -103,6 +104,7 @@ class AddDog extends React.Component {
         coordinates[1]
       ),
       name: name,
+      centreName: this.props.user.name || this.props.user.d.name,
       description: description,
       exerciseLevel: exerciseLevel,
       goodWithChildren: goodWithChildren,

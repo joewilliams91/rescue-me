@@ -58,7 +58,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "MessageThread"
+    initialRouteName: "SplashPage"
   } 
 );
 

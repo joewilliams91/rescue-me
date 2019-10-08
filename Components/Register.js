@@ -17,7 +17,8 @@ import {
   updateEmail,
   updatePassword,
   signup,
-  updateLocation
+  updateLocation,
+  updateName
 } from "../actions/user";
 import HasDogRadioComponents from "./AddingComponents/HasDogRadioComponents";
 import HasChildrenRadioComponents from "./AddingComponents/HasChildrenRadioComponents";
@@ -93,7 +94,6 @@ class Register extends React.Component {
     }
   };
   componentDidMount() {
-    console.log(this.props.user);
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -134,6 +134,9 @@ class Register extends React.Component {
       radius,
       telephone
     } = this.state;
+
+    this.props.updateName(firstName);
+
     const geofirestore = new GeoFirestore(db);
     const geocollection = geofirestore.collection("users");
 
@@ -163,6 +166,8 @@ class Register extends React.Component {
       gender: gender,
       likedDogs: {}
     });
+
+    this.props.navigation.navigate("SwipeList")
   };
 
   render() {
@@ -242,7 +247,7 @@ class Register extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { updateEmail, updatePassword, updateLocation, signup },
+    { updateEmail, updatePassword, updateLocation, signup, updateName },
     dispatch
   );
 };

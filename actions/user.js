@@ -5,6 +5,7 @@ export const UPDATE_PASSWORD = "UPDATE_PASSWORD";
 export const LOGIN = "LOGIN";
 export const UPDATE_LOCATION = "UPDATE_LOCATION";
 export const UPDATE_TYPE = "UPDATE_TYPE";
+export const UPDATE_NAME = "UPDATE_NAME"
 
 export const updateEmail = email => {
   return {
@@ -33,6 +34,13 @@ export const updateType = type => {
     payload: type
   };
 };
+
+export const updateName = type => {
+  return {
+    type: UPDATE_NAME,
+    payload: type
+  }
+}
 
 export const signup = () => {
   return async (dispatch, getState) => {
@@ -89,9 +97,10 @@ export const getUser = (uid, type) => {
               .collection("centres")
               .doc(uid)
               .get();
+      
+        const fetchedUser = {...user.data(), id: uid, type}
 
-
-      dispatch({ type: LOGIN, payload: user.data() });
+      dispatch({ type: LOGIN, payload: fetchedUser });
     } catch (e) {
       console.log(e);
     }

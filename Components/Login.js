@@ -10,7 +10,14 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import { updateEmail, updatePassword, login, getUser } from "../actions/user";
+import {
+  updateEmail,
+  updatePassword,
+  login,
+  getUser,
+  updateName,
+  updateLocation
+} from "../actions/user";
 import Firebase from "../config/Firebase";
 
 class Login extends React.Component {
@@ -27,11 +34,15 @@ class Login extends React.Component {
     const { type } = this.props.user;
     Firebase.auth().onAuthStateChanged(user => {
       if (user.uid) {
-        this.props.getUser(user.uid, type).then(() => {
+        this.props.getUser(user.uid, type).then(user => {
           if (this.props.user.d) {
-            if (type === "user") {
-              this.props.navigation.navigate("SwipeList");
-            } else {
+            const { coordinates, firstName, centreName, id } = this.props.user.d;
+            const coords = [coordinates._lat, coordinates._long];
+            this.props.updateName(firstName || centreName);
+            this.props.updateLocation(coords);
+            if (this.props.user.type === "user") {
+              this.props.navigation.navigate("LikedDogsList");
+            } else if (this.props.user.type === "centre") {
               this.props.navigation.navigate("CentreDashboard");
             }
           }
@@ -180,7 +191,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { updateEmail, updatePassword, login, getUser },
+    { updateEmail, updatePassword, login, getUser, updateName, updateLocation },
     dispatch
   );
 };

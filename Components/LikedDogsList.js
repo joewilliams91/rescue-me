@@ -1,9 +1,17 @@
 import React, { Component } from "react";
 import firebase from "firebase";
-import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity
+} from "react-native";
 import { connect } from "react-redux";
-const firestore = firebase.firestore();
-const usersCollection = firestore.collection("users");
+import Firebase, { db } from "../config/Firebase";
+const usersCollection = db.collection("users");
+const messagesCollection = db.collection("messages");
 
 class LikedDogsList extends Component {
   state = {
@@ -12,21 +20,70 @@ class LikedDogsList extends Component {
     id: ""
   };
 
+  createMessage = (centreId, centreName, dogName, dogId) => {
+    const { id } = this.state;
+    const { name } = this.props.user;
+    const newMessage = messagesCollection.doc()
+    newMessage.set({
+      centreId: centreId,
+      centreName: centreName,
+      dogName: dogName,
+      dogId: dogId,
+      user: id,
+      userName: name
+    }).then(() => {
+      this.props.navigation.navigate("MessageThread", {
+        messageId: newMessage
+      })
+    })
+  };
+
+  componentDidMount() {
+    const { id } = this.props.user;
+    console.log(this.props.user.id, "---userId")
+    usersCollection
+      .doc(id)
+      .get()
+      .then(user => {
+        const {likedDogs} = user.data();
+        console.log(likedDogs, "----")
+        this.setState({
+          id: id,
+          likedDogs: likedDogs,
+          isLoading: false
+        });
+      });
+  }
+
   render() {
     const { likedDogs, isLoading } = this.state;
     const { navigate } = this.props.navigation;
 
-    const entry = likedDogs;
-    const dogs = Object.entries(entry);
+    const entry = likedDogs
+    let likedDogsList = [];
+    
+    for(let dog in likedDogs){
+      const list = {}
+      list.dogId = dog.id.replace(/ /g, "");
+      list.centreId = dog.centreId;
+      list.image = dog.image[0];
+      list.name = dog.name;
+      list.centreName = dog.centreName;
 
-    const likedDogsList = dogs.map(dog => {
-      const list = {};
-      list.dogId = dog[0].replace(/ /g, "");
-      list.centreId = dog[1].centreId;
-      list.image = dog[1].image[0];
-      list.name = dog[1].name;
-      return list;
-    });    
+      likedDogsList.push(list)
+    }
+
+    console.log(likedDogsList)
+
+    // const likedDogsList = dogs.map(dog => {
+    //   const list = {};
+    //   list.dogId = dog[0].replace(/ /g, "");
+    //   list.centreId = dog[1].centreId;
+    //   list.image = dog[1].image[0];
+    //   list.name = dog[1].name;
+    //   list.centreName = dog[1].centreName;
+    //   return list;
+    // });
 
     if (isLoading) {
       return (
@@ -37,7 +94,6 @@ class LikedDogsList extends Component {
     } else {
       return (
         <ScrollView>
-            
           {likedDogsList.map(dog => {
             return (
               <View style={styles.row}>
@@ -61,6 +117,19 @@ class LikedDogsList extends Component {
                     />
                   </TouchableOpacity>
                   <Text key={dog.dogId}> {dog.name}</Text>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      this.createMessage(
+                        dog.centreId,
+                        dog.centreName,
+                        dog.dogName,
+                        dog.dogId
+                      );
+                    }}
+                  >
+                    <Text>Message</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             );
@@ -68,17 +137,6 @@ class LikedDogsList extends Component {
         </ScrollView>
       );
     }
-  }
-
-  componentDidMount() {
-   const { id } = this.props.user
-    usersCollection
-      .doc(id)
-      .get()
-      .then(user => {
-        const userData = user.data();
-        this.setState({ likedDogs: userData.likedDogs, isLoading: false });
-      });
   }
 }
 
@@ -97,6 +155,17 @@ const styles = StyleSheet.create({
   },
   column: {
     flexDirection: "column"
+  },
+  button: {
+    marginTop: 30,
+    marginBottom: 20,
+    paddingVertical: 5,
+    alignItems: "center",
+    backgroundColor: "#FFA611",
+    borderColor: "#FFA611",
+    borderWidth: 1,
+    borderRadius: 5,
+    width: 200
   }
 });
 
@@ -104,4 +173,4 @@ const mapStateToProps = state => ({
   ...state
 });
 
-export default connect(mapStateToProps)(LikedDogsList)
+export default connect(mapStateToProps)(LikedDogsList);

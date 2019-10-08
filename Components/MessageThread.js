@@ -13,7 +13,7 @@ class MessageThread extends Component {
   };
 
   componentDidMount() {
-    const {messageId} = this.props
+    const {messageId} = this.props.navigation.state.params;
     messagesCollection
       .doc(messageId)
       .collection("messages")
