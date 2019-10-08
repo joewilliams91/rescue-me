@@ -9,7 +9,9 @@ import {
   Animated,
   Dimensions,
   PanResponder,
-  Button
+  Button,
+  ScrollView,
+  TextInput
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -30,7 +32,8 @@ class DogProfile extends React.Component {
   state = {
     dog: {},
     isLoading: true,
-    i: 0
+    i: 0,
+    input: ''
   };
 
   setImageWidth(event) {
@@ -159,7 +162,7 @@ class DogProfile extends React.Component {
     } else {
       const barWidth = SCREEN_WIDTH * 0.8;
       return (
-        <View
+        <ScrollView
         {...this.PanResponder.panHandlers}
           key={dog.id}
        
@@ -200,6 +203,7 @@ class DogProfile extends React.Component {
           
           </View>
          
+         
           <Text
             style={{
               position: "absolute",
@@ -238,6 +242,48 @@ class DogProfile extends React.Component {
               >
               </Button>
             </View>
+            <Button
+            title="£1"
+            // style={{ zIndex: 2000 }}
+            onPress={() => this.props.navigation.navigate("Donations", {
+              amount: 1
+            })}
+          >
+          </Button>
+          <Button
+            title="£2"
+            // style={{ zIndex: 2000 }}
+            onPress={() => this.props.navigation.navigate("Donations", {
+              amount: 2
+            })}
+          >
+          </Button>
+          <Button
+            title="£5"
+            // style={{ zIndex: 2000 }}
+            onPress={() => this.props.navigation.navigate("Donations", {
+              amount: 5
+            })}
+          >
+          </Button>
+          <TextInput 
+            clearButtonMode='always'
+            placeholder="Other amount"
+            value={this.state.input}
+            keyboardType='number-pad'
+            onChange={(event) => this.setState({ input: event.nativeEvent.text})}
+          />
+          <Button
+          title="Submit"
+          onPress={() => {
+            this.props.navigation.navigate("Donations", {
+              amount: Number(this.state.input).toFixed(2)
+            });
+            this.setState({ input: ""})
+          }
+           }>
+
+          </Button>
           <Video
   source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/rescuemetest-4a629.appspot.com/o/videos%2FVID-20190918-WA0001.mp4?alt=media&token=4901ea2a-fd0c-4065-ac5d-30ac724b0258' }}
   rate={1.0}
@@ -249,7 +295,7 @@ class DogProfile extends React.Component {
 />
          
           
-        </View>
+        </ScrollView>
 
       );
     }
