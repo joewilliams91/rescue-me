@@ -23,14 +23,8 @@ class CentreDogsList extends Component {
       list.name = dog[1].name;
       list.image = dog[1].photos[0];
       return list;
-<<<<<<< HEAD
-    })
-
-    
-=======
     });
 
->>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5
     if (isLoading) {
       return (
         <View>
@@ -51,18 +45,12 @@ class CentreDogsList extends Component {
                       style={styles.buttonStyle}
                       title="Enter the link here"
                       onPress={() => {
-<<<<<<< HEAD
-                        this.props.navigation.navigate("RescueCentreDogProfile", {
-                          id: dog.dogId
-                        });
-=======
                         this.props.navigation.navigate(
                           "RescueCentreDogProfile",
                           {
                             id: dog.dogId
                           }
                         );
->>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5
                       }}
                     >
                       <Text>Insert a settings icon here</Text>
@@ -121,9 +109,4 @@ const styles = StyleSheet.create({
   }
 });
 
-<<<<<<< HEAD
-
 export default CentreDogsList;
-=======
-export default CentreDogsList;
->>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5

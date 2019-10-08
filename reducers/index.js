@@ -23,13 +23,9 @@ const user = (state = {}, action) => {
       return { ...state, coordinates: action.payload };
     case UPDATE_TYPE:
       return { ...state, type: action.payload };
-<<<<<<< HEAD
-    case UPDATE_NAME: 
-      return {...state, name: action.payload }
-=======
+
     case UPDATE_NAME:
       return { ...state, name: action.payload };
->>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5
     default:
       return state;
   }

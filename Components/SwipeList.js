@@ -347,6 +347,14 @@ class SwipeList extends React.Component {
                         }}
                         source={{ uri: dog.photos[0] }}
                       />
+                      <Button
+                        onPress={() =>
+                          this.props.navigation.navigate("DogProfile", {
+                            id: dog.id
+                          })
+                        }
+                        title="prof"
+                      ></Button>
                     </Animated.View>
                   );
                 } else {

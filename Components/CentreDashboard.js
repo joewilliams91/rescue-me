@@ -1,26 +1,7 @@
 import React, { Component } from "react";
-<<<<<<< HEAD
-import firebase from "firebase";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-const firestore = firebase.firestore();
-const centresCollection = firestore.collection("centres");
-
-class CentreDashboard extends Component {
-    render(){
-        return (
-            <View>
-               <Text>Hi</Text> 
-            </View>
-        )
-    }
-}
-
-export default CentreDashboard;
-=======
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 class CentreDashboard extends Component {
- 
   render() {
     return (
       <View>
@@ -53,4 +34,3 @@ class CentreDashboard extends Component {
 }
 
 export default CentreDashboard;
->>>>>>> b0ae1579a1ffc5847142d3897ec4961ada0892b5

@@ -10,22 +10,14 @@ import AddDog from "../Components/AddDog";
 import SplashPage from "../Components/SplashPage";
 import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
-import Donations from '../Components/Donations';
-import LikedDogsList from '../Components/LikedDogsList'
-import CentreDogsList from '../Components/CentreDogsList'
-import MessageThread from '../Components/MessageThread'
-import RescueCentreDogProfile from '../Components/RescueCentreDogProfile'
-import CentreDashboard from '../Components/CentreDashboard'
 import Donations from "../Components/Donations";
 import LikedDogsList from "../Components/LikedDogsList";
 import CentreDogsList from "../Components/CentreDogsList";
 import MessageThread from "../Components/MessageThread";
 import RescueCentreDogProfile from "../Components/RescueCentreDogProfile";
-import CentreDashboard from "../Components/CentreDashboard";
 import InboxMessages from "../Components/InboxMessages";
-import MessageThread from "../Components/MessageThread";
-import CentreDashboard from "../Components/CentreDashboard"
-import CentreDogsList from "../Components/CentreDogsList";
+import CentreDashboard from "../Components/CentreDashboard";
+
 const StackNavigator = createStackNavigator(
   {
     Login: {
@@ -79,17 +71,14 @@ const StackNavigator = createStackNavigator(
     CentreDashboard: {
       screen: CentreDashboard
     },
-  
+
     CentreDogsList: {
       screen: CentreDogsList
     }
   },
-    {
-    initialRouteName: "SplashPage"
+  {
+    initialRouteName: "CentreDogsList"
   }
-  
-  
-
 );
 
 export default createAppContainer(StackNavigator);

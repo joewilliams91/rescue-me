@@ -21,14 +21,14 @@ class LikedDogsList extends Component {
   };
 
   createMessage = (centreId, centreName, dogName, dogId) => {
-    console.log("in here")
+    console.log("in here");
     const { id } = this.state;
-    console.log(id, "---id")
-    console.log(dogId)
-    const { name } = this.props.user
-    console.log(centreId, centreName, dogName, dogId)
+    console.log(id, "---id");
+    console.log(dogId);
+    const { name } = this.props.user;
+    console.log(centreId, centreName, dogName, dogId, "------");
     // const newMessage = messagesCollection.doc();
-    
+
     const newMessage = messagesCollection.doc();
     let newDoc = newMessage
       .set({
@@ -48,7 +48,8 @@ class LikedDogsList extends Component {
 
   componentDidMount() {
     const { id } = this.props.user;
-    console.log(id)
+    console.log(this.props.user, "<------this.userrr");
+    console.log(id);
     usersCollection
       .doc(id)
       .get()
@@ -64,15 +65,13 @@ class LikedDogsList extends Component {
 
   render() {
     const { likedDogs, isLoading } = this.state;
-​
     const entry = likedDogs;
     let likedDogsList = [];
-    
 
     for (let dog in likedDogs) {
-      console.log(likedDogs)
+      console.log(likedDogs);
       const list = {};
-      list.dogId = likedDogs[dog].id
+      list.dogId = likedDogs[dog].id;
       list.centreId = likedDogs[dog].centreId;
       list.image = likedDogs[dog].photos[0];
       list.name = likedDogs[dog].name;
@@ -80,7 +79,6 @@ class LikedDogsList extends Component {
 
       likedDogsList.push(list);
     }
-
 
     if (isLoading) {
       return (

@@ -37,7 +37,12 @@ class Login extends React.Component {
       if (user.uid) {
         this.props.getUser(user.uid, type).then(user => {
           if (this.props.user.d) {
-            const { coordinates, firstName, centreName, id } = this.props.user.d;
+            const {
+              coordinates,
+              firstName,
+              centreName,
+              id
+            } = this.props.user.d;
             const coords = [coordinates._lat, coordinates._long];
             this.props.updateName(firstName || centreName);
             this.props.updateLocation(coords);
