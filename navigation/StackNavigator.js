@@ -11,7 +11,9 @@ import SwipeList from "../Components/SwipeList";
 import DogProfile from "../Components/DogProfile";
 import LikedDogsList from '../Components/LikedDogsList'
 import CentreDogsList from '../Components/CentreDogsList'
-import MessageThread from 
+import MessageThread from '../Components/MessageThread'
+import RescueCentreDogProfile from '../Components/RescueCentreDogProfile'
+import CentreDashboard from '../Components/CentreDashboard'
 
 const StackNavigator = createStackNavigator(
   {
@@ -47,10 +49,16 @@ const StackNavigator = createStackNavigator(
     },
     MessageThread: {
       screen: MessageThread
+    },
+    RescueCentreDogProfile: {
+      screen: RescueCentreDogProfile
+    },
+    CentreDashboard: {
+      screen: CentreDashboard
     }
   },
   {
-    initialRouteName: "Login"
+    initialRouteName: "MessageThread"
   } 
 );
 

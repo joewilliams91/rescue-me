@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
-import { updateType } from "../actions/user";
+import { updateType, getUser } from "../actions/user";
 import { bindActionCreaters, bindActionCreators } from "redux";
+import Firebase from "../config/Firebase";
 
 class SplashPage extends Component {
   navigate = type => {
-    console.log(type);
     this.props.updateType(type);
     this.props.navigation.navigate("Login");
   };
@@ -15,6 +15,7 @@ class SplashPage extends Component {
     header: null
   };
 
+  
   render() {
     return (
       <View style={styles.container}>
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ updateType }, dispatch);
+  return bindActionCreators({ updateType, getUser }, dispatch);
 };
 
 const mapStateToProps = state => {

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Text
 } from "react-native";
-​
+
 const DetailsComponent = props => {
   const {
     exerciseOptions,
@@ -36,7 +36,7 @@ const DetailsComponent = props => {
             </View>
           );
         })}
-​
+
         <Text>Is the dog good with other dogs?</Text>
         {goodWithOptions.map(item => {
           return (
@@ -76,7 +76,7 @@ const DetailsComponent = props => {
     );
   }
 };
-​
+
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
@@ -100,5 +100,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#794F9B"
   }
 });
-​
+
 export default DetailsComponent;

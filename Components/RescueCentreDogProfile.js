@@ -15,7 +15,7 @@ const dogsCollection = geofirestore.collection("dogs");
 import UpdatePhotoComponent from "./UpdatingComponents/UpdatePhotoComponent";
 import ViewDescriptionComponent from "./UpdatingComponents/ViewDescriptionComponent";
 import DetailsComponent from "./UpdatingComponents/DetailsComponent";
-​
+
 export default class RescueCentreDogProfile extends React.Component {
   state = {
     isLoading: true,
@@ -37,7 +37,7 @@ export default class RescueCentreDogProfile extends React.Component {
       { key: 5, text: "5" }
     ]
   };
-​
+
   componentDidMount() {
     const { id } = this.props.navigation.state.params;
     dogsCollection
@@ -51,7 +51,7 @@ export default class RescueCentreDogProfile extends React.Component {
           goodWithOtherDogs,
           exerciseLevel
         } = dog.data();
-​
+
         this.setState({
           id,
           isLoading: false,
@@ -63,7 +63,7 @@ export default class RescueCentreDogProfile extends React.Component {
         });
       });
   }
-​
+
   addToPhotoArray = url => {
     this.setState(
       currentState => {
@@ -73,7 +73,7 @@ export default class RescueCentreDogProfile extends React.Component {
       },
       () => {
         const { photos, id } = this.state;
-​
+
         const dogToUpdate = dogsCollection
           .doc(id)
           .update({
@@ -86,24 +86,24 @@ export default class RescueCentreDogProfile extends React.Component {
       }
     );
   };
-​
+
   toggleEdit = () => {
     this.setState(currentState => {
       const newEditDescription = !currentState.editDescription;
       return { ...currentState, editDescription: newEditDescription };
     });
   };
-​
+
   changeDescription = description => {
     this.setState({ description });
   };
-​
+
   updateDescription = () => {
     const { description } = this.state;
     this.toggleEdit();
     this.updateDetails("description", description);
   };
-​
+
   updateDetails = (type, updateDetail) => {
     const {id} = this.state
     this.setState({ [type]: updateDetail });
@@ -117,7 +117,7 @@ export default class RescueCentreDogProfile extends React.Component {
       })
       .catch(console.log("Update unsuccessful"));
   };
-​
+
   render() {
     const {
       photos,
@@ -143,7 +143,7 @@ export default class RescueCentreDogProfile extends React.Component {
             toggleEdit={this.toggleEdit}
             updateDescription={this.updateDescription}
           />
-​
+
           <DetailsComponent
             updateDetails={this.updateDetails}
             goodWithChildren={goodWithChildren}

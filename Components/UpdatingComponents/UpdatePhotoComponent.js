@@ -10,19 +10,19 @@ import {
   Button
 } from "react-native";
 import PhotoComponent from "../AddingComponents/PhotoComponent";
-​
+
 export default class UpdatePhotoComponent extends React.Component {
   state = {
     editPhotos: false
   };
-​
+
   toggleEdit = () => {
     this.setState(currentState => {
       const newEditPhotos = !currentState.editPhotos;
       return { ...currentState, editPhotos: newEditPhotos };
     });
   };
-​
+
   render() {
     const { photos, addToPhotoArray } = this.props;
     const {editPhotos} = this.state
@@ -42,7 +42,7 @@ export default class UpdatePhotoComponent extends React.Component {
     );
   }
 }
-​
+
 const styles = StyleSheet.create({
   button: {
     marginTop: 30,

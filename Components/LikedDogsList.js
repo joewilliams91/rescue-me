@@ -1,22 +1,24 @@
 import React, { Component } from "react";
 import firebase from "firebase";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";​
+import { View, ScrollView, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { connect } from "react-redux";
 const firestore = firebase.firestore();
 const usersCollection = firestore.collection("users");
-​
+
 class LikedDogsList extends Component {
   state = {
     likedDogs: "",
-    isLoading: true
+    isLoading: true,
+    id: ""
   };
-​
+
   render() {
     const { likedDogs, isLoading } = this.state;
     const { navigate } = this.props.navigation;
-​
+
     const entry = likedDogs;
     const dogs = Object.entries(entry);
-​
+
     const likedDogsList = dogs.map(dog => {
       const list = {};
       list.dogId = dog[0].replace(/ /g, "");
@@ -24,8 +26,8 @@ class LikedDogsList extends Component {
       list.image = dog[1].image[0];
       list.name = dog[1].name;
       return list;
-    });
-​
+    });    
+
     if (isLoading) {
       return (
         <View>
@@ -34,7 +36,8 @@ class LikedDogsList extends Component {
       );
     } else {
       return (
-        <View style={styles.container}>
+        <ScrollView>
+            
           {likedDogsList.map(dog => {
             return (
               <View style={styles.row}>
@@ -62,15 +65,15 @@ class LikedDogsList extends Component {
               </View>
             );
           })}
-        </View>
+        </ScrollView>
       );
     }
   }
-​
+
   componentDidMount() {
-    // Database User Id <<<<<<<<
+   const { id } = this.props.user
     usersCollection
-      .doc("ohvb6aJhckdBNLCnCljIAsRmYDR2")
+      .doc(id)
       .get()
       .then(user => {
         const userData = user.data();
@@ -78,7 +81,7 @@ class LikedDogsList extends Component {
       });
   }
 }
-​
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -96,5 +99,9 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   }
 });
-​
-export default LikedDogsList;
+
+const mapStateToProps = state => ({
+  ...state
+});
+
+export default connect(mapStateToProps)(LikedDogsList)

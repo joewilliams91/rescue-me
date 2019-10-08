@@ -37,7 +37,7 @@ export const updateType = type => {
 export const signup = () => {
   return async (dispatch, getState) => {
     try {
-      const { email, password } = getState().user;
+      const { email, password, type } = getState().user;
 
       const response = await Firebase.auth().createUserWithEmailAndPassword(
         email,
@@ -66,24 +66,34 @@ export const login = () => {
         email,
         password
       );
+
       dispatch(getUser(response.user.uid));
     } catch (e) {
-      console.log(e);
+      alert(e);
     }
   };
 };
 
-export const getUser = uid => {
+export const getUser = (uid, type) => {
   return async (dispatch, getState) => {
     try {
-      const user = await db
-        .collection("users")
-        .doc(uid)
-        .get();
+      const { type } = getState().user;
+
+      const user =
+        type === "user"
+          ? await db
+              .collection("users")
+              .doc(uid)
+              .get()
+          : await db
+              .collection("centres")
+              .doc(uid)
+              .get();
+
 
       dispatch({ type: LOGIN, payload: user.data() });
     } catch (e) {
-      alert(e);
+      console.log(e);
     }
   };
 };
