@@ -15,14 +15,14 @@ import {
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-// import axios from "axios";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 import firebase from "firebase";
 import { Video } from "expo-av";
 import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
 import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
-// import { Button } from "react-native-paper";
-// import { GeoCollectionReference } from "geofirestore";
-// firebase.initializeApp();
 
 const firestore = firebase.firestore();
 const dogsCollection = firestore.collection("dogs");
@@ -125,8 +125,8 @@ class DogProfile extends React.Component {
   }
 
   componentDidMount() {
-    const { id } = this.props.navigation.state.params;
-    console.log(id);
+    // const { id } = this.props.navigation.state.params;
+    // console.log(id);
     this.PanResponder = PanResponder.create({
       onStartShouldSetPanResponder: (event, gestureState) => true,
       onStartShouldSetPanResponderCapture: (event, gestureState) => true,
@@ -142,7 +142,8 @@ class DogProfile extends React.Component {
       }
     });
     dogsCollection
-      .doc(id.replace(/ /g, ""))
+      // .doc(id.replace(/ /g, ""))
+      .doc("KbGiuJ9zrt7g6qESEbyb")
       .get()
       .then(dog => {
         const dogData = dog.data();
