@@ -4,14 +4,14 @@ import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
 import * as firebase from "firebase/app";
 import "firebase/storage";
-
 export default class PhotoComponent extends React.Component {
   state = {
     captures: [],
     capturing: null,
     hasCameraPermission: null,
-    type: Camera.Constants.Type.back,
+    type: Camera.Constants.Type.front,
     flashMode: Camera.Constants.FlashMode.off
+
   };
 
   async componentDidMount() {

@@ -6,8 +6,13 @@ import {
   TouchableOpacity,
   Text,
   Button,
-  Image
+  Image,
+  ScrollView
 } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
@@ -47,7 +52,9 @@ class Login extends React.Component {
             this.props.updateName(firstName || centreName);
             this.props.updateLocation(coords);
             if (this.props.user.type === "user") {
+
               this.props.navigation.navigate("LikedDogsList");
+
             } else if (this.props.user.type === "centre") {
               this.props.navigation.navigate("CentreDashboard");
             }
@@ -59,113 +66,109 @@ class Login extends React.Component {
 
   render() {
     return (
-      <LinearGradient
-        colors={["#f8789a", "#845efd"]}
-        start={[0.1, 1.5]}
-        end={[1.2, 0.1]}
-        style={styles.gradient}
-      >
-        <Image
-          style={{
-            width: 80,
-            height: 80,
-            marginBottom: 30,
-            marginTop: 100
-          }}
-          source={require("../assets/images/logo/rescueMe_logo_dog.png")}
-        />
-        <Text style={styles.heroMessage}>Hello!</Text>
-        <View style={styles.inputContainer}>
-          <Text
+      <ScrollView>
+        <LinearGradient
+          colors={["#f8789a", "#845efd"]}
+          start={[0.1, 1.5]}
+          end={[1.2, 0.1]}
+          style={styles.gradient}
+        >
+          <Image
             style={{
-              color: "#fff",
-              fontSize: 30,
-              fontFamily: "poppins-semibold",
-              textAlign: "center",
-              marginBottom: 20
+              width: 80,
+              height: 80,
+              marginBottom: hp("10"),
+              marginTop: hp("20")
             }}
-          >
-            Sign In
-          </Text>
-
-          <TextInput
-            style={styles.inputBox}
-            value={this.props.user.email}
-            onChangeText={email => this.props.updateEmail(email)}
-            placeholder="Email"
-            placeholderTextColor={"#c5c6ca"}
-            autoCapitalize="none"
+            source={require("../assets/images/logo/rescueMe_logo_dog.png")}
           />
-
-          <TextInput
-            style={styles.inputBox}
-            value={this.props.user.password}
-            onChangeText={password => this.props.updatePassword(password)}
-            placeholder="Password"
-            placeholderTextColor={"#c5c6ca"}
-            clearTextOnFocus={true}
-            secureTextEntry={true}
-          />
-          <View style={{ alignItems: "center", marginTop: 30 }}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.login()}
+          <Text style={styles.heroMessage}>Hello!</Text>
+          <View style={styles.inputContainer}>
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 20,
+                fontFamily: "poppins-semibold",
+                textAlign: "center"
+              }}
             >
-              <Text style={styles.loginButtonText}>LOGIN</Text>
+              Sign In
+            </Text>
+
+            <TextInput
+              style={styles.inputBox}
+              value={this.props.user.email}
+              onChangeText={email => this.props.updateEmail(email)}
+              placeholder="Email"
+              placeholderTextColor={"#c5c6ca"}
+              autoCapitalize="none"
+            />
+
+            <TextInput
+              style={styles.inputBox}
+              value={this.props.user.password}
+              onChangeText={password => this.props.updatePassword(password)}
+              placeholder="Password"
+              placeholderTextColor={"#c5c6ca"}
+              clearTextOnFocus={true}
+              secureTextEntry={true}
+            />
+            <View style={{ alignItems: "center", marginTop: hp("4") }}>
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={() => this.props.login()}
+              >
+                <Text style={styles.loginButtonText}>LOGIN</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.signupContainer}>
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 25,
+                fontFamily: "poppins-semibold",
+                marginBottom: 14
+              }}
+            >
+              Newbie?
+            </Text>
+            <TouchableOpacity
+              style={styles.signUpbutton}
+              onPress={() => this.props.navigation.navigate("SignUp")}
+            >
+              <Text style={styles.signUpbuttonText}>SIGN UP</Text>
             </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.signupContainer}>
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: 30,
-              fontFamily: "poppins-semibold",
-              marginBottom: 14
-            }}
-          >
-            Newbie?
-          </Text>
-          <TouchableOpacity
-            style={styles.signUpbutton}
-            onPress={() => this.props.navigation.navigate("SignUp")}
-          >
-            <Text style={styles.signUpbuttonText}>SIGN UP</Text>
-          </TouchableOpacity>
-        </View>
-      </LinearGradient>
+        </LinearGradient>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   gradient: {
-    flex: 1,
+    height: hp("100"),
     alignSelf: "stretch",
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: "center"
   },
   heroMessage: {
     color: "white",
-    fontSize: 30,
+    fontSize: 32,
     fontFamily: "poppins-bold"
   },
   inputContainer: {
-    flex: 1,
-    marginTop: 150,
-    marginBottom: 40,
-    width: 300,
-    justifyContent: "center"
+    marginTop: hp("2"),
+    width: wp("70")
   },
   inputBox: {
     alignItems: "center",
     color: "#fff",
-    marginTop: 5,
-    marginBottom: 10,
+    marginTop: 15,
     borderBottomColor: "#c5c6ca",
     borderBottomWidth: 2,
     overflow: "hidden",
-    padding: 12,
+    padding: 5,
     fontSize: 14,
     textAlign: "left",
     alignSelf: "stretch",
@@ -173,7 +176,6 @@ const styles = StyleSheet.create({
   },
   signupContainer: {
     alignItems: "center",
-    flex: 1,
     marginTop: 30
   },
   loginButton: {

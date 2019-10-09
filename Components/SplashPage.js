@@ -3,6 +3,10 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 import { updateType, getUser } from "../actions/user";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 import { bindActionCreaters, bindActionCreators } from "redux";
 import Firebase from "../config/Firebase";
 
@@ -15,7 +19,6 @@ class SplashPage extends Component {
     header: null
   };
 
-  
   render() {
     return (
       <View style={styles.container}>
@@ -25,13 +28,15 @@ class SplashPage extends Component {
           end={[1.2, 0.1]}
           style={styles.gradient}
         >
-          <View style={{ alignItems: "center", flex: 1 }}>
+          <View
+            style={{ alignItems: "center", width: wp("70"), height: hp("20") }}
+          >
             <Image
               style={{
-                width: 230,
-                height: 90,
-                marginBottom: 30,
-                marginTop: 100
+                height: 70,
+                width: 200,
+                marginBottom: hp("18"),
+                marginTop: hp("18")
               }}
               source={require("../assets/images/logo/logo.png")}
             />
@@ -78,9 +83,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   textTitle: {
-    flex: 2,
-
-    justifyContent: "center"
+    marginTop: hp("15"),
+    marginBottom: hp("10")
   },
   heroMessage: {
     color: "white",
@@ -98,12 +102,12 @@ const styles = StyleSheet.create({
   buttonStyle: {
     backgroundColor: "white",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: hp("3"),
     borderRadius: 25,
     overflow: "hidden",
     padding: 8,
     textAlign: "center",
-    width: 250
+    width: wp("70")
   },
   buttonText: { color: "#707070", fontSize: 15, fontFamily: "poppins-semibold" }
 });
