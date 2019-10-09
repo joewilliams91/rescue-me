@@ -6,7 +6,7 @@ const DOBComponent = props => {
   const { updateDetails, dob } = props;
   return (
     <View style={styles.inputContainer}>
-      <Text style={styles.question}>When were you born?</Text>
+      <Text style={styles.question}>Date of birth:</Text>
       <DatePicker
         style={{
           width: 280
