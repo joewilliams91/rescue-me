@@ -78,9 +78,9 @@ class SwipeList extends React.Component {
           .doc(currentUserID)
           .update({ likedDogs: likedDogs })
           .then(() => {
-            console.log("Update to liked list successful");
+            console.log("Added to liked list");
           })
-          .catch(console.log("Update unsuccessful"));
+          .catch(console.log("Not added to liked list"));
       }
     );
   }
@@ -288,7 +288,7 @@ class SwipeList extends React.Component {
                 } else if (i == currentIndex) {
                   this.currentDog = dog;
                   console.log(
-                    "<---- Inside the else statement that returns the TOP card"
+                    "<-------- Inside the else statement that returns the TOP card"
                   );
                   return (
                     <Animated.View
