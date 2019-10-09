@@ -1,7 +1,8 @@
 import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, Alert } from "react-native";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
+import { withNavigation } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import * as firebase from "firebase/app";
 import "firebase/storage";
@@ -115,10 +116,16 @@ export default class PhotoComponent extends React.Component {
         return this.uploadToFirebase(blob, "images");
       })
       .then(url => {
-        console.log(url, "<--- url")
         this.props.navigation.state.params.addToPhotoArray(url);
-        console.log(url);
-        console.log("File uploaded");
+      })
+      .then(()=> {
+        Alert.alert(
+          'Photo uploaded',
+          'Click OK to go back',
+          [
+            {text: 'OK', onPress: () => this.props.navigation.goBack()}
+          ]
+        )
       })
       .catch(error => {
         throw error;
@@ -139,9 +146,18 @@ export default class PhotoComponent extends React.Component {
         return this.uploadToFirebase(blob, "videos");
       })
       .then(url => {
-        this.props.addToVideoArray(url);
+        this.props.navigation.state.params.addToVideoArray(url);
         console.log(url);
         console.log("File uploaded");
+      })
+      .then(()=> {
+        Alert.alert(
+          'Video uploaded',
+          'Click OK to go back',
+          [
+            {text: 'OK', onPress: () => this.props.navigation.goBack()}
+          ]
+        )
       })
       .catch(error => {
         throw error;
@@ -197,7 +213,7 @@ export default class PhotoComponent extends React.Component {
               style={{ position: "absolute", bottom: 20, left: 150 }}
                 onPressIn={this.handleCaptureIn.bind(this)}
                 onPressOut={this.handleCaptureOut.bind(this)}
-                onLongPress={this.props.userType === "centre" ? this.handleLongCapture.bind(this) : () => {}}
+                onLongPress={this.props.navigation.state.params.userType === "centre" ? this.handleLongCapture.bind(this) : () => {}}
                 onPress={this.handleShortCapture.bind(this)}
               >
                 <Icon

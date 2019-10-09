@@ -1,7 +1,8 @@
 import React from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
-import { View, Image } from 'react-native';
+import { withNavigation} from 'react-navigation';
+import { View, Image, Alert } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase/app';
@@ -59,6 +60,15 @@ export default class UploadComponent extends React.Component {
                 console.log(url);
                 console.log("File uploaded")
             })
+            .then(()=> {
+                Alert.alert(
+                  'Photo uploaded',
+                  'Click OK to go back',
+                  [
+                    {text: 'OK', onPress: () => this.props.navigation.goBack()}
+                  ]
+                )
+              })
             .catch(error => {
                 throw error;
             })
