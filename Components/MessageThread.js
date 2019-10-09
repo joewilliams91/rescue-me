@@ -3,9 +3,10 @@ import { StyleSheet, Platform, Text } from "react-native";
 import { connect } from "react-redux";
 import Firebase, { db } from "../config/Firebase";
 import firebase from "firebase";
-import { GiftedChat } from "react-native-gifted-chat";
+import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import KeyboardSpacer from "react-native-keyboard-spacer";
 import uuidv4 from "uuidv4";
+
 const uuid = require("uuidv4").default;
 const messagesCollection = db.collection("messages");
 
@@ -24,8 +25,8 @@ class MessageThread extends Component {
       .collection("messages")
       .orderBy("timestamp", "desc")
       .onSnapshot(this.onCollectionUpdate);
-    this.setState({ userId: id ,isLoading: false });
-  }  
+    this.setState({ userId: id, isLoading: false });
+  }
 
   onCollectionUpdate = querySnapshot => {
     const messages = [];
@@ -40,7 +41,6 @@ class MessageThread extends Component {
         user: user
       });
     });
-    console.log(messages)
     this.setState({ messages });
   };
 
@@ -52,12 +52,14 @@ class MessageThread extends Component {
     const { messageId } = this.props.navigation.state.params;
     for (let i = 0; i < messages.length; i++) {
       const { text, user } = messages[i];
+
       const message = {
         text: text,
         user: user,
         timestamp: this.timestamp(),
         _id: uuidv4()
       };
+
       messagesCollection
         .doc(messageId.replace(/ /g, ""))
         .collection("messages")
@@ -67,11 +69,30 @@ class MessageThread extends Component {
         });
     }
   };
+  renderBubble = props => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: "#f84d60"
+          },
+          left: {
+            backgroundColor: "#c6c6c6"
+          }
+        }}
+      />
+    );
+  };
 
   render() {
     const { messages, isLoading } = this.state;
-    console.log(this.props.navigation.state.params)
-    const {id} = this.props.navigation.state.params;
+
+    const props = this.props.navigation.state.params;
+    const { id, userName } = this.props.navigation.state.params;
+
+
+
     if (isLoading) {
       return <Text>Loading...</Text>;
     } else {
@@ -80,7 +101,12 @@ class MessageThread extends Component {
           <GiftedChat
             messages={messages}
             onSend={messages => this.onSend(messages)}
-            user={{ _id: id }}
+            user={{
+              _id: id,
+              name: userName
+            }}           
+            keyboardShouldPersistTaps="never"
+            renderBubble={this.renderBubble}
           />
           {Platform.OS === "android" ? <KeyboardSpacer /> : null}
         </>

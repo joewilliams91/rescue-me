@@ -23,33 +23,50 @@ class LikedDogsList extends Component {
 
   createMessage = (centreId, centreName, dogName, dogId) => {
     const { id } = this.state;
+
     const  name  = this.props.user.name || this.props.user.d.firstName
+
     try {
-      messagesCollection.where("centreId", "==", `${centreId}`).where("user", "==", `${id}`).get().then(dataM => {
-        dataM.forEach(doc => {
-           this.props.navigation.navigate("MessageThread", {
-             messageId: doc.id,
-             id: id
+      const query = messagesCollection
+        .where("centreId", "==", `${centreId}`)
+        .where("user", "==", `${id}`);
+
+      let querySnapshot =  query.get().then(dataM => {
+        if (dataM.empty) {
+         const newMessage = messagesCollection.doc();
+         newMessage
+           .set({
+             centreId: centreId,
+             centreName: centreName,
+             dogName: dogName,
+             dogId: dogId,
+             user: id,
+             userName: name,
+             messageId: newMessage.id
+           })
+           .then(() => {
+             this.props.navigation.navigate("MessageThread", {
+               messageId: newMessage.id,
+               userName: name,
+               id: id
+             });
            });
-        })
-      })
-    } catch {
-      const newMessage = messagesCollection.doc();
-      let newDoc = newMessage
-        .set({
-          centreId: centreId,
-          centreName: centreName,
-          dogName: dogName,
-          dogId: dogId,
-          user: id,
-          userName: name,
-          messageId: newMessage.id
-        })
-        .then(() => {
-          this.props.navigation.navigate("MessageThread", {
-            messageId: newMessage.id
+        } else {
+          dataM.forEach(doc => {
+            this.props.navigation.navigate("MessageThread", {
+              messageId: doc.id,
+              id: id,
+              userName: name
+            });
           });
+        
+        }
+          
         });
+         
+      
+    } catch(e) {
+       console.log(e);
     }
   };
 
@@ -62,6 +79,7 @@ class LikedDogsList extends Component {
         const { likedDogs } = user.data().d;
         let likedDogsList = [];
 
+
     for (let dog in likedDogs) {
       const list = {};
       list.dogId = likedDogs[dog].id;
@@ -72,6 +90,7 @@ class LikedDogsList extends Component {
 
       likedDogsList.push(list);
     }
+
         this.setState({
           id: id,
           likedDogs: likedDogsList,
@@ -82,8 +101,7 @@ class LikedDogsList extends Component {
 
   render() {
     const { likedDogs, isLoading } = this.state;
-    const entry = likedDogs;
-    
+
 
     if (isLoading) {
       return (
@@ -94,11 +112,13 @@ class LikedDogsList extends Component {
     } else {
       return (
         <ScrollView>
+
           
           {likedDogs.map(dog => {
             
+
             return (
-              <View style={styles.row}>
+              <View style={styles.row} key={dog.dogId}>
                 <View style={styles.column}>
                   <TouchableOpacity
                     onPress={() => {

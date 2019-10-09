@@ -35,6 +35,7 @@ class InboxMessages extends Component {
                   onPress={() => {
                     this.props.navigation.navigate("MessageThread", {
                       messageId: chatRoom.messageId,
+                      userName: chatRoom.userName,
                       id: id
                     });}}>
                   <Text>Link to the chat room here</Text>
