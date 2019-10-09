@@ -21,6 +21,7 @@ export default class RescueCentreDogProfile extends React.Component {
     isLoading: true,
     id: "",
     photos: [],
+    videos: [],
     description: "",
     goodWithChildren: "",
     exerciseLevel: "",
@@ -49,13 +50,15 @@ export default class RescueCentreDogProfile extends React.Component {
           description,
           goodWithChildren,
           goodWithOtherDogs,
-          exerciseLevel
+          exerciseLevel,
+          videos
         } = dog.data();
 
         this.setState({
           id,
           isLoading: false,
           photos,
+          videos,
           description,
           goodWithChildren,
           goodWithOtherDogs,
@@ -78,6 +81,30 @@ export default class RescueCentreDogProfile extends React.Component {
           .doc(id)
           .update({
             photos: photos
+          })
+          .then(() => {
+            console.log("Update successful");
+          })
+          .catch(console.log("Update unsuccessful"));
+      }
+    );
+  };
+
+
+  addToVideoArray = url => {
+    this.setState(
+      currentState => {
+        const newVideos = [...currentState.videos, url];
+        const newState = { ...currentState, videos: newVideos };
+        return newState;
+      },
+      () => {
+        const { videos, id } = this.state;
+
+        const dogToUpdate = dogsCollection
+          .doc(id)
+          .update({
+            videos: videos
           })
           .then(() => {
             console.log("Update successful");
@@ -127,14 +154,17 @@ export default class RescueCentreDogProfile extends React.Component {
       exerciseLevel,
       exerciseOptions,
       goodWithOptions,
-      editDescription
+      editDescription,
+      videos
     } = this.state;
     {
       return (
         <ScrollView>
           <UpdatePhotoComponent
             addToPhotoArray={this.addToPhotoArray}
+            addToVideoArray={this.addToVideoArray}
             photos={photos}
+            videos={videos}
           />
           <ViewDescriptionComponent
             changeDescription={this.changeDescription}

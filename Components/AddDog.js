@@ -8,6 +8,7 @@ import {
   Text,
   Button
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 import Firebase, { db } from "../config/Firebase.js";
 import firebase from "firebase";
@@ -34,6 +35,7 @@ class AddDog extends React.Component {
     goodWithChildren: "",
     goodWithOtherDogs: "",
     photos: [],
+    videos: [],
     size: "",
     goodWithOptions: [
       { key: true, text: "True" },
@@ -66,6 +68,13 @@ class AddDog extends React.Component {
       return newState;
     });
   };
+  addToVideoArray = url => {
+    this.setState(currentState => {
+      const newVideos = [...currentState.videos, url];
+      const newState = { ...currentState, videos: newVideos };
+      return newState;
+    });
+  };
   componentDidMount() {
     this.setState({
       centreId: this.props.user.id,
@@ -85,9 +94,10 @@ class AddDog extends React.Component {
       goodWithChildren,
       goodWithOtherDogs,
       photos,
+      videos,
       size
     } = this.state;
-    
+
     const parts = dob.split("-");
     const newDob = firebase.firestore.Timestamp.fromDate(
       new Date(+parts[2], +parts[1] - 1, +parts[0])
@@ -97,6 +107,7 @@ class AddDog extends React.Component {
     const centreDoc = geofirestore.collection("centres").doc(centreId);
     const newDog = dogsCollection.doc();
     const newDogId = newDog.id;
+    const centreName = this.props.user.name || this.props.user.d.name;
     centreDoc.update({ ["availableDogs." + newDogId]: { name, photos } });
     newDog.set({
       coordinates: new firebase.firestore.GeoPoint(
@@ -104,7 +115,7 @@ class AddDog extends React.Component {
         coordinates[1]
       ),
       name: name,
-      centreName: this.props.user.name || this.props.user.d.name,
+      centreName: centreName,
       description: description,
       exerciseLevel: exerciseLevel,
       goodWithChildren: goodWithChildren,
@@ -115,7 +126,7 @@ class AddDog extends React.Component {
       size: size,
       breed: breed,
       photos: photos,
-      videos: []
+      videos: videos
     });
   };
   render() {
@@ -137,48 +148,92 @@ class AddDog extends React.Component {
     } = this.state;
     return (
       <ScrollView>
-        <Text>
-          Hi there ${centreId}! Please enter some information about your dog.
-        </Text>
-        <DogNameComponent name={name} updateDetails={this.updateDetails} />
-        <DogBreedComponent breed={breed} updateDetails={this.updateDetails} />
-        <DescriptionComponent
-          description={description}
-          updateDetails={this.updateDetails}
-        />
-        <DOBComponent updateDetails={this.updateDetails} dob={dob} />
-        <ExerciseLevelComponent
-          options={exerciseOptions}
-          exerciseLevel={exerciseLevel}
-          updateDetails={this.updateDetails}
-        />
-        <GenderComponent
-          options={genderOptions}
-          gender={gender}
-          updateDetails={this.updateDetails}
-        />
-        <GoodWithDogsComponent
-          options={goodWithOptions}
-          goodWithOtherDogs={goodWithOtherDogs}
-          updateDetails={this.updateDetails}
-        />
-        <GoodWithChildrenComponent
-          options={goodWithOptions}
-          goodWithChildren={goodWithChildren}
-          updateDetails={this.updateDetails}
-        />
-        <SizeComponent
-          options={sizeOptions}
-          size={size}
-          updateDetails={this.updateDetails}
-        />
-        <PhotoComponent
-          user={centreId}
-          addToPhotoArray={this.addToPhotoArray}
-        />
-        <TouchableOpacity style={styles.button} onPress={this.handleAdd}>
-          <Text style={styles.buttonText}>Add dog</Text>
-        </TouchableOpacity>
+        <LinearGradient
+          colors={["#f8789a", "#845efd"]}
+          start={[0.1, 1.5]}
+          end={[1.2, 0.1]}
+          style={styles.gradient}
+        >
+          <View>
+            <Text>
+              Hi there ${centreId}! Please enter some information about your
+              dog.
+            </Text>
+          </View>
+          <Text style={styles.guideMessage}>
+           Let's add a dog.
+          </Text>
+          <DogNameComponent name={name} updateDetails={this.updateDetails} />
+          <Text style={styles.guideMessage}>
+           From Alsatians to Zuchons, we look after all dogs.
+          </Text>
+          <DogBreedComponent breed={breed} updateDetails={this.updateDetails} />
+          <Text style={styles.guideMessage}>
+            When was your dog born? Try to be as accurate as possible, but don't worry if you don't know.
+          </Text>
+          <DOBComponent updateDetails={this.updateDetails} dob={dob} />
+          <Text style={styles.guideMessage}>
+            How would you describe your dog? Be creative and precise here; a good bio can win hearts.
+          </Text>
+          <DescriptionComponent
+            description={description}
+            updateDetails={this.updateDetails}
+          />    
+          <Text style={styles.guideMessage}>
+            Woof woof! We need a pooch portrait please.
+          </Text>     
+          <PhotoComponent
+            user={centreId}
+            addToPhotoArray={this.addToPhotoArray}
+            addToVideoArray={this.addToVideoArray}
+          />
+          <Text style={styles.guideMessage}>
+            Some users might be looking for a specific gender.
+          </Text>
+          <GenderComponent
+            options={genderOptions}
+            gender={gender}
+            updateDetails={this.updateDetails}
+          />
+          <Text style={styles.guideMessage}>
+            Dogs come in all shapes and sizes, and some just aren't what our users are looking for.
+          </Text>
+          <SizeComponent
+            options={sizeOptions}
+            size={size}
+            updateDetails={this.updateDetails}
+          />
+          <Text style={styles.guideMessage}>
+            Some people work full time, while others might enjoy a challenge. Please help us to match users with dogs they can handle.
+          </Text>
+          <ExerciseLevelComponent
+            options={exerciseOptions}
+            exerciseLevel={exerciseLevel}
+            updateDetails={this.updateDetails}
+          />
+          <Text style={styles.guideMessage}>
+            Not all dogs are equal, some need a bit more patience before they're
+            ready to hang out with other dogs.
+          </Text>
+          <GoodWithDogsComponent
+            options={goodWithOptions}
+            goodWithOtherDogs={goodWithOtherDogs}
+            updateDetails={this.updateDetails}
+          />
+          <Text style={styles.guideMessage}>
+            Some doggo's find kids a bit too much.
+          </Text>
+          <GoodWithChildrenComponent
+            options={goodWithOptions}
+            goodWithChildren={goodWithChildren}
+            updateDetails={this.updateDetails}
+          />
+          
+          
+          <TouchableOpacity style={styles.signMeUpbutton} onPress={this.handleAdd}>
+            <Text style={styles.signMeUpbuttonText}>Add dog!</Text>
+          </TouchableOpacity>
+        </LinearGradient>
       </ScrollView>
     );
   }
@@ -194,6 +249,39 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     width: 200
+  },
+  gradient: {
+    flex: 1,
+    zIndex: -1000,
+    alignSelf: "stretch",
+    alignItems: "center"
+  },
+  heroMessage: {
+    color: "white",
+    fontSize: 30,
+    fontFamily: "poppins-bold"
+  },
+  guideMessage: {
+    padding: 20,
+    textAlign: "center",
+    color: "white",
+    fontSize: 18,
+    fontFamily: "poppins-regular"
+  },
+  signMeUpbutton: {
+    backgroundColor: "white",
+    marginBottom: 100,
+    borderRadius: 25,
+    overflow: "hidden",
+    padding: 9,
+    textAlign: "center",
+    width: 280
+  },
+  signMeUpbuttonText: {
+    color: "#f8789a",
+    textAlign: "center",
+    fontSize: 17,
+    fontFamily: "poppins-semibold"
   }
 });
 const mapStateToProps = state => ({

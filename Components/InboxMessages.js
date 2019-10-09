@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import firebase from "firebase";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Firebase, { db } from "../config/Firebase";
 import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
@@ -23,6 +25,7 @@ class InboxMessages extends Component {
 
   render() {
     const { isLoading, chatRooms } = this.state;
+    const { id } = this.props.user;
     if (chatRooms === "") {
       return (
         <View>
@@ -40,10 +43,11 @@ class InboxMessages extends Component {
                 <TouchableOpacity
                   onPress={() => {
                     this.props.navigation.navigate("MessageThread", {
-                      messageId: chatRoom.messageId
-                    });
-                  }}
-                >
+                      messageId: chatRoom.messageId,
+                      userName: chatRoom.userName,
+                      id: id
+                    });}}>
+
                   <Text>Link to the chat room here</Text>
                 </TouchableOpacity>
               </View>
@@ -54,8 +58,10 @@ class InboxMessages extends Component {
     }
   }
   componentDidMount() {
+    const { id, type } = this.props.user;
+    const userType = type === "user" ? "user" : "centreId";
     messagesCollection
-      .where("user", "==", "L2QZactccSQ6b0TjdKurdWSBSHy2")
+      .where(`${userType}`, "==", `${id}`)
       .get()
       .then(dataM => {
         let chatsData = [];
@@ -75,4 +81,13 @@ const styles = StyleSheet.create({
     alignItems: "center"
   }
 });
-export default InboxMessages;
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(
+  mapStateToProps
+)(InboxMessages);

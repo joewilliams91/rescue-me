@@ -9,6 +9,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
+import { LinearGradient } from "expo-linear-gradient";
 import Firebase, { db } from "../config/Firebase";
 import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
 import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
@@ -30,55 +31,65 @@ class LikedDogsList extends Component {
   };
 
   createMessage = (centreId, centreName, dogName, dogId) => {
-    console.log("in here");
     const { id } = this.state;
-    console.log(id, "---id");
-    console.log(dogId);
-    const { name } = this.props.user;
-    console.log(centreId, centreName, dogName, dogId, "------");
-    // const newMessage = messagesCollection.doc();
 
-    const newMessage = messagesCollection.doc();
-    let newDoc = newMessage
-      .set({
-        centreId: centreId,
-        centreName: centreName,
-        dogName: dogName,
-        dogId: dogId,
-        user: id,
-        userName: name
-      })
-      .then(() => {
-        this.props.navigation.navigate("MessageThread", {
-          messageId: newMessage.id
+    const  name  = this.props.user.name || this.props.user.d.firstName
+
+    try {
+      const query = messagesCollection
+        .where("centreId", "==", `${centreId}`)
+        .where("user", "==", `${id}`);
+
+      let querySnapshot =  query.get().then(dataM => {
+        if (dataM.empty) {
+         const newMessage = messagesCollection.doc();
+         newMessage
+           .set({
+             centreId: centreId,
+             centreName: centreName,
+             dogName: dogName,
+             dogId: dogId,
+             user: id,
+             userName: name,
+             messageId: newMessage.id
+           })
+           .then(() => {
+             this.props.navigation.navigate("MessageThread", {
+               messageId: newMessage.id,
+               userName: name,
+               id: id
+             });
+           });
+        } else {
+          dataM.forEach(doc => {
+            this.props.navigation.navigate("MessageThread", {
+              messageId: doc.id,
+              id: id,
+              userName: name
+            });
+          });
+        
+        }
+          
         });
-      });
+         
+      
+    } catch(e) {
+       console.log(e);
+    }
   };
 
   componentDidMount() {
     const { id } = this.props.user;
-    console.log(this.props.user, "<------this.userrr");
-    console.log(id);
     usersCollection
       .doc(id)
       .get()
       .then(user => {
         const { likedDogs } = user.data().d;
-        this.setState({
-          id: id,
-          likedDogs: likedDogs,
-          isLoading: false
-        });
-      });
-  }
+        let likedDogsList = [];
 
-  render() {
-    const { likedDogs, isLoading } = this.state;
-    const entry = likedDogs;
-    let likedDogsList = [];
 
     for (let dog in likedDogs) {
-      console.log(likedDogs);
       const list = {};
       list.dogId = likedDogs[dog].id;
       list.centreId = likedDogs[dog].centreId;
@@ -89,6 +100,18 @@ class LikedDogsList extends Component {
       likedDogsList.push(list);
     }
 
+        this.setState({
+          id: id,
+          likedDogs: likedDogsList,
+          isLoading: false
+        });
+      });
+  }
+
+  render() {
+    const { likedDogs, isLoading } = this.state;
+
+
     if (isLoading) {
       return (
         <View>
@@ -98,9 +121,13 @@ class LikedDogsList extends Component {
     } else {
       return (
         <ScrollView>
-          {likedDogsList.map(dog => {
+
+          
+          {likedDogs.map(dog => {
+            
+
             return (
-              <View style={styles.row}>
+              <View style={styles.row} key={dog.dogId}>
                 <View style={styles.column}>
                   <TouchableOpacity
                     onPress={() => {
@@ -138,6 +165,7 @@ class LikedDogsList extends Component {
               </View>
             );
           })}
+         
         </ScrollView>
       );
     }
