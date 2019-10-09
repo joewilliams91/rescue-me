@@ -23,32 +23,48 @@ class LikedDogsList extends Component {
   createMessage = (centreId, centreName, dogName, dogId) => {
     const { id } = this.state;
     const { name } = this.props.user;
+    console.log(id)
     try {
-      messagesCollection.where("centreId", "==", `${centreId}`).where("user", "==", `${id}`).get().then(dataM => {
-        dataM.forEach(doc => {
-           this.props.navigation.navigate("MessageThread", {
-             messageId: doc.id,
-             id: id
+      const query = messagesCollection
+        .where("centreId", "==", `${centreId}`)
+        .where("user", "==", `${id}`);
+
+      let querySnapshot =  query.get().then(dataM => {
+        if (dataM.empty) {
+         const newMessage = messagesCollection.doc();
+         newMessage
+           .set({
+             centreId: centreId,
+             centreName: centreName,
+             dogName: dogName,
+             dogId: dogId,
+             user: id,
+             userName: name,
+             messageId: newMessage.id
+           })
+           .then(() => {
+             this.props.navigation.navigate("MessageThread", {
+               messageId: newMessage.id,
+               userName: name,
+               id: id
+             });
            });
-        })
-      })
-    } catch {
-      const newMessage = messagesCollection.doc();
-      let newDoc = newMessage
-        .set({
-          centreId: centreId,
-          centreName: centreName,
-          dogName: dogName,
-          dogId: dogId,
-          user: id,
-          userName: name,
-          messageId: newMessage.id
-        })
-        .then(() => {
-          this.props.navigation.navigate("MessageThread", {
-            messageId: newMessage.id
+        } else {
+          dataM.forEach(doc => {
+            this.props.navigation.navigate("MessageThread", {
+              messageId: doc.id,
+              id: id,
+              userName: name
+            });
           });
+        
+        }
+          
         });
+         
+      
+    } catch(e) {
+       console.log(e);
     }
   };
 
@@ -59,9 +75,21 @@ class LikedDogsList extends Component {
       .get()
       .then(user => {
         const { likedDogs } = user.data().d;
+        let likedDogsList = [];
+
+        for (let dog in likedDogs) {
+          const list = {};
+          list.dogId = likedDogs[dog].id;
+          list.centreId = likedDogs[dog].centreId;
+          list.image = likedDogs[dog].photos[0];
+          list.name = likedDogs[dog].name;
+          list.centreName = likedDogs[dog].centreName;
+
+          likedDogsList.push(list);
+        }
         this.setState({
           id: id,
-          likedDogs: likedDogs,
+          likedDogs: likedDogsList,
           isLoading: false
         });
       });
@@ -69,19 +97,6 @@ class LikedDogsList extends Component {
 
   render() {
     const { likedDogs, isLoading } = this.state;
-    const entry = likedDogs;
-    let likedDogsList = [];
-
-    for (let dog in likedDogs) {
-      const list = {};
-      list.dogId = likedDogs[dog].id;
-      list.centreId = likedDogs[dog].centreId;
-      list.image = likedDogs[dog].photos[0];
-      list.name = likedDogs[dog].name;
-      list.centreName = likedDogs[dog].centreName;
-
-      likedDogsList.push(list);
-    }
 
     if (isLoading) {
       return (
@@ -92,9 +107,9 @@ class LikedDogsList extends Component {
     } else {
       return (
         <ScrollView>
-          {likedDogsList.map(dog => {
+          {likedDogs.map(dog => {
             return (
-              <View style={styles.row}>
+              <View style={styles.row} key={dog.dogId}>
                 <View style={styles.column}>
                   <TouchableOpacity
                     onPress={() => {
