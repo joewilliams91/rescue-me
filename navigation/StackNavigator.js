@@ -83,7 +83,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "DogProfile"
+    initialRouteName: "CentreDogsList"
   }
 );
 
