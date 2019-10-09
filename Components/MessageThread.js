@@ -75,6 +75,9 @@ class MessageThread extends Component {
         wrapperStyle={{
           right: {
             backgroundColor: "#f84d60"
+          },
+          left: {
+            backgroundColor: "#c6c6c6"
           }
         }}
       />
