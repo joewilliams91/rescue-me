@@ -8,7 +8,7 @@ import "firebase/storage";
 export default class PhotoComponent extends React.Component {
   state = {
     hasCameraPermission: null,
-    type: Camera.Constants.Type.back
+    type: Camera.Constants.Type.front
   };
 
   async componentDidMount() {

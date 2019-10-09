@@ -1,7 +1,6 @@
 import React from "react";
-import { createSwitchNavigator, createAppContainer } from "react-navigation";
+import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { LinearGradient } from "expo-linear-gradient";
 import Login from "../Components/Login";
 import SignUp from "../Components/SignUp";
 import Register from "../Components/Register";
@@ -71,7 +70,6 @@ const StackNavigator = createStackNavigator(
     CentreDashboard: {
       screen: CentreDashboard
     },
-
     CentreDogsList: {
       screen: CentreDogsList
     }
