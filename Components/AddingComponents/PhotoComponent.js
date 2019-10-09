@@ -10,11 +10,12 @@ export default class PhotoComponent extends React.Component {
     captures: [],
     capturing: null,
     hasCameraPermission: null,
-    type: Camera.Constants.Type.back,
+    type: Camera.Constants.Type.front,
     flashMode: Camera.Constants.FlashMode.off
   };
 
   async componentDidMount() {
+    
     const camera = await Permissions.askAsync(Permissions.CAMERA);
     const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
     const hasCameraPermission =
@@ -65,7 +66,9 @@ export default class PhotoComponent extends React.Component {
       const name = uuid();
       const folder = this.props.user;
       const file = type === "images" ? "jpg" : "mp4";
+      // console.log(file)
       const contentType = type === "images" ? "image/jpg" : "video/mp4";
+      // console.log(contentType)
       const imageRef = firebase
         .storage()
         .ref(`${folder}`)
@@ -79,6 +82,7 @@ export default class PhotoComponent extends React.Component {
           return imageRef.getDownloadURL();
         })
         .then(url => {
+          // console.log(url)
           blob.close();
           resolve(url);
         })
@@ -190,7 +194,7 @@ export default class PhotoComponent extends React.Component {
               <TouchableOpacity
                 onPressIn={this.handleCaptureIn.bind(this)}
                 onPressOut={this.handleCaptureOut.bind(this)}
-                onLongPress={this.handleLongCapture.bind(this)}
+                onLongPress={this.props.userType === "centre" && this.handleLongCapture.bind(this)}
                 onPress={this.handleShortCapture.bind(this)}
               >
                 <Text

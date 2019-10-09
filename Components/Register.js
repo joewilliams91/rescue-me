@@ -35,6 +35,7 @@ import TelephoneComponent from "./AddingComponents/TelephoneComponent";
 import DescriptionComponent from "./AddingComponents/DescriptionComponent";
 class Register extends React.Component {
   state = {
+    userType: '',
     userId: "",
     firstName: "",
     surname: "",
@@ -99,6 +100,8 @@ class Register extends React.Component {
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
+          userId: this.props.user.id,
+          userType: this.props.user.type,
           coordinates: [position.coords.latitude, position.coords.longitude]
         });
       },
@@ -108,7 +111,7 @@ class Register extends React.Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.user !== prevProps.user) {
-      console.log(this.props.user, "-----did mount ");
+      console.log(this.props.user, "-----did update ");
       this.setState({ userId: this.props.user.id });
     }
   }
@@ -189,7 +192,8 @@ class Register extends React.Component {
       genderOptions,
       radius,
       telephone,
-      description
+      description,
+      userType
     } = this.state;
     return (
       <ScrollView>
@@ -248,6 +252,7 @@ class Register extends React.Component {
 
           <PhotoComponent
             user={userId}
+            userType={userType}
             addToPhotoArray={this.addToPhotoArray}
           />
 
