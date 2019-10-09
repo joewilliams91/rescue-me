@@ -4,6 +4,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Firebase, { db } from "../config/Firebase";
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
+import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
 // const firestore = firebase.firestore();
 
 const messagesCollection = db.collection("messages");
@@ -12,6 +14,13 @@ class InboxMessages extends Component {
   state = {
     isLoading: true,
     chatRooms: ""
+  };
+
+  static navigationOptions = {
+    headerTransparent: true,
+    headerTintColor: "#6f6f6f",
+    headerRight: <HeaderMessagesInbox />,
+    headerTitle: <HeaderLikedList />
   };
 
   render() {
@@ -38,6 +47,7 @@ class InboxMessages extends Component {
                       userName: chatRoom.userName,
                       id: id
                     });}}>
+
                   <Text>Link to the chat room here</Text>
                 </TouchableOpacity>
               </View>

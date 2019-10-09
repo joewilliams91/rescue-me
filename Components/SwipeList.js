@@ -26,14 +26,12 @@ import {
 const { GeoFirestore } = require("geofirestore");
 const geofirestore = new GeoFirestore(db);
 const usersCollection = geofirestore.collection("users");
-
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 class SwipeList extends React.Component {
   state = {
-    // currentUserID: "",
-    currentUserID: "05hHgyVaKqTQ99uSePq5UrXUEYv2",
+    currentUserID: "",
     isLoading: true,
     currentIndex: 0,
     dogId: null,
@@ -55,11 +53,10 @@ class SwipeList extends React.Component {
   };
 
   componentDidUpdate() {
-    console.log("didupdate");
+    console.log("<-- Component Updated");
   }
 
   currentDog = {};
-  // currentIndex = 0;
 
   storeToLikedList(dog) {
     this.setState(
@@ -81,9 +78,9 @@ class SwipeList extends React.Component {
           .doc(currentUserID)
           .update({ likedDogs: likedDogs })
           .then(() => {
-            console.log("Update to liked list successful");
+            console.log("Added to liked list");
           })
-          .catch(console.log("Update unsuccessful"));
+          .catch(console.log("Not added to liked list"));
       }
     );
   }
@@ -119,52 +116,93 @@ class SwipeList extends React.Component {
     extrapolate: "clamp"
   });
 
+  swipeLeft = () => {
+    Animated.spring(this.position, {
+      toValue: { x: -SCREEN_WIDTH - 200, y: SCREEN_HEIGHT + 100 }
+    }).start(() => {
+      this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+        this.position.setValue({ x: 0, y: 0 });
+      });
+    });
+  };
+
+  swipeRight = () => {
+    Animated.spring(this.position, {
+      toValue: { x: SCREEN_WIDTH + 150, y: SCREEN_HEIGHT + 100 }
+    }).start(() => {
+      this.storeToLikedList(this.currentDog);
+      this.setState(
+        currentState => ({
+          currentIndex: currentState.currentIndex + 1
+        }),
+        () => {
+          this.position.setValue({ x: 0, y: 0 });
+        }
+      );
+    });
+  };
+
+  superLike = () => {
+    Animated.spring(this.position, {
+      toValue: { y: -SCREEN_HEIGHT - 200, x: SCREEN_WIDTH + 10 }
+    }).start(() => {
+      this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+        this.position.setValue({ x: 0, y: 0 });
+      });
+    });
+  };
+
+  // The SWIPE animations are set up on component did mount
   componentDidMount() {
     this.PanResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderMove: (evt, gestureState) => {
         this.position.setValue({ x: gestureState.dx, y: gestureState.dy });
-        console.log("The Card has been picked up");
-      },
+        console.log("<== The Card has been picked up");
+      }, //*************/  This part listens for when a card has been touched, and works instantly, its keep a track of where on the screen the finger is with gesture state
       onPanResponderRelease: (evt, gestureState) => {
-        console.log("Card has been released");
+        //*************/  This part listens for when a card has been released, and works instantly
+        console.log("<==== Card has been released");
         if (gestureState.dx > 120) {
+          //*************/  This checks the figure of gesturestate on release, and if it's on a certain side of the screen, runs the animation function, this works quickly
           Animated.spring(
+            // actual animation
             this.position,
             {
               toValue: { x: SCREEN_WIDTH + 150, y: gestureState.dy }
             },
-            console.log("<-- Just before the start part of the animation")
+            console.log("<======  Just before the start part of the animation")
           ).start(() => {
+            //*************/ This section is where it starts getting slow
+            console.log("<<======== Inside the start");
             this.storeToLikedList(this.currentDog);
             this.setState(
+              //*************/ I believe its this triggering of re-render and the time it takes for the render to happen that causes the delay
               currentState => ({
                 currentIndex: currentState.currentIndex + 1
               }),
               () => {
                 this.position.setValue({ x: 0, y: 0 });
-                console.log("<-- Swiped Right - Dog ID"); // Swipe righty mctighty
+                console.log("<========== Swiped Right"); // Swipe righty mctighty
               }
             );
           });
         } else if (gestureState.dx < -120) {
+          // Swipe left - dislike
           Animated.spring(this.position, {
             toValue: { x: -SCREEN_WIDTH - 200, y: gestureState.dy }
           }).start(() => {
-            // this.currentIndex += 1;
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
-              // console.log(this.dogID, "<-- Swiped Left - Dog ID"); // Swipe left hefty
             });
           });
         } else if (gestureState.dy < -300) {
+          // Swipe up - Superlike
           Animated.spring(this.position, {
             toValue: { y: -SCREEN_HEIGHT - 200, x: gestureState.dx }
           }).start(() => {
-            // this.currentIndex += 1;
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
-              // console.log(this.dogID, "<-- Superlike - Dog ID"); // swipe uppy super likey
             });
           });
         } else {
@@ -182,7 +220,7 @@ class SwipeList extends React.Component {
       const { currentUserID } = this.state;
 
       usersCollection
-        .doc("05hHgyVaKqTQ99uSePq5UrXUEYv2") // Change the below baxk to currebntUserID IAN
+        .doc(currentUserID)
         .get()
         .then(user => {
           const {
@@ -213,12 +251,6 @@ class SwipeList extends React.Component {
                 hasChildren,
                 hasDogs
               } = this.state.user;
-              console.log(
-                hasChildren,
-                "<-----same answerrs?",
-                this.state.user,
-                "<----------The pissing user"
-              );
 
               return axios
                 .get(
@@ -227,9 +259,7 @@ class SwipeList extends React.Component {
                   }&lon=${coordinates[1]}&radius=${radiusPref}}`
                 )
                 .then(({ data }) =>
-                  this.setState({ dogs: data.dogs, isLoading: false }, () => {
-                    console.log(data.dogs);
-                  })
+                  this.setState({ dogs: data.dogs, isLoading: false }, () => {})
                 );
             }
           );
@@ -247,7 +277,7 @@ class SwipeList extends React.Component {
         </View>
       );
     } else {
-      console.log("Main Content");
+      console.log("<---- Inside our render");
       return (
         <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
           <View style={{ alignItems: "center", marginTop: hp("12") }}>
@@ -257,7 +287,9 @@ class SwipeList extends React.Component {
                   return null;
                 } else if (i == currentIndex) {
                   this.currentDog = dog;
-                  console.log("Top Card");
+                  console.log(
+                    "<-------- Inside the else statement that returns the TOP card"
+                  );
                   return (
                     <Animated.View
                       {...this.PanResponder.panHandlers}
@@ -387,7 +419,7 @@ class SwipeList extends React.Component {
                   );
                 } else {
                   return (
-                    <Animated.View
+                    <View
                       key={i}
                       style={[
                         {
@@ -416,7 +448,7 @@ class SwipeList extends React.Component {
                           zIndex: 1000,
                           color: "white",
                           fontSize: 40,
-                          fontWeight: "800"
+                          fontFamily: "poppins-black"
                         }}
                       >
                         {dog.name}
@@ -440,14 +472,18 @@ class SwipeList extends React.Component {
                           source={require("../assets/images/profileInfo.png")}
                         />
                       </TouchableOpacity>
-                    </Animated.View>
+                    </View>
                   );
                 }
               })
               .reverse()}
           </View>
           <View>
-            <FooterSwipe />
+            <FooterSwipe
+              swipeLeft={this.swipeLeft}
+              swipeRight={this.swipeRight}
+              superLike={this.superLike}
+            />
           </View>
           <View>
             <Image

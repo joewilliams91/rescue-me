@@ -9,7 +9,7 @@ class FooterSwipe extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => console.log("swipeLeft")}>
+        <TouchableOpacity onPress={() => this.props.swipeLeft()}>
           <Image
             source={require("./swipeLeftButton.png")}
             style={{
@@ -20,7 +20,7 @@ class FooterSwipe extends Component {
             }}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log("superlike")}>
+        <TouchableOpacity onPress={() => this.props.superLike()}>
           <Image
             source={require("./superLike.png")}
             style={{
@@ -33,7 +33,7 @@ class FooterSwipe extends Component {
             }}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log("swipeRight")}>
+        <TouchableOpacity onPress={() => this.props.swipeRight()}>
           <Image
             source={require("./swipeRightButton.png")}
             style={{

@@ -16,6 +16,8 @@ import MessageThread from "../Components/MessageThread";
 import RescueCentreDogProfile from "../Components/RescueCentreDogProfile";
 import InboxMessages from "../Components/InboxMessages";
 import CentreDashboard from "../Components/CentreDashboard";
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
+import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
 
 const StackNavigator = createStackNavigator(
   {
@@ -72,10 +74,16 @@ const StackNavigator = createStackNavigator(
     },
     CentreDogsList: {
       screen: CentreDogsList
+    },
+    HeaderMessagesInbox: {
+      screen: HeaderMessagesInbox
+    },
+    HeaderLikedList: {
+      screen: HeaderLikedList
     }
   },
   {
-    initialRouteName: "SplashPage"
+    initialRouteName: "DogProfile"
   }
 );
 
