@@ -77,7 +77,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "SplashPage"
+    initialRouteName: "AddDog"
   }
 );
 

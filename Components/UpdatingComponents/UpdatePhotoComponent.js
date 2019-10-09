@@ -13,19 +13,19 @@ import PhotoComponent from "../AddingComponents/PhotoComponent";
 
 export default class UpdatePhotoComponent extends React.Component {
   state = {
-    editPhotos: false
+    edit: false
   };
 
   toggleEdit = () => {
     this.setState(currentState => {
-      const newEditPhotos = !currentState.editPhotos;
-      return { ...currentState, editPhotos: newEditPhotos };
+      const newEdit = !currentState.edit;
+      return { ...currentState, edit: newEdit };
     });
   };
 
   render() {
-    const { photos, addToPhotoArray } = this.props;
-    const {editPhotos} = this.state
+    const { photos, videos, addToPhotoArray, addToVideoArray } = this.props;
+    const { edit } = this.state;
     return (
       <View>
         <Text>Photos: </Text>
@@ -34,9 +34,24 @@ export default class UpdatePhotoComponent extends React.Component {
             <Image style={{ width: 50, height: 50 }} source={{ uri: photo }} />
           );
         })}
-        {editPhotos && <PhotoComponent addToPhotoArray={addToPhotoArray}/>}
+        {edit && <PhotoComponent addToPhotoArray={addToPhotoArray} />}
         <TouchableOpacity style={styles.button} onPress={this.toggleEdit}>
-          <Text style={styles.buttonText}>{editPhotos ? "Done" : "Add a new photo"}</Text>
+          <Text style={styles.buttonText}>
+            {edit ? "Done" : "Add a new photo"}
+          </Text>
+        </TouchableOpacity>
+
+        <Text>Videos: </Text>
+        {videos.map(video => {
+          return (
+            <Image style={{ width: 50, height: 50 }} source={{ uri: video }} />
+          );
+        })}
+        {edit && <PhotoComponent addToVideoArray={addToVideoArray} />}
+        <TouchableOpacity style={styles.button} onPress={this.toggleEdit}>
+          <Text style={styles.buttonText}>
+            {edit ? "Done" : "Add a new photo"}
+          </Text>
         </TouchableOpacity>
       </View>
     );
