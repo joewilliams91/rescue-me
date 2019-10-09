@@ -21,35 +21,39 @@ class LikedDogsList extends Component {
   };
 
   createMessage = (centreId, centreName, dogName, dogId) => {
-    console.log("in here");
     const { id } = this.state;
-    console.log(id, "---id");
-    console.log(dogId);
     const { name } = this.props.user;
-    console.log(centreId, centreName, dogName, dogId, "------");
-    // const newMessage = messagesCollection.doc();
-
-    const newMessage = messagesCollection.doc();
-    let newDoc = newMessage
-      .set({
-        centreId: centreId,
-        centreName: centreName,
-        dogName: dogName,
-        dogId: dogId,
-        user: id,
-        userName: name
+    try {
+      messagesCollection.where("centreId", "==", `${centreId}`).where("user", "==", `${id}`).get().then(dataM => {
+        dataM.forEach(doc => {
+           this.props.navigation.navigate("MessageThread", {
+             messageId: doc.id,
+             id: id
+           });
+        })
       })
-      .then(() => {
-        this.props.navigation.navigate("MessageThread", {
+    } catch {
+      const newMessage = messagesCollection.doc();
+      let newDoc = newMessage
+        .set({
+          centreId: centreId,
+          centreName: centreName,
+          dogName: dogName,
+          dogId: dogId,
+          user: id,
+          userName: name,
           messageId: newMessage.id
+        })
+        .then(() => {
+          this.props.navigation.navigate("MessageThread", {
+            messageId: newMessage.id
+          });
         });
-      });
+    }
   };
 
   componentDidMount() {
     const { id } = this.props.user;
-    console.log(this.props.user, "<------this.userrr");
-    console.log(id);
     usersCollection
       .doc(id)
       .get()
@@ -69,7 +73,6 @@ class LikedDogsList extends Component {
     let likedDogsList = [];
 
     for (let dog in likedDogs) {
-      console.log(likedDogs);
       const list = {};
       list.dogId = likedDogs[dog].id;
       list.centreId = likedDogs[dog].centreId;
