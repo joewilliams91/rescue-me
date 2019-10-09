@@ -61,7 +61,7 @@ export const signup = () => {
         dispatch({ type: SIGNUP, payload: user });
       }
     } catch (e) {
-      console.log(e);
+      alert(e);
     }
   };
 };
@@ -102,7 +102,7 @@ export const getUser = (uid, type) => {
 
       dispatch({ type: LOGIN, payload: fetchedUser });
     } catch (e) {
-      console.log(e);
+      alert(e);
     }
   };
 };
