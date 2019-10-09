@@ -9,6 +9,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
+import { LinearGradient } from "expo-linear-gradient";
 import Firebase, { db } from "../config/Firebase";
 const usersCollection = db.collection("users");
 const messagesCollection = db.collection("messages");
@@ -22,7 +23,7 @@ class LikedDogsList extends Component {
 
   createMessage = (centreId, centreName, dogName, dogId) => {
     const { id } = this.state;
-    const { name } = this.props.user;
+    const  name  = this.props.user.name || this.props.user.d.firstName
     try {
       messagesCollection.where("centreId", "==", `${centreId}`).where("user", "==", `${id}`).get().then(dataM => {
         dataM.forEach(doc => {
@@ -59,18 +60,7 @@ class LikedDogsList extends Component {
       .get()
       .then(user => {
         const { likedDogs } = user.data().d;
-        this.setState({
-          id: id,
-          likedDogs: likedDogs,
-          isLoading: false
-        });
-      });
-  }
-
-  render() {
-    const { likedDogs, isLoading } = this.state;
-    const entry = likedDogs;
-    let likedDogsList = [];
+        let likedDogsList = [];
 
     for (let dog in likedDogs) {
       const list = {};
@@ -82,6 +72,18 @@ class LikedDogsList extends Component {
 
       likedDogsList.push(list);
     }
+        this.setState({
+          id: id,
+          likedDogs: likedDogsList,
+          isLoading: false
+        });
+      });
+  }
+
+  render() {
+    const { likedDogs, isLoading } = this.state;
+    const entry = likedDogs;
+    
 
     if (isLoading) {
       return (
@@ -92,7 +94,9 @@ class LikedDogsList extends Component {
     } else {
       return (
         <ScrollView>
-          {likedDogsList.map(dog => {
+          
+          {likedDogs.map(dog => {
+            
             return (
               <View style={styles.row}>
                 <View style={styles.column}>
@@ -132,6 +136,7 @@ class LikedDogsList extends Component {
               </View>
             );
           })}
+         
         </ScrollView>
       );
     }
