@@ -17,7 +17,9 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 // import axios from "axios";
 import firebase from "firebase";
-import { Video } from 'expo-av';
+import { Video } from "expo-av";
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
+import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
 // import { Button } from "react-native-paper";
 // import { GeoCollectionReference } from "geofirestore";
 // firebase.initializeApp();
@@ -33,14 +35,21 @@ class DogProfile extends React.Component {
     dog: {},
     isLoading: true,
     i: 0,
-    input: ''
+    input: ""
+  };
+
+  static navigationOptions = {
+    headerTransparent: true,
+    headerTintColor: "#6f6f6f",
+    headerRight: <HeaderMessagesInbox />,
+    headerTitle: <HeaderLikedList />
   };
 
   setImageWidth(event) {
     this.imageWidth = event.nativeEvent.layout.width;
   }
   imageWidth = null;
-  
+
   activityLevel() {
     const { exerciseLevel } = this.state.dog;
     let activityLevel = null;
@@ -117,22 +126,21 @@ class DogProfile extends React.Component {
 
   componentDidMount() {
     const { id } = this.props.navigation.state.params;
-    console.log(id)
+    console.log(id);
     this.PanResponder = PanResponder.create({
       onStartShouldSetPanResponder: (event, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (event, gestureState) =>  true,
+      onStartShouldSetPanResponderCapture: (event, gestureState) => true,
       onMoveShouldSetPanResponder: (event, gestureState) => false,
       onMoveShouldSetPanResponderCapture: (event, gestureState) => false,
       onPanResponderGrant: (event, gestureState) => false,
       onPanResponderMove: (event, gestureState) => false,
-      onPanResponderRelease: (event, gestureState) =>{
+      onPanResponderRelease: (event, gestureState) => {
         const { locationX } = event.nativeEvent;
         if (locationX < this.imageWidth / 2) {
-          this.incrementIndex(-1)
-        }
-        else this.incrementIndex(1)
+          this.incrementIndex(-1);
+        } else this.incrementIndex(1);
       }
-    })
+    });
     dogsCollection
       .doc(id.replace(/ /g, ""))
       .get()
@@ -164,9 +172,8 @@ class DogProfile extends React.Component {
       const barWidth = SCREEN_WIDTH * 0.8;
       return (
         <ScrollView
-        {...this.PanResponder.panHandlers}
+          {...this.PanResponder.panHandlers}
           key={dog.id}
-       
           style={[
             {
               height: SCREEN_HEIGHT - 210,
@@ -177,34 +184,50 @@ class DogProfile extends React.Component {
             }
           ]}
         >
-          <View
-            style={{ flex: 2 }}
-          >
-          <Image
-            style={{
-              flex: 1,
-              height: null,
-              width: null,
-              resizeMode: "cover",
-              borderRadius: 20
-            }}
-            onLayout={(event) => this.setImageWidth(event)}
-            source={{ uri: dog.photos[i] }}
-          />
-          <View
-          style={{position: 'absolute', flex: 1, left: 0.05 * SCREEN_WIDTH }}>
-          <View
-          style={{position: 'absolute', top: 5, width: barWidth, height: 5, backgroundColor:  '#ccc', overflow: 'hidden', left: 0 }}>
+          <View style={{ flex: 2 }}>
+            <Image
+              style={{
+                flex: 1,
+                height: null,
+                width: null,
+                resizeMode: "cover",
+                borderRadius: 20
+              }}
+              onLayout={event => this.setImageWidth(event)}
+              source={{ uri: dog.photos[i] }}
+            />
+            <View
+              style={{
+                position: "absolute",
+                flex: 1,
+                left: 0.05 * SCREEN_WIDTH
+              }}
+            >
+              <View
+                style={{
+                  position: "absolute",
+                  top: 5,
+                  width: barWidth,
+                  height: 5,
+                  backgroundColor: "#ccc",
+                  overflow: "hidden",
+                  left: 0
+                }}
+              ></View>
+              <View
+                style={{
+                  position: "absolute",
+                  top: 5,
+                  left: (this.state.i * barWidth) / dog.photos.length,
+                  width: barWidth / dog.photos.length,
+                  backgroundColor: "#5294d6",
+                  height: 5,
+                  overflow: "hidden"
+                }}
+              ></View>
+            </View>
           </View>
-          <View
-          style={{ position: 'absolute', top: 5, left: this.state.i * barWidth / dog.photos.length,width: barWidth / dog.photos.length, backgroundColor:  '#5294d6', height: 5, overflow: 'hidden' }}
-          >
-          </View>
-          </View>
-          
-          </View>
-         
-         
+
           <Text
             style={{
               position: "absolute",
@@ -218,90 +241,90 @@ class DogProfile extends React.Component {
           >
             {dog.name}
           </Text>
-        
+
           <Text>{dog.description}</Text>
- <View>
-              <Text>{dog.name}</Text>
-              <Text>{dog.gender}</Text>
-              <Text>{dog.description}</Text>
-              <Text>Details</Text>
-              <Text>Breed</Text>
-              <Text>{dog.breed}</Text>
-              <Text>Size</Text>
-              <Text>{this.size()}</Text>
-              <Text>Activity Levels</Text>
-              <Text>{this.activityLevel()}</Text>
-              <Text>Age</Text>
-              <Text>{this.getAge()}</Text>
-              <Text>Good With:</Text>
-              <Text>{this.goodWithKids()}</Text>
-              <Text>{this.goodWithDogs()}</Text>
-              <Button
-                title="Go to Dog Profile"
-                style={{ zIndex: 2000 }}
-                onPress={() => goBack("DogProfile")}
-              >
-              </Button>
-            </View>
+          <View>
+            <Text>{dog.name}</Text>
+            <Text>{dog.gender}</Text>
+            <Text>{dog.description}</Text>
+            <Text>Details</Text>
+            <Text>Breed</Text>
+            <Text>{dog.breed}</Text>
+            <Text>Size</Text>
+            <Text>{this.size()}</Text>
+            <Text>Activity Levels</Text>
+            <Text>{this.activityLevel()}</Text>
+            <Text>Age</Text>
+            <Text>{this.getAge()}</Text>
+            <Text>Good With:</Text>
+            <Text>{this.goodWithKids()}</Text>
+            <Text>{this.goodWithDogs()}</Text>
             <Button
+              title="Go to Dog Profile"
+              style={{ zIndex: 2000 }}
+              onPress={() => goBack("DogProfile")}
+            ></Button>
+          </View>
+          <Button
             title="£1"
             // style={{ zIndex: 2000 }}
-            onPress={() => this.props.navigation.navigate("Donations", {
-              amount: 1,
-              id: dog.centreId
-            })}
-          >
-          </Button>
+            onPress={() =>
+              this.props.navigation.navigate("Donations", {
+                amount: 1,
+                id: dog.centreId
+              })
+            }
+          ></Button>
           <Button
             title="£2"
             // style={{ zIndex: 2000 }}
-            onPress={() => this.props.navigation.navigate("Donations", {
-              amount: 2,
-              id: dog.centreId
-            })}
-          >
-          </Button>
+            onPress={() =>
+              this.props.navigation.navigate("Donations", {
+                amount: 2,
+                id: dog.centreId
+              })
+            }
+          ></Button>
           <Button
             title="£5"
             // style={{ zIndex: 2000 }}
-            onPress={() => this.props.navigation.navigate("Donations", {
-              amount: 5,
-              id: dog.centreId
-            })}
-          >
-          </Button>
-          <TextInput 
-            clearButtonMode='always'
+            onPress={() =>
+              this.props.navigation.navigate("Donations", {
+                amount: 5,
+                id: dog.centreId
+              })
+            }
+          ></Button>
+          <TextInput
+            clearButtonMode="always"
             placeholder="Other amount"
             value={this.state.input}
-            keyboardType='number-pad'
-            onChange={(event) => this.setState({ input: event.nativeEvent.text})}
+            keyboardType="number-pad"
+            onChange={event => this.setState({ input: event.nativeEvent.text })}
           />
           <Button
-          title="Submit"
-          onPress={() => {
-            this.props.navigation.navigate("Donations", {
-              amount: Number(this.state.input).toFixed(2),
-              id: dog.centreId
-            });
-            this.setState({ input: ""})
-          }
-           }>
-
-          </Button>
+            title="Submit"
+            onPress={() => {
+              this.props.navigation.navigate("Donations", {
+                amount: Number(this.state.input).toFixed(2),
+                id: dog.centreId
+              });
+              this.setState({ input: "" });
+            }}
+          ></Button>
           <Video
-  source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/rescuemetest-4a629.appspot.com/o/videos%2FVID-20190918-WA0001.mp4?alt=media&token=4901ea2a-fd0c-4065-ac5d-30ac724b0258' }}
-  rate={1.0}
-  volume={1.0}
-  isMuted={false}
-  resizeMode="cover"
-  useNativeControls
-  style={{ width: 300, height: 300 }}
-/>
-         
-          
+            source={{
+              uri:
+                "https://firebasestorage.googleapis.com/v0/b/rescuemetest-4a629.appspot.com/o/videos%2FVID-20190918-WA0001.mp4?alt=media&token=4901ea2a-fd0c-4065-ac5d-30ac724b0258"
+            }}
+            rate={1.0}
+            volume={1.0}
+            isMuted={false}
+            resizeMode="cover"
+            useNativeControls
+            style={{ width: 300, height: 300 }}
+          />
         </ScrollView>
-
       );
     }
   }

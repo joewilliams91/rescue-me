@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Firebase, { db } from "../config/Firebase";
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
+import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
 // const firestore = firebase.firestore();
 
 const messagesCollection = db.collection("messages");
@@ -10,6 +12,13 @@ class InboxMessages extends Component {
   state = {
     isLoading: true,
     chatRooms: ""
+  };
+
+  static navigationOptions = {
+    headerTransparent: true,
+    headerTintColor: "#6f6f6f",
+    headerRight: <HeaderMessagesInbox />,
+    headerTitle: <HeaderLikedList />
   };
 
   render() {
@@ -30,7 +39,11 @@ class InboxMessages extends Component {
                 <Text>Regarding:{chatRoom.dogName}</Text>
                 <TouchableOpacity
                   onPress={() => {
-                    this.props.navigation.navigate("MessageThread", {messageId : chatRoom.messageId})}}>
+                    this.props.navigation.navigate("MessageThread", {
+                      messageId: chatRoom.messageId
+                    });
+                  }}
+                >
                   <Text>Link to the chat room here</Text>
                 </TouchableOpacity>
               </View>

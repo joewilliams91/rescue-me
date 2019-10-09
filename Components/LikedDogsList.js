@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import Firebase, { db } from "../config/Firebase";
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
+import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
 const usersCollection = db.collection("users");
 const messagesCollection = db.collection("messages");
 
@@ -18,6 +20,13 @@ class LikedDogsList extends Component {
     likedDogs: "",
     isLoading: true,
     id: ""
+  };
+
+  static navigationOptions = {
+    headerTransparent: true,
+    headerTintColor: "#6f6f6f",
+    headerRight: <HeaderMessagesInbox />,
+    headerTitle: <HeaderLikedList />
   };
 
   createMessage = (centreId, centreName, dogName, dogId) => {
