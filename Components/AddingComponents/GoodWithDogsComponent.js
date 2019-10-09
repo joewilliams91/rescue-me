@@ -9,14 +9,27 @@ import {
 
 const GoodWithDogsComponent = props => {
   const { options, updateDetails, goodWithOtherDogs } = props;
+  function checkValue(value) {
+    let activityValue = null;
+    switch (value) {
+      case "True":
+        activityValue = "Yes";
+        break;
+      case "False":
+        activityValue = "No";
+        break;
+    }
+    return activityValue;
+  }
   {
     return (
-      <View>
-        <Text>Is the dog good with other dogs?</Text>
+      <View style={styles.inputContainer}>
+        <Text style={styles.question}>Is the dog good with other dogs?</Text>
         {options.map(item => {
+          let boolValue = checkValue(item.text);
           return (
             <View key={item.key} style={styles.buttonContainer}>
-              <Text>{item.text}</Text>
+              <Text style={styles.value}>{boolValue}</Text>
               <TouchableOpacity
                 style={styles.circle}
                 onPress={() => updateDetails("goodWithOtherDogs", item.key)}
@@ -45,7 +58,7 @@ const styles = StyleSheet.create({
     width: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ACACAC",
+    borderColor: "#fff",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -53,8 +66,28 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: "#794F9B"
+    backgroundColor: "#fff"
+  },
+  value: {
+    color: "#fff",
+    fontSize: 17,
+    fontFamily: "poppins-regular"
+  },
+  inputContainer: {
+    flex: 1,
+    marginTop: 20,
+    marginBottom: 40,
+    width: 250,
+    justifyContent: "center"
+  },
+  question: {
+    color: "#fff",
+    fontSize: 17,
+    marginBottom: 15,
+    textAlign: "center",
+    fontFamily: "poppins-semibold"
   }
 });
+
 
 export default GoodWithDogsComponent;

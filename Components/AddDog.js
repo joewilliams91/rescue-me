@@ -161,48 +161,77 @@ class AddDog extends React.Component {
             </Text>
           </View>
           <Text style={styles.guideMessage}>
-            What is your dog's name?
+           Let's add a dog.
           </Text>
           <DogNameComponent name={name} updateDetails={this.updateDetails} />
+          <Text style={styles.guideMessage}>
+           From Alsatians to Zuchons, we look after all dogs.
+          </Text>
           <DogBreedComponent breed={breed} updateDetails={this.updateDetails} />
+          <Text style={styles.guideMessage}>
+            When was your dog born? Try to be as accurate as possible, but don't worry if you don't know.
+          </Text>
           <DOBComponent updateDetails={this.updateDetails} dob={dob} />
+          <Text style={styles.guideMessage}>
+            How would you describe your dog? Be creative and precise here; a good bio can win hearts.
+          </Text>
           <DescriptionComponent
             description={description}
             updateDetails={this.updateDetails}
-          />         
+          />    
+          <Text style={styles.guideMessage}>
+            Woof woof! We need a pooch portrait please.
+          </Text>     
           <PhotoComponent
             user={centreId}
             addToPhotoArray={this.addToPhotoArray}
             addToVideoArray={this.addToVideoArray}
           />
-          <ExerciseLevelComponent
-            options={exerciseOptions}
-            exerciseLevel={exerciseLevel}
-            updateDetails={this.updateDetails}
-          />
+          <Text style={styles.guideMessage}>
+            Some users might be looking for a specific gender.
+          </Text>
           <GenderComponent
             options={genderOptions}
             gender={gender}
             updateDetails={this.updateDetails}
           />
-          <GoodWithDogsComponent
-            options={goodWithOptions}
-            goodWithOtherDogs={goodWithOtherDogs}
-            updateDetails={this.updateDetails}
-          />
-          <GoodWithChildrenComponent
-            options={goodWithOptions}
-            goodWithChildren={goodWithChildren}
-            updateDetails={this.updateDetails}
-          />
+          <Text style={styles.guideMessage}>
+            Dogs come in all shapes and sizes, and some just aren't what our users are looking for.
+          </Text>
           <SizeComponent
             options={sizeOptions}
             size={size}
             updateDetails={this.updateDetails}
           />
+          <Text style={styles.guideMessage}>
+            Some people work full time, while others might enjoy a challenge. Please help us to match users with dogs they can handle.
+          </Text>
+          <ExerciseLevelComponent
+            options={exerciseOptions}
+            exerciseLevel={exerciseLevel}
+            updateDetails={this.updateDetails}
+          />
+          <Text style={styles.guideMessage}>
+            Not all dogs are equal, some need a bit more patience before they're
+            ready to hang out with other dogs.
+          </Text>
+          <GoodWithDogsComponent
+            options={goodWithOptions}
+            goodWithOtherDogs={goodWithOtherDogs}
+            updateDetails={this.updateDetails}
+          />
+          <Text style={styles.guideMessage}>
+            Some doggo's find kids a bit too much.
+          </Text>
+          <GoodWithChildrenComponent
+            options={goodWithOptions}
+            goodWithChildren={goodWithChildren}
+            updateDetails={this.updateDetails}
+          />
           
-          <TouchableOpacity style={styles.button} onPress={this.handleAdd}>
-            <Text style={styles.buttonText}>Add dog</Text>
+          
+          <TouchableOpacity style={styles.signMeUpbutton} onPress={this.handleAdd}>
+            <Text style={styles.signMeUpbuttonText}>Add dog!</Text>
           </TouchableOpacity>
         </LinearGradient>
       </ScrollView>

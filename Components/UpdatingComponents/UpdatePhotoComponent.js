@@ -34,20 +34,18 @@ export default class UpdatePhotoComponent extends React.Component {
             <Image style={{ width: 50, height: 50 }} source={{ uri: photo }} />
           );
         })}
-        {edit && <PhotoComponent addToPhotoArray={addToPhotoArray} />}
-        <TouchableOpacity style={styles.button} onPress={this.toggleEdit}>
-          <Text style={styles.buttonText}>
-            {edit ? "Done" : "Add a new photo"}
-          </Text>
-        </TouchableOpacity>
-
         <Text>Videos: </Text>
         {videos.map(video => {
           return (
             <Image style={{ width: 50, height: 50 }} source={{ uri: video }} />
           );
         })}
-        {edit && <PhotoComponent addToVideoArray={addToVideoArray} />}
+        {edit && (
+          <PhotoComponent
+            addToVideoArray={addToVideoArray}
+            addToPhotoArray={addToPhotoArray}
+          />
+        )}
         <TouchableOpacity style={styles.button} onPress={this.toggleEdit}>
           <Text style={styles.buttonText}>
             {edit ? "Done" : "Add a new photo"}
