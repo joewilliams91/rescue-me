@@ -79,7 +79,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "CentreRegister"
+    initialRouteName: "SplashPage"
   }
 );
 

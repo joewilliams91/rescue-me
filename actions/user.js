@@ -47,6 +47,18 @@ export const signup = () => {
     try {
       const { email, password, type } = getState().user;
 
+      try{
+        /.+@.+\..+/.test(email)
+      } catch(e){
+        alert("Invalid email")
+      }
+
+      try{
+        /.{6,}/.test(password)
+      } catch(e){
+        alert("Please enter a passwork of at least six characters")
+      }      
+
       const response = await Firebase.auth().createUserWithEmailAndPassword(
         email,
         password
@@ -60,9 +72,9 @@ export const signup = () => {
 
         dispatch({ type: SIGNUP, payload: user });
       }
-    } catch (e) {
-      alert(e);
-    }
+    } catch (error) {
+      alert(error);
+    } 
   };
 };
 
