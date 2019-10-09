@@ -19,6 +19,7 @@ class MessageThread extends Component {
 
   componentDidMount() {
     const { messageId, id } = this.props.navigation.state.params;
+    console.log(messageId)
     messagesCollection
       .doc(messageId)
       .collection("messages")
@@ -86,9 +87,11 @@ class MessageThread extends Component {
 
   render() {
     const { messages, isLoading } = this.state;
+
     const props = this.props.navigation.state.params;
     const { id, userName } = this.props.navigation.state.params;
-    console.log(id, userName);
+
+
 
     if (isLoading) {
       return <Text>Loading...</Text>;

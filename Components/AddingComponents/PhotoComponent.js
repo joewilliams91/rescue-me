@@ -4,16 +4,23 @@ import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
 import * as firebase from "firebase/app";
 import "firebase/storage";
-
 export default class PhotoComponent extends React.Component {
   state = {
+    captures: [],
+    capturing: null,
     hasCameraPermission: null,
-    type: Camera.Constants.Type.back
+    type: Camera.Constants.Type.front,
+    flashMode: Camera.Constants.FlashMode.off
+
   };
 
   async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === "granted" });
+    const camera = await Permissions.askAsync(Permissions.CAMERA);
+    const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+    const hasCameraPermission =
+      camera.status === "granted" && audio.status === "granted";
+
+    this.setState({ hasCameraPermission });
   }
 
   uriToBlob = uri => {
@@ -35,7 +42,7 @@ export default class PhotoComponent extends React.Component {
     });
   };
 
-  uploadToFirebase = blob => {
+  uploadToFirebase = (blob, type) => {
     return new Promise((resolve, reject) => {
       const storageRef = firebase.storage().ref();
 
@@ -57,14 +64,16 @@ export default class PhotoComponent extends React.Component {
 
       const name = uuid();
       const folder = this.props.user;
+      const file = type === "images" ? "jpg" : "mp4";
+      const contentType = type === "images" ? "image/jpg" : "video/mp4";
       const imageRef = firebase
         .storage()
         .ref(`${folder}`)
-        .child(`images/${name}.jpg`);
+        .child(`${type}/${name}.${file}`);
 
       imageRef
         .put(blob, {
-          contentType: "image/jpeg"
+          contentType
         })
         .then(() => {
           return imageRef.getDownloadURL();
@@ -79,35 +88,59 @@ export default class PhotoComponent extends React.Component {
     });
   };
 
-  async snapPhoto() {
-    console.log("Button Pressed");
-    if (this.camera) {
-      console.log("Taking photo");
-      const options = {
-        quality: 1,
-        base64: true,
-        fixOrientation: true,
-        exif: true
-      };
-      await this.camera
-        .takePictureAsync(options)
-        .then(photo => {
-          const { height, width, type, uri } = photo;
-          return this.uriToBlob(uri);
-        })
-        .then(blob => {
-          return this.uploadToFirebase(blob);
-        })
-        .then(url => {
-          this.props.addToPhotoArray(url);
-          console.log(url);
-          console.log("File uploaded");
-        })
-        .catch(error => {
-          throw error;
-        });
+  handleCaptureIn() {
+    this.setState({ capturing: true });
+  }
+
+  handleCaptureOut() {
+    if (this.state.capturing) {
+      this.camera.stopRecording();
+      this.setState({ capturing: false });
     }
   }
+
+  async handleShortCapture() {
+    const photoData = await this.camera
+      .takePictureAsync()
+      .then(photo => {
+        const { height, width, type, uri } = photo;
+        return this.uriToBlob(uri);
+      })
+      .then(blob => {
+        return this.uploadToFirebase(blob, "images");
+      })
+      .then(url => {
+        this.props.addToPhotoArray(url);
+        console.log(url);
+        console.log("File uploaded");
+      })
+      .catch(error => {
+        throw error;
+      });
+  }
+
+  async handleLongCapture() {
+    const options = {
+      quality: Camera.Constants.VideoQuality["480p"]
+    };
+    const videoData = await this.camera
+      .recordAsync(options)
+      .then(photo => {
+        const { height, width, type, uri } = photo;
+        return this.uriToBlob(uri);
+      })
+      .then(blob => {
+        return this.uploadToFirebase(blob, "videos");
+      })
+      .then(url => {
+        this.props.addToVideoArray(url);
+        console.log(url);
+        console.log("File uploaded");
+      })
+      .catch(error => {
+        throw error;
+      });
+    }
 
   render() {
     const { hasCameraPermission } = this.state;
@@ -154,7 +187,12 @@ export default class PhotoComponent extends React.Component {
                   Flip{" "}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={this.snapPhoto.bind(this)}>
+              <TouchableOpacity
+                onPressIn={this.handleCaptureIn.bind(this)}
+                onPressOut={this.handleCaptureOut.bind(this)}
+                onLongPress={this.handleLongCapture.bind(this)}
+                onPress={this.handleShortCapture.bind(this)}
+              >
                 <Text
                   style={{ fontSize: 18, marginBottom: 10, color: "white" }}
                 >
@@ -162,7 +200,7 @@ export default class PhotoComponent extends React.Component {
                   Snap{" "}
                 </Text>
               </TouchableOpacity>
-            </View>
+             </View>
           </Camera>
         </View>
       );

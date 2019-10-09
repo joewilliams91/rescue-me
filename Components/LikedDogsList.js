@@ -9,6 +9,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
+import { LinearGradient } from "expo-linear-gradient";
 import Firebase, { db } from "../config/Firebase";
 const usersCollection = db.collection("users");
 const messagesCollection = db.collection("messages");
@@ -22,8 +23,9 @@ class LikedDogsList extends Component {
 
   createMessage = (centreId, centreName, dogName, dogId) => {
     const { id } = this.state;
-    const { name } = this.props.user;
-    console.log(id)
+
+    const  name  = this.props.user.name || this.props.user.d.firstName
+
     try {
       const query = messagesCollection
         .where("centreId", "==", `${centreId}`)
@@ -77,16 +79,18 @@ class LikedDogsList extends Component {
         const { likedDogs } = user.data().d;
         let likedDogsList = [];
 
-        for (let dog in likedDogs) {
-          const list = {};
-          list.dogId = likedDogs[dog].id;
-          list.centreId = likedDogs[dog].centreId;
-          list.image = likedDogs[dog].photos[0];
-          list.name = likedDogs[dog].name;
-          list.centreName = likedDogs[dog].centreName;
 
-          likedDogsList.push(list);
-        }
+    for (let dog in likedDogs) {
+      const list = {};
+      list.dogId = likedDogs[dog].id;
+      list.centreId = likedDogs[dog].centreId;
+      list.image = likedDogs[dog].photos[0];
+      list.name = likedDogs[dog].name;
+      list.centreName = likedDogs[dog].centreName;
+
+      likedDogsList.push(list);
+    }
+
         this.setState({
           id: id,
           likedDogs: likedDogsList,
@@ -98,6 +102,7 @@ class LikedDogsList extends Component {
   render() {
     const { likedDogs, isLoading } = this.state;
 
+
     if (isLoading) {
       return (
         <View>
@@ -107,7 +112,11 @@ class LikedDogsList extends Component {
     } else {
       return (
         <ScrollView>
+
+          
           {likedDogs.map(dog => {
+            
+
             return (
               <View style={styles.row} key={dog.dogId}>
                 <View style={styles.column}>
@@ -147,6 +156,7 @@ class LikedDogsList extends Component {
               </View>
             );
           })}
+         
         </ScrollView>
       );
     }

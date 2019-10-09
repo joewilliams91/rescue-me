@@ -8,12 +8,21 @@ import {
   Animated,
   Dimensions,
   PanResponder,
-  Button
+  Button,
+  TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
 import axios from "axios";
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
+import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
+import FooterSwipe from "../Components/FooterComponents/FooterSwipe";
 import firebase from "firebase";
 import Firebase, { db } from "../config/Firebase.js";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+
 const { GeoFirestore } = require("geofirestore");
 const geofirestore = new GeoFirestore(db);
 const usersCollection = geofirestore.collection("users");
@@ -23,7 +32,8 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 
 class SwipeList extends React.Component {
   state = {
-    currentUserID: "",
+    // currentUserID: "",
+    currentUserID: "05hHgyVaKqTQ99uSePq5UrXUEYv2",
     isLoading: true,
     currentIndex: 0,
     dogId: null,
@@ -35,6 +45,13 @@ class SwipeList extends React.Component {
       hasDogs: "",
       likedDogs: {}
     }
+  };
+
+  static navigationOptions = {
+    headerTransparent: true,
+    headerTintColor: "#6f6f6f",
+    headerRight: <HeaderMessagesInbox />,
+    headerTitle: <HeaderLikedList />
   };
 
   componentDidUpdate() {
@@ -98,7 +115,7 @@ class SwipeList extends React.Component {
   });
   superLikeOpacity = this.position.y.interpolate({
     inputRange: [-SCREEN_HEIGHT / 1, 0, SCREEN_HEIGHT / 1],
-    outputRange: [1, 0, 0],
+    outputRange: [3, 0, 0],
     extrapolate: "clamp"
   });
 
@@ -165,7 +182,7 @@ class SwipeList extends React.Component {
       const { currentUserID } = this.state;
 
       usersCollection
-        .doc(currentUserID) // Change the below baxk to currebntUserID IAN
+        .doc("05hHgyVaKqTQ99uSePq5UrXUEYv2") // Change the below baxk to currebntUserID IAN
         .get()
         .then(user => {
           const {
@@ -233,7 +250,7 @@ class SwipeList extends React.Component {
       console.log("Main Content");
       return (
         <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-          <View style={{ flex: 2, alignItems: "center" }}>
+          <View style={{ alignItems: "center", marginTop: hp("12") }}>
             {dogs
               .map((dog, i) => {
                 if (i < currentIndex) {
@@ -249,8 +266,8 @@ class SwipeList extends React.Component {
                         this.rotateAndTranslate,
 
                         {
-                          height: SCREEN_HEIGHT - 250,
-                          width: SCREEN_WIDTH - 20,
+                          height: SCREEN_HEIGHT - hp("30"),
+                          width: SCREEN_WIDTH - wp("5"),
                           padding: 10
                         }
                       ]}
@@ -326,12 +343,12 @@ class SwipeList extends React.Component {
                       <Text
                         style={{
                           position: "absolute",
-                          bottom: 90,
+                          bottom: 25,
                           left: 40,
                           zIndex: 1000,
                           color: "white",
                           fontSize: 40,
-                          fontWeight: "800"
+                          fontFamily: "poppins-black"
                         }}
                       >
                         {dog.name}
@@ -347,14 +364,25 @@ class SwipeList extends React.Component {
                         }}
                         source={{ uri: dog.photos[0] }}
                       />
-                      <Button
+                      <TouchableOpacity
+                        style={styles.signUpbutton}
                         onPress={() =>
                           this.props.navigation.navigate("DogProfile", {
                             id: dog.id
                           })
                         }
-                        title="prof"
-                      ></Button>
+                      >
+                        <Image
+                          style={{
+                            zIndex: 1000,
+                            height: 30,
+                            width: 30,
+                            position: "absolute",
+                            bottom: 10
+                          }}
+                          source={require("../assets/images/profileInfo.png")}
+                        />
+                      </TouchableOpacity>
                     </Animated.View>
                   );
                 } else {
@@ -363,8 +391,8 @@ class SwipeList extends React.Component {
                       key={i}
                       style={[
                         {
-                          height: SCREEN_HEIGHT - 250,
-                          width: SCREEN_WIDTH - 20,
+                          height: SCREEN_HEIGHT - hp("30"),
+                          width: SCREEN_WIDTH - wp("5"),
                           padding: 10,
                           position: "absolute"
                         }
@@ -383,8 +411,9 @@ class SwipeList extends React.Component {
                       <Text
                         style={{
                           position: "absolute",
-                          bottom: 90,
+                          bottom: 25,
                           left: 40,
+                          zIndex: 1000,
                           color: "white",
                           fontSize: 40,
                           fontWeight: "800"
@@ -392,15 +421,45 @@ class SwipeList extends React.Component {
                       >
                         {dog.name}
                       </Text>
+                      <TouchableOpacity
+                        style={styles.signUpbutton}
+                        onPress={() =>
+                          this.props.navigation.navigate("DogProfile", {
+                            id: dog.id
+                          })
+                        }
+                      >
+                        <Image
+                          style={{
+                            zIndex: 1000,
+                            height: 30,
+                            width: 30,
+                            position: "absolute",
+                            bottom: 10
+                          }}
+                          source={require("../assets/images/profileInfo.png")}
+                        />
+                      </TouchableOpacity>
                     </Animated.View>
                   );
                 }
               })
               .reverse()}
           </View>
-          <View style={{ height: 60 }}></View>
           <View>
-            <Text>Footer must go here</Text>
+            <FooterSwipe />
+          </View>
+          <View>
+            <Image
+              source={require("../assets/images/logo/rescueMeLogoSmol.png")}
+              style={{
+                width: 40,
+                height: 40,
+                alignSelf: "center",
+                textAlign: "center",
+                margin: 10
+              }}
+            ></Image>
           </View>
         </View>
       );
@@ -420,6 +479,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     padding: 10
+  },
+  signUpbutton: {
+    alignItems: "flex-end",
+    padding: 20,
+    position: "absolute",
+    bottom: 20,
+    right: 30
   }
 });
 
