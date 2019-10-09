@@ -17,6 +17,8 @@ import MessageThread from "../Components/MessageThread";
 import RescueCentreDogProfile from "../Components/RescueCentreDogProfile";
 import InboxMessages from "../Components/InboxMessages";
 import CentreDashboard from "../Components/CentreDashboard";
+import PhotoComponent from "../Components/AddingComponents/PhotoComponent";
+import UploadComponent from "../Components/AddingComponents/UploadComponent"
 
 const StackNavigator = createStackNavigator(
   {
@@ -74,6 +76,12 @@ const StackNavigator = createStackNavigator(
 
     CentreDogsList: {
       screen: CentreDogsList
+    },
+    PhotoComponent: {
+      screen: PhotoComponent
+    },
+    UploadComponent: {
+      screen: UploadComponent
     }
   },
   {

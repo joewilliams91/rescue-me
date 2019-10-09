@@ -9,9 +9,11 @@ import {
   TouchableOpacity,
   ScrollView,
   Text,
-  Button
+  Button,
+  View
 } from "react-native";
 import { bindActionCreators } from "redux";
+import { Icon } from 'react-native-elements';
 import { connect } from "react-redux";
 import {
   updateEmail,
@@ -33,6 +35,7 @@ import PhotoComponent from "./AddingComponents/PhotoComponent";
 import RadiusComponent from "./AddingComponents/RadiusComponent";
 import TelephoneComponent from "./AddingComponents/TelephoneComponent";
 import DescriptionComponent from "./AddingComponents/DescriptionComponent";
+import UploadComponent from "./AddingComponents/UploadComponent"
 class Register extends React.Component {
   state = {
     userType: '',
@@ -249,12 +252,32 @@ class Register extends React.Component {
           <Text style={styles.guideMessage}>
             Say Cheese! We need a picture for your profile please.
           </Text>
+          <View
+          style={{ flexDirection: 'row' }}
+          >
+          <Icon 
+          style={{ flex: 1 }}
+          name="camera"
+          type="font-awesome"
+          color="white"
+          onPress={() => this.props.navigation.navigate("PhotoComponent", {
+            user: userId,
+            userType,
+            addToPhotoArray: this.addToPhotoArray
+          })}
+          />
+          <UploadComponent
+          addToPhotoArray={this.addToPhotoArray}
+          user={userId}
+          style={{ flex: 1 }} />
+          </View>
+        
 
-          <PhotoComponent
+          {/* <PhotoComponent
             user={userId}
             userType={userType}
             addToPhotoArray={this.addToPhotoArray}
-          />
+          /> */}
 
           <ActivityLevelRadioComponents
             options={activityOptions}

@@ -2,6 +2,7 @@ import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
+import { Icon } from 'react-native-elements';
 import * as firebase from "firebase/app";
 import "firebase/storage";
 
@@ -64,9 +65,9 @@ export default class PhotoComponent extends React.Component {
       }
 
       const name = uuid();
-      const folder = this.props.user;
+      const folder = this.props.navigation.state.params.user;
       const file = type === "images" ? "jpg" : "mp4";
-      // console.log(file)
+      console.log(file)
       const contentType = type === "images" ? "image/jpg" : "video/mp4";
       // console.log(contentType)
       const imageRef = firebase
@@ -114,7 +115,8 @@ export default class PhotoComponent extends React.Component {
         return this.uploadToFirebase(blob, "images");
       })
       .then(url => {
-        this.props.addToPhotoArray(url);
+        console.log(url, "<--- url")
+        this.props.navigation.state.params.addToPhotoArray(url);
         console.log(url);
         console.log("File uploaded");
       })
@@ -156,7 +158,7 @@ export default class PhotoComponent extends React.Component {
       return (
         <View style={{ flex: 1 }}>
           <Camera
-            style={{ flex: 4, width: 350, height: 450, marginBottom: 80 }}
+            style={{ flex: 4  }}
             ref={ref => {
               this.camera = ref;
             }}
@@ -171,9 +173,9 @@ export default class PhotoComponent extends React.Component {
             >
               <TouchableOpacity
                 style={{
-                  flex: 0.1,
-                  alignSelf: "flex-end",
-                  alignItems: "center"
+                  position: 'absolute',
+                  bottom: 30,
+                  left: 20
                 }}
                 onPress={() => {
                   this.setState({
@@ -184,25 +186,27 @@ export default class PhotoComponent extends React.Component {
                   });
                 }}
               >
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: "white" }}
-                >
-                  {" "}
-                  Flip{" "}
-                </Text>
+                <Icon
+                  name="repeat"
+                  type="font-awesome"
+                  color="white"
+                  // style={{ alignSelf: 'center'}}
+                />
               </TouchableOpacity>
               <TouchableOpacity
+              style={{ position: "absolute", bottom: 20, left: 150 }}
                 onPressIn={this.handleCaptureIn.bind(this)}
                 onPressOut={this.handleCaptureOut.bind(this)}
-                onLongPress={this.props.userType === "centre" && this.handleLongCapture.bind(this)}
+                onLongPress={this.props.userType === "centre" ? this.handleLongCapture.bind(this) : () => {}}
                 onPress={this.handleShortCapture.bind(this)}
               >
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: "white" }}
-                >
-                  {" "}
-                  Snap{" "}
-                </Text>
+                <Icon
+                reverse
+                  // style={{ position: "absolute", bottom: 20 }}
+                  name='circle'
+                  type="font-awesome"
+                  color="white"
+                />
               </TouchableOpacity>
              </View>
           </Camera>
