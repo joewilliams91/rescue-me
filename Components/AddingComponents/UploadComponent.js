@@ -9,7 +9,7 @@ import "firebase/storage"
 
 export default class UploadComponent extends React.Component {
     state = {
-        hasUploadPermission: true,
+        hasUploadPermission: false,
         uploading: false
     }
 
