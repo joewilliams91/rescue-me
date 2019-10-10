@@ -6,7 +6,8 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
@@ -28,7 +29,11 @@ class LikedDogsList extends Component {
   };
 
   static navigationOptions = {
-    headerTransparent: true,
+    headerStyle: {
+      backgroundColor: "#f5f5f5",
+      borderBottomWidth: 0,
+      height: hp("10")
+    },
     headerTintColor: "#6f6f6f",
     headerRight: <HeaderMessagesInbox />,
     headerTitle: <HeaderLikedList />
@@ -84,7 +89,7 @@ class LikedDogsList extends Component {
   componentDidMount() {
     const { id } = this.props.user;
     usersCollection
-      .doc(id) 
+      .doc("CNZRmXLaILgwtkWyKu5tbHyV9OF3")
       .get()
       .then(user => {
         const { likedDogs } = user.data().d;
@@ -102,7 +107,7 @@ class LikedDogsList extends Component {
         }
 
         this.setState({
-          id: id, 
+          id: id,
           likedDogs: likedDogsList,
           isLoading: false
         });
@@ -113,8 +118,8 @@ class LikedDogsList extends Component {
     const { likedDogs, isLoading } = this.state;
     if (isLoading) {
       return (
-        <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-          <Text>Loading...</Text>
+        <View style={[styles.loadingContainer, styles.loadingHorizontal]}>
+          <ActivityIndicator size="large" color="#e64664" />
         </View>
       );
     } else {
@@ -127,7 +132,7 @@ class LikedDogsList extends Component {
         >
           <View
             style={{
-              marginTop: hp("12"),
+              marginTop: hp("2"),
               alignItems: "center"
             }}
           >
@@ -138,39 +143,35 @@ class LikedDogsList extends Component {
             >
               <Text
                 style={{
-                  color: "black",
+                  color: "#707070",
                   fontSize: 30,
-                  fontFamily: "poppins-black",
+                  fontFamily: "poppins-bold",
                   textAlign: "center"
                 }}
               >
                 Dogs you've liked
               </Text>
-              <View>
-                <Text
-                  style={{
-                    color: "#c6c6c6",
-                    fontSize: 12,
-                    fontFamily: "poppins-black",
-                    textAlign: "center"
-                  }}
-                >
-                  Here's a list of all the dogs you're interested in. {"\n"}{" "}
-                  Have a look through, think carefully about about which pupper
-                  would suit best, {"\n"}when you're ready, make your approach!
-                </Text>
-              </View>
+
+              <Text
+                style={{
+                  color: "#a3a3a3",
+                  fontSize: 18,
+                  lineHeight: 19,
+                  fontFamily: "poppins-regular",
+                  textAlign: "center",
+                  padding: 20
+                }}
+              >
+                Here's a list of all the dogs you're interested in. {"\n"}
+                {"\n"}Have a look through, think carefully about about which
+                pupper would suit best, when you're ready, make your approach!
+              </Text>
             </View>
 
             <View style={styles.container}>
               {likedDogs.map(dog => {
                 return (
-                  <View
-                    key={dog.dogId}
-                    style={{
-                      alignItems: "center"
-                    }}
-                  >
+                  <View key={dog.dogId}>
                     <TouchableOpacity
                       onPress={() => {
                         this.props.navigation.navigate("DogProfile", {
@@ -181,22 +182,26 @@ class LikedDogsList extends Component {
                       <Image
                         source={{ uri: dog.image }}
                         style={{
-                          width: 155,
-                          height: 180,
-                          margin: 10,
-                          padding: 10,
+                          width: wp("42"),
+                          height: hp("28"),
+                          margin: wp("1"),
+                          marginTop: hp("2"),
                           borderRadius: 10
                         }}
                       />
                     </TouchableOpacity>
                     <Text
                       style={{
-                        alignItems: "center"
+                        position: "absolute",
+                        bottom: 15,
+                        left: 10,
+                        zIndex: 1000,
+                        color: "white",
+                        fontSize: 26,
+                        fontFamily: "poppins-black"
                       }}
-                      
                       key={dog.dogId}
                     >
-                      {" "}
                       {dog.name}
                     </Text>
                     <TouchableOpacity
@@ -211,14 +216,34 @@ class LikedDogsList extends Component {
                       }}
                     >
                       <Image
-                        source={require("../assets/images/envelope.png")}
-                        style={{ width: 35, height: 30, marginTop: 5 }}
+                        source={require("../assets/images/LikedMessage.png")}
+                        style={{
+                          width: 35,
+                          height: 35,
+                          position: "absolute",
+                          bottom: 15,
+                          right: 10,
+                          zIndex: 1000
+                        }}
                       />
                     </TouchableOpacity>
                   </View>
                 );
               })}
             </View>
+          </View>
+          <View>
+            <Image
+              source={require("../assets/images/logo/rescueMeLogoSmol.png")}
+              style={{
+                width: 40,
+                height: 40,
+                alignSelf: "center",
+                textAlign: "center",
+                marginTop: hp("2"),
+                marginBottom: hp("3")
+              }}
+            ></Image>
           </View>
         </ScrollView>
       );
@@ -230,7 +255,19 @@ const styles = StyleSheet.create({
   container: {
     flexWrap: "wrap",
     flexDirection: "row",
-    paddingTop: 8
+    justifyContent: "space-between",
+    width: wp("96"),
+    padding: wp("2")
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  loadingHorizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
   }
 });
 

@@ -6,6 +6,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Firebase, { db } from "../config/Firebase";
 import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
 import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 // const firestore = firebase.firestore();
 
 const messagesCollection = db.collection("messages");
@@ -17,7 +21,11 @@ class InboxMessages extends Component {
   };
 
   static navigationOptions = {
-    headerTransparent: true,
+    headerStyle: {
+      backgroundColor: "#f5f5f5",
+      borderBottomWidth: 0,
+      height: hp("10")
+    },
     headerTintColor: "#6f6f6f",
     headerRight: <HeaderMessagesInbox />,
     headerTitle: <HeaderLikedList />

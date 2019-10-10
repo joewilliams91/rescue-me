@@ -46,7 +46,11 @@ class SwipeList extends React.Component {
   };
 
   static navigationOptions = {
-    headerTransparent: true,
+    headerStyle: {
+      backgroundColor: "#f5f5f5",
+      borderBottomWidth: 0,
+      height: hp("10")
+    },
     headerTintColor: "#6f6f6f",
     headerRight: <HeaderMessagesInbox />,
     headerTitle: <HeaderLikedList />
@@ -305,7 +309,7 @@ class SwipeList extends React.Component {
       console.log("<---- Inside our render");
       return (
         <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-          <View style={{ alignItems: "center", marginTop: hp("12") }}>
+          <View style={{ alignItems: "center" }}>
             {dogs
               .map((dog, i) => {
                 if (i < currentIndex) {
