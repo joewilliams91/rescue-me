@@ -53,8 +53,8 @@ class LikedDogsList extends Component {
               centreName: centreName,
               dogName: dogName,
               dogId: dogId,
-              avatar: avatar,
               user: id,
+              avatar: avatar,
               userName: name,
               messageId: newMessage.id
             })
