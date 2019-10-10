@@ -15,7 +15,6 @@ import CentreDogsList from "../Components/CentreDogsList";
 import MessageThread from "../Components/MessageThread";
 import RescueCentreDogProfile from "../Components/RescueCentreDogProfile";
 import InboxMessages from "../Components/InboxMessages";
-import CentreDashboard from "../Components/CentreDashboard";
 import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
 import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
 
@@ -68,9 +67,6 @@ const StackNavigator = createStackNavigator(
     },
     RescueCentreDogProfile: {
       screen: RescueCentreDogProfile
-    },
-    CentreDashboard: {
-      screen: CentreDashboard
     },
     CentreDogsList: {
       screen: CentreDogsList
