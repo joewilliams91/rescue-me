@@ -47,15 +47,14 @@ class InboxMessages extends Component {
             return (
               <View>
                 <TouchableOpacity
-                  onPress={
+                  onPress={() => {
                     this.props.user.type === "centre"
                       ? this.props.navigation.navigate("UserProfile", {
                           id: chatRoom.user
                         })
-                      : () => {}
-                  }
+                      : () => {};
+                  }}
                 >
-                  {" "}
                   <Text>
                     From:
                     {this.props.user.type === "user"
@@ -64,7 +63,7 @@ class InboxMessages extends Component {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={
+                  onPress={() => {
                     this.props.user.type === "centre"
                       ? this.props.navigation.navigate(
                           "RescueCentreDogProfile",
@@ -74,8 +73,8 @@ class InboxMessages extends Component {
                         )
                       : this.props.navigation.navigate("DogProfile", {
                           id: chatRoom.dogId
-                        })
-                  }
+                        });
+                  }}
                 >
                   <Text>Regarding:{chatRoom.dogName}</Text>
                 </TouchableOpacity>

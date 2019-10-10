@@ -7,7 +7,8 @@ import {
   Text,
   Button,
   Image,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -52,7 +53,7 @@ class Login extends React.Component {
             this.props.updateName(firstName || centreName);
             this.props.updateLocation(coords);
             if (this.props.user.type === "user") {
-              this.props.navigation.navigate("SwipeList");
+              this.props.navigation.navigate("InboxMessages");
             } else if (this.props.user.type === "centre") {
               this.props.navigation.navigate("CentreDogsList");
             }
@@ -64,7 +65,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <ScrollView>
+      <KeyboardAvoidingView behavior="padding" enabled>
         <LinearGradient
           colors={["#f8789a", "#845efd"]}
           start={[0.1, 1.5]}
@@ -139,7 +140,7 @@ class Login extends React.Component {
             </TouchableOpacity>
           </View>
         </LinearGradient>
-      </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }
