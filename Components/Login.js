@@ -7,8 +7,7 @@ import {
   Text,
   Button,
   Image,
-  ScrollView,
-  KeyboardAvoidingView
+  ScrollView
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -53,7 +52,7 @@ class Login extends React.Component {
             this.props.updateName(firstName || centreName);
             this.props.updateLocation(coords);
             if (this.props.user.type === "user") {
-              this.props.navigation.navigate("InboxMessages");
+              this.props.navigation.navigate("SwipeList");
             } else if (this.props.user.type === "centre") {
               this.props.navigation.navigate("CentreDogsList");
             }
@@ -65,22 +64,19 @@ class Login extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView
-      style={{ flex: 1 }}>
+      <ScrollView>
         <LinearGradient
           colors={["#f8789a", "#845efd"]}
           start={[0.1, 1.5]}
           end={[1.2, 0.1]}
           style={styles.gradient}
         >
-          <View
-          style={{ justifyContent: 'flex-end'}}>
           <Image
             style={{
               width: 80,
               height: 80,
               marginBottom: hp("10"),
-              marginTop: hp("20"),
+              marginTop: hp("20")
             }}
             source={require("../assets/images/logo/rescueMe_logo_dog.png")}
           />
@@ -142,11 +138,8 @@ class Login extends React.Component {
               <Text style={styles.signUpbuttonText}>SIGN UP</Text>
             </TouchableOpacity>
           </View>
-          </View>
-          
         </LinearGradient>
-        <View style={{ flex: 1 }} />
-      </KeyboardAvoidingView>
+      </ScrollView>
     );
   }
 }
