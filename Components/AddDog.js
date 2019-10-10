@@ -190,7 +190,10 @@ class AddDog extends React.Component {
           <View
           style={{ flexDirection: 'row' }}
           >
-          <Icon 
+            <View 
+            style={{ margin: 15 }}>
+            <Icon 
+          size={50}
           style={{ flex: 1 }}
           name="camera"
           type="font-awesome"
@@ -202,12 +205,14 @@ class AddDog extends React.Component {
             addToVideoArray: this.addToVideoArray
           })}
           />
+            </View>
+         
           <UploadComponent
           userType={userType}
           addToVideoArray={this.addToVideoArray}
           addToPhotoArray={this.addToPhotoArray}
           user={centreId}
-          style={{ flex: 1 }} />
+          style={{ flex: 1, margin: 15 }} />
           </View>
           <Text style={styles.guideMessage}>
             Some users might be looking for a specific gender.

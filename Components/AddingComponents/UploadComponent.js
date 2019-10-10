@@ -1,8 +1,7 @@
 import React from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
-import { withNavigation} from 'react-navigation';
-import { View, Image, Alert } from 'react-native';
+import { View, Image, Alert, ActivityIndicator } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase/app';
@@ -10,21 +9,46 @@ import "firebase/storage"
 
 export default class UploadComponent extends React.Component {
     state = {
-        image: null
+        uploading: false
     }
 
     render() {
-        let { image } = this.state;
         return (
-            <View>
-                <Icon
-                    size={50}
-                    name="upload"
-                    type="antdesign"
-                    color="white"
-                    onPress={this.pickImage} />
-                {image &&
-                    <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+            <View
+                style={{ flexDirection: "row" }}>
+                {this.state.uploading &&
+                    <View
+                    style={{ position: 'absolute', zIndex: 1000 }}>
+                        <ActivityIndicator
+                        color="black"
+                        style={{ zIndex: 2000 }}
+                        size="large" />
+                        </View>
+                }
+                <View
+                    style={{ margin: 15 }}>
+                    <Icon
+                        style={{ flex: 1 }}
+                        size={50}
+                        name="file-picture-o"
+                        type="font-awesome"
+                        color="white"
+                        onPress={() => this.pickMedia("images")} />
+                </View>
+
+                {this.props.userType === 'centre' &&
+                    <View
+                        style={{ margin: 15 }}>
+                        <Icon
+                            style={{ flex: 1 }}
+                            size={50}
+                            name="folder-video"
+                            type="entypo"
+                            color="white"
+                            onPress={() => this.pickMedia("videos")} /></View>
+
+                }
+
             </View>
 
         )
@@ -43,32 +67,36 @@ export default class UploadComponent extends React.Component {
         }
     }
 
-    pickImage =  () => {
+
+    pickMedia = mediaType => {
         return ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images
+            mediaTypes: mediaType === "images" ? ImagePicker.MediaTypeOptions.Images : ImagePicker.MediaTypeOptions.Videos
         }).then((result) => {
             if (!result.cancelled) {
+                this.setState({ uploading: true })
                 const uri = result.uri
                 return this.uriToBlob(uri)
             }
         })
             .then(blob => {
-                return this.uploadToFirebase(blob, "images")
+                return this.uploadToFirebase(blob, `${mediaType}`)
             })
             .then(url => {
-                this.props.addToPhotoArray(url);
+                mediaType === "images" ?
+                    this.props.addToPhotoArray(url) : this.props.addToVideoArray(url)
                 console.log(url);
                 console.log("File uploaded")
             })
-            .then(()=> {
+            .then(() => {
+                this.setState({ uploading: false })
                 Alert.alert(
-                  'Photo uploaded',
-                  'Click OK to go back',
-                  [
-                    {text: 'OK', onPress: () => this.props.navigation.goBack()}
-                  ]
+                    `${mediaType.slice(0, mediaType.length - 1)} uploaded`,
+                    'Click OK to go back',
+                    [
+                        { text: 'OK', onPress: () => { } }
+                    ]
                 )
-              })
+            })
             .catch(error => {
                 throw error;
             })
@@ -76,22 +104,22 @@ export default class UploadComponent extends React.Component {
 
     uriToBlob = uri => {
         return new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-    
-          xhr.onload = function() {
-            resolve(xhr.response);
-          };
-    
-          xhr.onerror = function() {
-            reject(new Error("uriToBlob failed"));
-          };
-    
-          xhr.responseType = "blob";
-    
-          xhr.open("GET", uri, true);
-          xhr.send(null);
+            const xhr = new XMLHttpRequest();
+
+            xhr.onload = function () {
+                resolve(xhr.response);
+            };
+
+            xhr.onerror = function () {
+                reject(new Error("uriToBlob failed"));
+            };
+
+            xhr.responseType = "blob";
+
+            xhr.open("GET", uri, true);
+            xhr.send(null);
         });
-      };
+    };
 
     uploadToFirebase = (blob, type) => {
         return new Promise((resolve, reject) => {
@@ -115,8 +143,8 @@ export default class UploadComponent extends React.Component {
 
             const name = uuid();
             const folder = this.props.user;
-            const file = "jpg";
-            const contentType = "image/jpg";
+            const file = type === "images" ? "jpg" : "mp4";
+            const contentType = type === "images" ? "image/jpg" : "video/mp4";
 
             const imageRef = firebase
                 .storage()
