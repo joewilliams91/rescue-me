@@ -112,7 +112,7 @@ class AddDog extends React.Component {
     const newDog = dogsCollection.doc();
     const newDogId = newDog.id;
     const centreName = this.props.user.name || this.props.user.d.name;
-    centreDoc.update({ ["availableDogs." + newDogId]: { name, photos } });
+    centreDoc.update({ ["availableDogs." + newDogId]: { name, photos, id: newDogId } });
     newDog.set({
       coordinates: new firebase.firestore.GeoPoint(
         coordinates[0],
@@ -130,7 +130,8 @@ class AddDog extends React.Component {
       size: size,
       breed: breed,
       photos: photos,
-      videos: videos
+      videos: videos,
+      id: newDog.id
     });
   };
   render() {

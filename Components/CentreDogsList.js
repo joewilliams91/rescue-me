@@ -92,7 +92,7 @@ class CentreDogsList extends Component {
           <View style={styles.column}>
             {availableDogs.map(dog => {
               return (
-                <View style={styles.row}>
+                <View key={dog.dogId} style={styles.row}>
                   <View>
                     <Image source={{ uri: dog.image }} style={styles.image} />
                   </View>
@@ -138,6 +138,7 @@ class CentreDogsList extends Component {
 
         for (let dog in availableDogs) {
           const list = {};
+          console.log(availableDogs[dog]);
           list.dogId = availableDogs[dog].id;
           list.name = availableDogs[dog].name;
           list.image = availableDogs[dog].photos[0];
