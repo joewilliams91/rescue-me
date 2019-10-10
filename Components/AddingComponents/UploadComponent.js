@@ -94,8 +94,6 @@ export default class UploadComponent extends React.Component {
           mediaType === "images"
             ? this.props.addToPhotoArray(url)
             : this.props.addToVideoArray(url);
-          console.log(url);
-          console.log("File uploaded");
         })
         .then(() => {
           this.setState({ uploading: false });
@@ -168,7 +166,6 @@ export default class UploadComponent extends React.Component {
           return imageRef.getDownloadURL();
         })
         .then(url => {
-          // console.log(url)
           blob.close();
           resolve(url);
         })

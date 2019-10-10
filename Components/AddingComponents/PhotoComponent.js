@@ -73,9 +73,7 @@ export default class PhotoComponent extends React.Component {
       const name = uuid();
       const folder = this.props.navigation.state.params.user;
       const file = type === "images" ? "jpg" : "mp4";
-      console.log(file)
       const contentType = type === "images" ? "image/jpg" : "video/mp4";
-      // console.log(contentType)
       const imageRef = firebase
         .storage()
         .ref(`${folder}`)
@@ -89,7 +87,6 @@ export default class PhotoComponent extends React.Component {
           return imageRef.getDownloadURL();
         })
         .then(url => {
-          // console.log(url)
           blob.close();
           resolve(url);
         })
@@ -156,8 +153,6 @@ export default class PhotoComponent extends React.Component {
       })
       .then(url => {
         this.props.navigation.state.params.addToVideoArray(url);
-        console.log(url);
-        console.log("File uploaded");
       })
       .then(() => {
         this.setState({ uploading: false })
@@ -226,7 +221,6 @@ export default class PhotoComponent extends React.Component {
                   name="md-reverse-camera"
                   type="ionicon"
                   color="white"
-                // style={{ alignSelf: 'center'}}
                 />
               </TouchableOpacity>
               <TouchableOpacity

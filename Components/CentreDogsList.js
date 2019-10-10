@@ -138,7 +138,6 @@ class CentreDogsList extends Component {
 
         for (let dog in availableDogs) {
           const list = {};
-          console.log(availableDogs[dog]);
           list.dogId = availableDogs[dog].id;
           list.name = availableDogs[dog].name;
           list.image = availableDogs[dog].photos[0];

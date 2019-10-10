@@ -128,7 +128,6 @@ class Register extends React.Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.user !== prevProps.user) {
-      console.log(this.props.user, "-----did update ");
       this.setState({ userId: this.props.user.id });
     }
   }

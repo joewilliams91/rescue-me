@@ -80,7 +80,6 @@ class LikedDogsList extends Component {
         }
       });
     } catch (e) {
-      console.log(e);
     }
   };
 

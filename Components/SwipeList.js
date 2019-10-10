@@ -56,14 +56,9 @@ class SwipeList extends React.Component {
     headerTitle: <HeaderLikedList />
   };
 
-  componentDidUpdate() {
-    console.log("<-- Component Updated");
-  }
-
   currentDog = {};
 
   storeToLikedList(dog) {
-    console.log(dog, "------dog")
     this.setState(
       currentState => {
         const newDog = dog.id;
@@ -82,10 +77,10 @@ class SwipeList extends React.Component {
         const userToUpdate = usersCollection
           .doc(currentUserID)
           .update({ likedDogs: likedDogs })
-          .then(() => {
-            console.log("Added to liked list");
-          })
-          .catch(console.log("Not added to liked list"));
+          // .then(() => {
+          //   console.log("Added to liked list");
+          // })
+          // .catch(console.log("Not added to liked list"));
       }
     );
   }
@@ -158,21 +153,15 @@ class SwipeList extends React.Component {
     });
   };
 
-  // The SWIPE animations are set up on component did mount
   componentDidMount() {
     this.PanResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderMove: (evt, gestureState) => {
         this.position.setValue({ x: gestureState.dx, y: gestureState.dy });
-        console.log("<== The Card has been picked up");
-      }, //*************/  This part listens for when a card has been touched, and works instantly, its keep a track of where on the screen the finger is with gesture state
+      }, 
       onPanResponderRelease: (evt, gestureState) => {
-        //*************/  This part listens for when a card has been released, and works instantly
-        console.log("<==== Card has been released");
         if (gestureState.dx > 120) {
-          //*************/  This checks the figure of gesturestate on release, and if it's on a certain side of the screen, runs the animation function, this works quickly
           Animated.timing(
-            // actual animation
             this.position,
             {
               toValue: {
@@ -181,26 +170,19 @@ class SwipeList extends React.Component {
                 duration: 0.1
               }
             },
-            console.log("<======  Just before the start part of the animation")
           ).start(() => {
-            //*************/ This section is where it starts getting slow
-            console.log("<<======== Inside the start");
             this.storeToLikedList(this.currentDog);
             const newArray = [...this.state.dogs];
-            console.log(newArray, "<------- newarray");
             this.setState(
-              //*************/ I believe its this triggering of re-render and the time it takes for the render to happen that causes the delay
               currentState => ({
                 currentIndex: currentState.currentIndex + 1
               }),
               () => {
                 this.position.setValue({ x: 0, y: 0 });
-                console.log("<========== Swiped Right"); // Swipe righty mctighty
               }
             );
           });
         } else if (gestureState.dx < -120) {
-          // Swipe left - dislike
           Animated.timing(this.position, {
             toValue: {
               x: -SCREEN_WIDTH - 200,
@@ -213,7 +195,6 @@ class SwipeList extends React.Component {
             });
           });
         } else if (gestureState.dy < -300) {
-          // Swipe up - Superlike
           Animated.duration(this.position, {
             toValue: {
               y: -SCREEN_HEIGHT - 200,
@@ -299,14 +280,12 @@ class SwipeList extends React.Component {
   render() {
     const { currentUser, dogs, isLoading, currentIndex } = this.state;
     if (isLoading) {
-      console.log("isloading");
       return (
         <View style={[styles.loadingContainer, styles.loadingHorizontal]}>
           <ActivityIndicator size="large" color="#e64664" />
         </View>
       );
     } else {
-      console.log("<---- Inside our render");
       return (
         <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
           <View style={{ alignItems: "center" }}>
@@ -316,10 +295,6 @@ class SwipeList extends React.Component {
                   return null;
                 } else if (i == currentIndex) {
                   this.currentDog = dog;
-
-                  console.log(
-                    "<-------- Inside the else statement that returns the TOP card"
-                  );
                   return (
                     <Animated.View
                       {...this.PanResponder.panHandlers}
@@ -509,7 +484,6 @@ class SwipeList extends React.Component {
               .reverse()}
           </View>
           <View>
-            {console.log("THIS>>>>>>>>", this.currentDog)}
             <FooterSwipe
               swipeLeft={this.swipeLeft}
               swipeRight={this.swipeRight}

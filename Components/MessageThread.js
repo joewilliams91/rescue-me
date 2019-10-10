@@ -64,7 +64,7 @@ class MessageThread extends Component {
         .collection("messages")
         .add(message)
         .catch(error => {
-          console.log(error);
+          alert("Message could not be sent")
         });
     }
   };

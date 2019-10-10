@@ -78,7 +78,6 @@ class AddDog extends React.Component {
     });
   };
   componentDidMount() {
-    console.log(this.props.user.type)
     this.setState({
       centreId: this.props.user.id,
       userType: this.props.user.type,

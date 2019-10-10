@@ -59,7 +59,6 @@ class RescueCentreDogProfile extends React.Component {
           videos
         } = dog.data();
 
-        console.log(photos)
 
         this.setState({
           id,
@@ -90,9 +89,9 @@ class RescueCentreDogProfile extends React.Component {
             photos: photos
           })
           .then(() => {
-            console.log("Update successful");
+            alert("Update successful");
           })
-          .catch(console.log("Update unsuccessful"));
+          .catch(alert("Update unsuccessful"));
       }
     );
   };
@@ -114,9 +113,9 @@ class RescueCentreDogProfile extends React.Component {
             videos: videos
           })
           .then(() => {
-            console.log("Update successful");
+            alert("Update successful");
           })
-          .catch(console.log("Update unsuccessful"));
+          .catch(alert("Update unsuccessful"));
       }
     );
   };
@@ -147,9 +146,9 @@ class RescueCentreDogProfile extends React.Component {
         [type]: updateDetail
       })
       .then(() => {
-        console.log("Update successful");
+        alert("Update successful");
       })
-      .catch(console.log("Update unsuccessful"));
+      .catch(alert("Update unsuccessful"));
   };
 
   deleteDog = () =>{
@@ -167,10 +166,10 @@ class RescueCentreDogProfile extends React.Component {
            availableDogs: availableDogs
          })
          .then(() => {
-           console.log("Delete successful");
+           alert("Delete successful");
            this.props.navigation.navigate("CentreDogsList")
          })
-         .catch(console.log("Delete unsuccessful"));
+         .catch(alert("Delete unsuccessful"));
 
      })
   }

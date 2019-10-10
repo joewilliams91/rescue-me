@@ -112,7 +112,6 @@ class UserProfile extends React.Component {
 
   componentDidMount() {
     // const { id } = this.props.navigation.state.params;
-    // console.log(id);
     this.PanResponder = PanResponder.create({
       onStartShouldSetPanResponder: (event, gestureState) => true,
       onStartShouldSetPanResponderCapture: (event, gestureState) => true,
