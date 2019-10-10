@@ -1,20 +1,28 @@
 import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, Alert, ActivityIndicator, Dimensions } from "react-native";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
+import { withNavigation } from 'react-navigation';
+import { Icon } from 'react-native-elements';
 import * as firebase from "firebase/app";
 import "firebase/storage";
+
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+const SCREEN_WIDTH = Dimensions.get("window").width;
+
 export default class PhotoComponent extends React.Component {
   state = {
     captures: [],
     capturing: null,
     hasCameraPermission: null,
     type: Camera.Constants.Type.front,
-    flashMode: Camera.Constants.FlashMode.off
-
+    flashMode: Camera.Constants.FlashMode.off,
+    uploading: false,
+    recording: false
   };
 
   async componentDidMount() {
+
     const camera = await Permissions.askAsync(Permissions.CAMERA);
     const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
     const hasCameraPermission =
@@ -27,11 +35,11 @@ export default class PhotoComponent extends React.Component {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
 
-      xhr.onload = function() {
+      xhr.onload = function () {
         resolve(xhr.response);
       };
 
-      xhr.onerror = function() {
+      xhr.onerror = function () {
         reject(new Error("uriToBlob failed"));
       };
 
@@ -63,9 +71,11 @@ export default class PhotoComponent extends React.Component {
       }
 
       const name = uuid();
-      const folder = this.props.user;
+      const folder = this.props.navigation.state.params.user;
       const file = type === "images" ? "jpg" : "mp4";
+      console.log(file)
       const contentType = type === "images" ? "image/jpg" : "video/mp4";
+      // console.log(contentType)
       const imageRef = firebase
         .storage()
         .ref(`${folder}`)
@@ -79,6 +89,7 @@ export default class PhotoComponent extends React.Component {
           return imageRef.getDownloadURL();
         })
         .then(url => {
+          // console.log(url)
           blob.close();
           resolve(url);
         })
@@ -95,7 +106,7 @@ export default class PhotoComponent extends React.Component {
   handleCaptureOut() {
     if (this.state.capturing) {
       this.camera.stopRecording();
-      this.setState({ capturing: false });
+      this.setState({ capturing: false, recording: false });
     }
   }
 
@@ -103,6 +114,7 @@ export default class PhotoComponent extends React.Component {
     const photoData = await this.camera
       .takePictureAsync()
       .then(photo => {
+        this.setState({ uploading: true })
         const { height, width, type, uri } = photo;
         return this.uriToBlob(uri);
       })
@@ -110,9 +122,17 @@ export default class PhotoComponent extends React.Component {
         return this.uploadToFirebase(blob, "images");
       })
       .then(url => {
-        this.props.addToPhotoArray(url);
-        console.log(url);
-        console.log("File uploaded");
+        this.props.navigation.state.params.addToPhotoArray(url);
+      })
+      .then(() => {
+        this.setState({ uploading: false })
+        Alert.alert(
+          'Photo uploaded',
+          'Click OK to go back',
+          [
+            { text: 'OK', onPress: () => this.props.navigation.goBack() }
+          ]
+        )
       })
       .catch(error => {
         throw error;
@@ -120,12 +140,14 @@ export default class PhotoComponent extends React.Component {
   }
 
   async handleLongCapture() {
+    this.setState({ recording: true })
     const options = {
       quality: Camera.Constants.VideoQuality["480p"]
     };
     const videoData = await this.camera
       .recordAsync(options)
       .then(photo => {
+        this.setState({ uploading: true })
         const { height, width, type, uri } = photo;
         return this.uriToBlob(uri);
       })
@@ -133,17 +155,27 @@ export default class PhotoComponent extends React.Component {
         return this.uploadToFirebase(blob, "videos");
       })
       .then(url => {
-        this.props.addToVideoArray(url);
+        this.props.navigation.state.params.addToVideoArray(url);
         console.log(url);
         console.log("File uploaded");
+      })
+      .then(() => {
+        this.setState({ uploading: false })
+        Alert.alert(
+          'Video uploaded',
+          'Click OK to go back',
+          [
+            { text: 'OK', onPress: () => this.props.navigation.goBack() }
+          ]
+        )
       })
       .catch(error => {
         throw error;
       });
-    }
+  }
 
   render() {
-    const { hasCameraPermission } = this.state;
+    const { hasCameraPermission, capturing, recording } = this.state;
     if (hasCameraPermission === null) {
       return <View />;
     } else if (hasCameraPermission === false) {
@@ -151,8 +183,17 @@ export default class PhotoComponent extends React.Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
+          {this.state.uploading &&
+            <View
+              style={{ position: 'absolute', top: SCREEN_HEIGHT / 2 - 30, left: SCREEN_WIDTH / 2 - 10, zIndex: 1000 }}>
+              <ActivityIndicator
+                color="white"
+                style={{ zIndex: 2000 }}
+                size="large" />
+            </View>
+          }
           <Camera
-            style={{ flex: 4, width: 350, height: 450, marginBottom: 80 }}
+            style={{ flex: 4 }}
             ref={ref => {
               this.camera = ref;
             }}
@@ -167,9 +208,9 @@ export default class PhotoComponent extends React.Component {
             >
               <TouchableOpacity
                 style={{
-                  flex: 0.1,
-                  alignSelf: "flex-end",
-                  alignItems: "center"
+                  position: 'absolute',
+                  bottom: 30,
+                  left: 20
                 }}
                 onPress={() => {
                   this.setState({
@@ -180,27 +221,27 @@ export default class PhotoComponent extends React.Component {
                   });
                 }}
               >
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: "white" }}
-                >
-                  {" "}
-                  Flip{" "}
-                </Text>
+                <Icon
+                  size={40}
+                  name="md-reverse-camera"
+                  type="ionicon"
+                  color="white"
+                // style={{ alignSelf: 'center'}}
+                />
               </TouchableOpacity>
               <TouchableOpacity
+                style={{ position: "absolute", bottom: 25, left: SCREEN_WIDTH / 2 - SCREEN_WIDTH / 13 }}
                 onPressIn={this.handleCaptureIn.bind(this)}
                 onPressOut={this.handleCaptureOut.bind(this)}
-                onLongPress={this.handleLongCapture.bind(this)}
+                onLongPress={this.props.navigation.state.params.userType === "centre" ? this.handleLongCapture.bind(this) : () => { }}
                 onPress={this.handleShortCapture.bind(this)}
               >
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: "white" }}
-                >
-                  {" "}
-                  Snap{" "}
-                </Text>
+                <View
+                style={{ width: 60, borderRadius: 30, height: 60, backgroundColor: recording ? "red": "#c6c6c6", opacity: 0.8, borderWidth: 3, borderColor: "white"}}>
+                </View>
+               
               </TouchableOpacity>
-             </View>
+            </View>
           </Camera>
         </View>
       );
