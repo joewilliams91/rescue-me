@@ -65,19 +65,22 @@ class Login extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" enabled>
+      <KeyboardAvoidingView
+      style={{ flex: 1 }}>
         <LinearGradient
           colors={["#f8789a", "#845efd"]}
           start={[0.1, 1.5]}
           end={[1.2, 0.1]}
           style={styles.gradient}
         >
+          <View
+          style={{ justifyContent: 'flex-end'}}>
           <Image
             style={{
               width: 80,
               height: 80,
               marginBottom: hp("10"),
-              marginTop: hp("20")
+              marginTop: hp("20"),
             }}
             source={require("../assets/images/logo/rescueMe_logo_dog.png")}
           />
@@ -139,7 +142,10 @@ class Login extends React.Component {
               <Text style={styles.signUpbuttonText}>SIGN UP</Text>
             </TouchableOpacity>
           </View>
+          </View>
+          
         </LinearGradient>
+        <View style={{ flex: 1 }} />
       </KeyboardAvoidingView>
     );
   }
