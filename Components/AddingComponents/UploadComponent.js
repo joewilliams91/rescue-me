@@ -9,6 +9,7 @@ import "firebase/storage"
 
 export default class UploadComponent extends React.Component {
     state = {
+        hasUploadPermission: true,
         uploading: false
     }
 
@@ -61,7 +62,9 @@ export default class UploadComponent extends React.Component {
     getPermissionAsync = async () => {
         if (Constants.platform.ios) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-            if (status !== 'granted') {
+            if (status === 'granted') {
+                this.setState({ hasUploadPermission: true })
+            } else {
                 alert('Permission required to upload photo')
             }
         }
@@ -69,37 +72,43 @@ export default class UploadComponent extends React.Component {
 
 
     pickMedia = mediaType => {
-        return ImagePicker.launchImageLibraryAsync({
-            mediaTypes: mediaType === "images" ? ImagePicker.MediaTypeOptions.Images : ImagePicker.MediaTypeOptions.Videos
-        }).then((result) => {
-            if (!result.cancelled) {
-                this.setState({ uploading: true })
-                const uri = result.uri
-                return this.uriToBlob(uri)
-            }
-        })
-            .then(blob => {
-                return this.uploadToFirebase(blob, `${mediaType}`)
+        if (Constants.platform.ios && !this.state.hasUploadPermission) {
+            this.getPermissionAsync();
+        }
+        else {
+            return ImagePicker.launchImageLibraryAsync({
+                mediaTypes: mediaType === "images" ? ImagePicker.MediaTypeOptions.Images : ImagePicker.MediaTypeOptions.Videos
+            }).then((result) => {
+                if (!result.cancelled) {
+                    this.setState({ uploading: true })
+                    const uri = result.uri
+                    return this.uriToBlob(uri)
+                }
             })
-            .then(url => {
-                mediaType === "images" ?
-                    this.props.addToPhotoArray(url) : this.props.addToVideoArray(url)
-                console.log(url);
-                console.log("File uploaded")
-            })
-            .then(() => {
-                this.setState({ uploading: false })
-                Alert.alert(
-                    `${mediaType.slice(0, mediaType.length - 1)} uploaded`,
-                    'Click OK to go back',
-                    [
-                        { text: 'OK', onPress: () => { } }
-                    ]
-                )
-            })
-            .catch(error => {
-                throw error;
-            })
+                .then(blob => {
+                    return this.uploadToFirebase(blob, `${mediaType}`)
+                })
+                .then(url => {
+                    mediaType === "images" ?
+                        this.props.addToPhotoArray(url) : this.props.addToVideoArray(url)
+                    console.log(url);
+                    console.log("File uploaded")
+                })
+                .then(() => {
+                    this.setState({ uploading: false })
+                    Alert.alert(
+                        `${mediaType.slice(0, mediaType.length - 1)} uploaded`,
+                        'Click OK to go back',
+                        [
+                            { text: 'OK', onPress: () => { } }
+                        ]
+                    )
+                })
+                .catch(error => {
+                    throw error;
+                })
+        }
+       
     };
 
     uriToBlob = uri => {
