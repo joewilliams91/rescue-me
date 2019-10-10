@@ -10,7 +10,9 @@ import {
   Button
 } from "react-native";
 import { Video } from "expo-av";
-import PhotoComponent from "../AddingComponents/PhotoComponent";
+import { Icon } from 'react-native-elements';
+import UploadComponent from "../AddingComponents/UploadComponent";
+import { withNavigation } from 'react-navigation';
 
 export default class UpdatePhotoComponent extends React.Component {
   state = {
@@ -25,7 +27,7 @@ export default class UpdatePhotoComponent extends React.Component {
   };
 
   render() {
-    const { photos, videos, addToPhotoArray, addToVideoArray } = this.props;
+    const { photos, videos, addToPhotoArray, addToVideoArray, centreId } = this.props;
     const { edit } = this.state;
     return (
       <View>
@@ -38,7 +40,7 @@ export default class UpdatePhotoComponent extends React.Component {
             justifyContent: "space-around"
           }}
         >
-          {photos.map(photo => {
+          {photos && photos.map(photo => {
             return (
               <Image
                 style={{ width: 113, height: 113, borderRadius: 5, margin: 10 }}
@@ -55,31 +57,66 @@ export default class UpdatePhotoComponent extends React.Component {
             justifyContent: "space-around"
           }}
         >
-          {videos.map(video => {
+          {videos && videos.map(video => {
             return (
               <Video
-                style={{ width: 113, height: 113, borderRadius: 5, margin: 10 }}
+              rate={1.0}
+              volume={1.0}
+              isMuted={false}
+              resizeMode="cover"
+              useNativeControls
+              style={{ width: 300, height: 200, borderRadius: 20, marginBottom: 10 }}
                 source={{ uri: video }}
               />
             );
           })}
         </View>
+        <Text style={styles.guideMessage}>
+            Upload new pictures or videos here!
+          </Text>  
+        <View
+          style={{ alignSelf: 'center', flexDirection: 'row' }}
+          >
+            <View 
+            style={{ margin: 15 }}>
+            <Icon 
+          size={50}
+          style={{ flex: 1 }}
+          name="camera"
+          type="font-awesome"
+          color="white"
+          onPress={() => this.props.navigation.navigate("PhotoComponent", {
+            user: centreId,
+            userType: "centre",
+            addToPhotoArray,
+            addToVideoArray
+          })}
+          />
+            </View>
+         
+          <UploadComponent
+          userType="centre"
+          addToVideoArray={addToVideoArray}
+          addToPhotoArray={addToPhotoArray}
+          user={centreId}
+          style={{ flex: 1, margin: 15 }} />
+          </View>
 
         <View style={{flexDirection: "row", justifyContent: "center"}}>
-          {edit && (
+          {/* {edit && (
           <PhotoComponent
             addToVideoArray={addToVideoArray}
             addToPhotoArray={addToPhotoArray}
           />
-        )}
-        <TouchableOpacity
+        )} */}
+        {/* <TouchableOpacity
           style={styles.signMeUpbutton}
           onPress={this.toggleEdit}
         >
           <Text style={styles.signMeUpbuttonText}>
             {edit ? "Done" : "Add new media"}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         </View>
         
       </View>
@@ -154,5 +191,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
     fontFamily: "poppins-semibold"
-  }
+  },
+  guideMessage: {
+    padding: 20,
+    textAlign: "center",
+    color: "white",
+    fontSize: 18,
+    fontFamily: "poppins-regular"
+  },
 });

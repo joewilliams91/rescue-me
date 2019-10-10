@@ -315,18 +315,20 @@ class DogProfile extends React.Component {
             </View>
 
             <View style={{ alignItems: "center", paddingBottom: 30 }}>
-              <Video
+              {dog.videos && dog.videos.map(video =>{
+                return  <Video
                 source={{
-                  uri:
-                    "https://firebasestorage.googleapis.com/v0/b/rescuemetest-4a629.appspot.com/o/videos%2FVID-20190918-WA0001.mp4?alt=media&token=4901ea2a-fd0c-4065-ac5d-30ac724b0258"
+                  uri: video
                 }}
                 rate={1.0}
                 volume={1.0}
                 isMuted={false}
                 resizeMode="cover"
                 useNativeControls
-                style={{ width: 300, height: 200, borderRadius: 20 }}
+                style={{ width: 300, height: 200, borderRadius: 20, marginBottom: 10 }}
               />
+              })}
+             
             </View>
             <View style={styles.donationContainer}>
               <Text
@@ -399,6 +401,7 @@ class DogProfile extends React.Component {
                   }
                 />
                 <TouchableOpacity
+                  disabled={this.state.input.length === 0}
                   style={styles.customDonateButton}
                   onPress={() => {
                     this.props.navigation.navigate("Donations", {
