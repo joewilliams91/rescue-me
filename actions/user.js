@@ -86,7 +86,7 @@ export const login = () => {
         email,
         password
       );
-
+      console.log(email, response.user.uid);
       dispatch(getUser(response.user.uid));
     } catch (e) {
       alert(e);
@@ -111,6 +111,8 @@ export const getUser = (uid, type) => {
               .get();
 
       const fetchedUser = { ...user.data(), id: uid, type };
+
+      console.log(fetchedUser);
 
       dispatch({ type: LOGIN, payload: fetchedUser });
     } catch (e) {

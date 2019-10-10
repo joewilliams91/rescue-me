@@ -87,7 +87,7 @@ class SwipeList extends React.Component {
 
   position = new Animated.ValueXY();
   rotate = this.position.x.interpolate({
-    inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+    inputRange: [-SCREEN_WIDTH / 1, 0, SCREEN_WIDTH / 2],
     outputRange: ["-30deg", "0deg", "10deg"],
     extrapolate: "clamp"
   });
@@ -100,6 +100,7 @@ class SwipeList extends React.Component {
       ...this.position.getTranslateTransform()
     ]
   };
+
   likedOpacity = this.position.x.interpolate({
     inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
     outputRange: [0, 0, 5],
@@ -117,8 +118,8 @@ class SwipeList extends React.Component {
   });
 
   swipeLeft = () => {
-    Animated.spring(this.position, {
-      toValue: { x: -SCREEN_WIDTH - 200, y: SCREEN_HEIGHT + 100 }
+    Animated.timing(this.position, {
+      toValue: { x: -SCREEN_WIDTH - 200, y: SCREEN_HEIGHT + 100, duration: 0.5 }
     }).start(() => {
       this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
         this.position.setValue({ x: 0, y: 0 });
@@ -127,8 +128,8 @@ class SwipeList extends React.Component {
   };
 
   swipeRight = () => {
-    Animated.spring(this.position, {
-      toValue: { x: SCREEN_WIDTH + 150, y: SCREEN_HEIGHT + 100 }
+    Animated.timing(this.position, {
+      toValue: { x: SCREEN_WIDTH + 100, y: SCREEN_HEIGHT + 100, duration: 0.5 }
     }).start(() => {
       this.storeToLikedList(this.currentDog);
       this.setState(
@@ -143,8 +144,8 @@ class SwipeList extends React.Component {
   };
 
   superLike = () => {
-    Animated.spring(this.position, {
-      toValue: { y: -SCREEN_HEIGHT - 200, x: SCREEN_WIDTH + 10 }
+    Animated.timing(this.position, {
+      toValue: { y: -SCREEN_HEIGHT - 200, x: SCREEN_WIDTH + 10, duration: 0.5 }
     }).start(() => {
       this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
         this.position.setValue({ x: 0, y: 0 });
@@ -165,17 +166,23 @@ class SwipeList extends React.Component {
         console.log("<==== Card has been released");
         if (gestureState.dx > 120) {
           //*************/  This checks the figure of gesturestate on release, and if it's on a certain side of the screen, runs the animation function, this works quickly
-          Animated.spring(
+          Animated.timing(
             // actual animation
             this.position,
             {
-              toValue: { x: SCREEN_WIDTH + 150, y: gestureState.dy }
+              toValue: {
+                x: SCREEN_WIDTH + 150,
+                y: gestureState.dy,
+                duration: 0.1
+              }
             },
             console.log("<======  Just before the start part of the animation")
           ).start(() => {
             //*************/ This section is where it starts getting slow
             console.log("<<======== Inside the start");
             this.storeToLikedList(this.currentDog);
+            const newArray = [...this.state.dogs];
+            console.log(newArray, "<------- newarray");
             this.setState(
               //*************/ I believe its this triggering of re-render and the time it takes for the render to happen that causes the delay
               currentState => ({
@@ -189,8 +196,12 @@ class SwipeList extends React.Component {
           });
         } else if (gestureState.dx < -120) {
           // Swipe left - dislike
-          Animated.spring(this.position, {
-            toValue: { x: -SCREEN_WIDTH - 200, y: gestureState.dy }
+          Animated.timing(this.position, {
+            toValue: {
+              x: -SCREEN_WIDTH - 200,
+              y: gestureState.dy,
+              duration: 0.5
+            }
           }).start(() => {
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
@@ -198,8 +209,12 @@ class SwipeList extends React.Component {
           });
         } else if (gestureState.dy < -300) {
           // Swipe up - Superlike
-          Animated.spring(this.position, {
-            toValue: { y: -SCREEN_HEIGHT - 200, x: gestureState.dx }
+          Animated.duration(this.position, {
+            toValue: {
+              y: -SCREEN_HEIGHT - 200,
+              x: gestureState.dx,
+              duration: 0.5
+            }
           }).start(() => {
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });

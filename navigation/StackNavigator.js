@@ -79,9 +79,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-
     initialRouteName: "SplashPage"
-
   }
 );
 
