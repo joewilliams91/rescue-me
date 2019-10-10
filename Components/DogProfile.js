@@ -185,8 +185,7 @@ class DogProfile extends React.Component {
             {
               height: hp("100"),
               width: SCREEN_WIDTH,
-              backgroundColor: "#f5f5f5",
-              borderWidth: 0
+              backgroundColor: "#f5f5f5"
             }
           ]}
         >
