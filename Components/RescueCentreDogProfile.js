@@ -44,7 +44,7 @@ class RescueCentreDogProfile extends React.Component {
 
   componentDidMount() {
     // const { id } = this.props.navigation.state.params;
-    const id = "jLUAzKxfLX2IFFS0H86k";
+    const id = "DUS2SbN2Vd9SN5pxGxg2";
 
     dogsCollection
       .doc(id)
@@ -207,6 +207,7 @@ class RescueCentreDogProfile extends React.Component {
               addToVideoArray={this.addToVideoArray}
               photos={photos}
               videos={videos}
+              centreId={this.props.user.id}
             />
             <Text style={styles.guideMessage}>Description: </Text>
             <ViewDescriptionComponent
