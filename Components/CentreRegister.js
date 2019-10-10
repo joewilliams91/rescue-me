@@ -40,7 +40,7 @@ class CentreRegister extends React.Component {
   };
   getCoordinates = event => {
     const postcode = event.nativeEvent.text.replace(/ /g, "");
-    if (/\w{1,2}\d{2,3}\w{2}/.test(postcode)) {
+    try {
       fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=AIzaSyA0NPRN93V8yRyOeg4IPwPuy-qQAXDBf2Q`
       )
@@ -54,7 +54,9 @@ class CentreRegister extends React.Component {
         .then(coordinates => {
           this.props.updateLocation(coordinates);
         })
-        .catch(error => alert(error));
+        .catch(error => alert("Please enter a valid postcode."));
+    } catch (error) {
+      alert("Please enter a valid postcode.");
     }
   };
   componentDidUpdate(prevProps) {

@@ -68,7 +68,6 @@ const StackNavigator = createStackNavigator(
     RescueCentreDogProfile: {
       screen: RescueCentreDogProfile
     },
-
     CentreDogsList: {
       screen: CentreDogsList
     },
