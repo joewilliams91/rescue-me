@@ -56,7 +56,7 @@ export const signup = () => {
       try{
         /.{6,}/.test(password)
       } catch(e){
-        alert("Please enter a passwork of at least six characters")
+        alert("Please enter a password of at least six characters")
       }      
 
       const response = await Firebase.auth().createUserWithEmailAndPassword(
