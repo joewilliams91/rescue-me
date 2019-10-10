@@ -2,16 +2,15 @@ import React from "react";
 import {
   ActivityIndicator,
   StyleSheet,
-  Platform,
   Image,
   Text,
   View,
-  Animated,
   Dimensions,
   PanResponder,
   Button,
   ScrollView,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -39,7 +38,11 @@ class DogProfile extends React.Component {
   };
 
   static navigationOptions = {
-    headerTransparent: true,
+    headerStyle: {
+      backgroundColor: "#f5f5f5",
+      borderBottomWidth: 0,
+      height: hp("10")
+    },
     headerTintColor: "#6f6f6f",
     headerRight: <HeaderMessagesInbox />,
     headerTitle: <HeaderLikedList />
@@ -84,10 +87,10 @@ class DogProfile extends React.Component {
     const { goodWithChildren } = this.state.dog;
     let statement = null;
     switch (goodWithChildren) {
-      case true:
+      case "true":
         statement = "Good with children";
         break;
-      case false:
+      case "false":
         statement = "Uncomfortable with children";
         break;
     }
@@ -114,11 +117,13 @@ class DogProfile extends React.Component {
     const { goodWithOtherDogs } = this.state.dog;
     let statement = null;
     switch (goodWithOtherDogs) {
-      case true:
+      case "true":
         statement = "Good with Dogs";
+
         break;
-      case false:
+      case "false":
         statement = "Not so good with dogs";
+
         break;
     }
     return statement;
@@ -143,7 +148,7 @@ class DogProfile extends React.Component {
     });
     dogsCollection
       // .doc(id.replace(/ /g, ""))
-      .doc("KbGiuJ9zrt7g6qESEbyb")
+      .doc("DUS2SbN2Vd9SN5pxGxg2")
       .get()
       .then(dog => {
         const dogData = dog.data();
@@ -160,6 +165,7 @@ class DogProfile extends React.Component {
       }
     });
   };
+
   render() {
     const { dog, isLoading, i } = this.state;
     const { goBack } = this.props.navigation;
@@ -173,158 +179,251 @@ class DogProfile extends React.Component {
       const barWidth = SCREEN_WIDTH * 0.8;
       return (
         <ScrollView
-          {...this.PanResponder.panHandlers}
           key={dog.id}
+          contentContainerStyle={{ alignItems: "center" }}
           style={[
             {
-              height: SCREEN_HEIGHT - 210,
+              height: hp("100"),
               width: SCREEN_WIDTH,
-              padding: 20,
-              paddingTop: 50,
-              position: "absolute"
+              backgroundColor: "#f5f5f5"
             }
           ]}
         >
-          <View style={{ flex: 2 }}>
-            <Image
-              style={{
-                flex: 1,
-                height: null,
-                width: null,
-                resizeMode: "cover",
-                borderRadius: 20
-              }}
-              onLayout={event => this.setImageWidth(event)}
-              source={{ uri: dog.photos[i] }}
-            />
-            <View
-              style={{
-                position: "absolute",
-                flex: 1,
-                left: 0.05 * SCREEN_WIDTH
-              }}
-            >
-              <View
-                style={{
-                  position: "absolute",
-                  top: 5,
-                  width: barWidth,
-                  height: 5,
-                  backgroundColor: "#ccc",
-                  overflow: "hidden",
-                  left: 0
-                }}
-              ></View>
-              <View
-                style={{
-                  position: "absolute",
-                  top: 5,
-                  left: (this.state.i * barWidth) / dog.photos.length,
-                  width: barWidth / dog.photos.length,
-                  backgroundColor: "#5294d6",
-                  height: 5,
-                  overflow: "hidden"
-                }}
-              ></View>
-            </View>
-          </View>
-
-          <Text
+          <View
             style={{
-              position: "absolute",
-              bottom: 50,
-              left: 120,
-              zIndex: 1000,
-              color: "white",
-              fontSize: 32,
-              fontWeight: "800"
+              width: wp("90"),
+              borderRadius: 10,
+              backgroundColor: "#fff",
+              marginBottom: hp("1")
             }}
           >
-            {dog.name}
-          </Text>
+            <View style={{ alignItems: "center" }}>
+              <Image
+                {...this.PanResponder.panHandlers}
+                style={{
+                  height: hp("50"),
+                  width: wp("90"),
+                  resizeMode: "cover",
+                  borderRadius: 10,
+                  alignItems: "center"
+                }}
+                onLayout={event => this.setImageWidth(event)}
+                source={{ uri: dog.photos[i] }}
+              />
 
-          <Text>{dog.description}</Text>
-          <View>
-            <Text>{dog.name}</Text>
-            <Text>{dog.gender}</Text>
-            <Text>{dog.description}</Text>
-            <Text>Details</Text>
-            <Text>Breed</Text>
-            <Text>{dog.breed}</Text>
-            <Text>Size</Text>
-            <Text>{this.size()}</Text>
-            <Text>Activity Levels</Text>
-            <Text>{this.activityLevel()}</Text>
-            <Text>Age</Text>
-            <Text>{this.getAge()}</Text>
-            <Text>Good With:</Text>
-            <Text>{this.goodWithKids()}</Text>
-            <Text>{this.goodWithDogs()}</Text>
-            <Button
-              title="Go to Dog Profile"
-              style={{ zIndex: 2000 }}
-              onPress={() => goBack("DogProfile")}
-            ></Button>
+              <View
+                style={{
+                  position: "absolute",
+                  alignItems: "center",
+                  left: wp("5")
+                }}
+              >
+                <View
+                  style={{
+                    position: "absolute",
+                    top: 5,
+                    width: barWidth,
+                    height: 5,
+                    backgroundColor: "#fff",
+                    overflow: "hidden",
+                    opacity: 0.5,
+                    left: 0
+                  }}
+                ></View>
+                <View
+                  style={{
+                    position: "absolute",
+                    top: 5,
+                    left: (this.state.i * barWidth) / dog.photos.length,
+                    width: barWidth / dog.photos.length,
+                    backgroundColor: "#fff",
+                    height: 5,
+                    overflow: "hidden"
+                  }}
+                ></View>
+              </View>
+            </View>
+
+            <View style={{ padding: wp("4") }}>
+              <Text
+                style={{
+                  color: "#a3a3a3",
+                  fontSize: 40,
+                  fontFamily: "poppins-semibold",
+                  marginBottom: 0,
+                  paddingBottom: 0,
+                  lineHeight: 42
+                }}
+              >
+                {dog.name}
+              </Text>
+              <Text
+                style={{
+                  color: "#a3a3a3",
+
+                  fontSize: 25,
+                  lineHeight: 25,
+                  fontFamily: "poppins-regular"
+                }}
+              >
+                {dog.gender}
+              </Text>
+              <Text
+                style={{
+                  color: "#a3a3a3",
+                  fontSize: 20,
+                  fontFamily: "poppins-regular",
+                  paddingBottom: 20
+                }}
+              >
+                {dog.description} {"\n"}ps. You can donate to this pooch's cause
+                below!
+              </Text>
+              <Text
+                style={{
+                  color: "#a3a3a3",
+                  fontSize: 25,
+                  fontFamily: "poppins-semibold"
+                }}
+              >
+                Details
+              </Text>
+              <Text style={styles.detailTitle}>Breed</Text>
+              <Text style={styles.detailDescription}>{dog.breed}</Text>
+              <Text style={styles.detailTitle}>Size</Text>
+              <Text style={styles.detailDescription}>{this.size()}</Text>
+              <Text style={styles.detailTitle}>Activity Levels</Text>
+              <Text style={styles.detailDescription}>
+                {this.activityLevel()}
+              </Text>
+              <Text style={styles.detailTitle}>Age</Text>
+              <Text style={styles.detailDescription}>{this.getAge()}</Text>
+              <Text style={styles.detailTitle}>Good With:</Text>
+              <Text
+                style={{
+                  color: "#a3a3a3",
+                  fontSize: 18,
+                  lineHeight: 19,
+                  fontFamily: "poppins-regular"
+                }}
+              >
+                {this.goodWithKids()}
+              </Text>
+              <Text style={styles.detailDescription}>
+                {this.goodWithDogs()}
+              </Text>
+            </View>
+
+            <View style={{ alignItems: "center", paddingBottom: 30 }}>
+              <Video
+                source={{
+                  uri:
+                    "https://firebasestorage.googleapis.com/v0/b/rescuemetest-4a629.appspot.com/o/videos%2FVID-20190918-WA0001.mp4?alt=media&token=4901ea2a-fd0c-4065-ac5d-30ac724b0258"
+                }}
+                rate={1.0}
+                volume={1.0}
+                isMuted={false}
+                resizeMode="cover"
+                useNativeControls
+                style={{ width: 300, height: 200, borderRadius: 20 }}
+              />
+            </View>
+            <View style={styles.donationContainer}>
+              <Text
+                style={{
+                  color: "#f8789a",
+                  fontSize: 32,
+                  fontFamily: "poppins-bold"
+                }}
+              >
+                Donate!
+              </Text>
+              <Text
+                style={{
+                  color: "#a3a3a3",
+                  textAlign: "center",
+                  fontSize: 18,
+                  lineHeight: 19,
+                  fontFamily: "poppins-regular",
+                  padding: 10
+                }}
+              >
+                Food, Medical, Pawdicures - these doggo's appreciate your
+                generosity, all donations go to your chosen rescue centre!
+              </Text>
+              <View style={styles.donationButtons}>
+                <TouchableOpacity
+                  style={styles.donateButton}
+                  onPress={() =>
+                    this.props.navigation.navigate("Donations", {
+                      amount: 1,
+                      id: dog.centreId
+                    })
+                  }
+                >
+                  <Text style={styles.donateButtonText}>£1</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.donateButton}
+                  onPress={() =>
+                    this.props.navigation.navigate("Donations", {
+                      amount: 2,
+                      id: dog.centreId
+                    })
+                  }
+                >
+                  <Text style={styles.donateButtonText}>£2</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.donateButton}
+                  onPress={() =>
+                    this.props.navigation.navigate("Donations", {
+                      amount: 5,
+                      id: dog.centreId
+                    })
+                  }
+                >
+                  <Text style={styles.donateButtonText}>£5</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.customDonation}>
+                <TextInput
+                  style={styles.customDonationInput}
+                  clearButtonMode="always"
+                  placeholder="Or custom amount here"
+                  value={this.state.input}
+                  keyboardType="number-pad"
+                  onChange={event =>
+                    this.setState({ input: event.nativeEvent.text })
+                  }
+                />
+                <TouchableOpacity
+                  style={styles.customDonateButton}
+                  onPress={() => {
+                    this.props.navigation.navigate("Donations", {
+                      amount: Number(this.state.input).toFixed(2),
+                      id: dog.centreId
+                    });
+                    this.setState({ input: "" });
+                  }}
+                >
+                  <Text style={styles.donateButtonText}>Submit</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
-          <Button
-            title="£1"
-            // style={{ zIndex: 2000 }}
-            onPress={() =>
-              this.props.navigation.navigate("Donations", {
-                amount: 1,
-                id: dog.centreId
-              })
-            }
-          ></Button>
-          <Button
-            title="£2"
-            // style={{ zIndex: 2000 }}
-            onPress={() =>
-              this.props.navigation.navigate("Donations", {
-                amount: 2,
-                id: dog.centreId
-              })
-            }
-          ></Button>
-          <Button
-            title="£5"
-            // style={{ zIndex: 2000 }}
-            onPress={() =>
-              this.props.navigation.navigate("Donations", {
-                amount: 5,
-                id: dog.centreId
-              })
-            }
-          ></Button>
-          <TextInput
-            clearButtonMode="always"
-            placeholder="Other amount"
-            value={this.state.input}
-            keyboardType="number-pad"
-            onChange={event => this.setState({ input: event.nativeEvent.text })}
-          />
-          <Button
-            title="Submit"
-            onPress={() => {
-              this.props.navigation.navigate("Donations", {
-                amount: Number(this.state.input).toFixed(2),
-                id: dog.centreId
-              });
-              this.setState({ input: "" });
-            }}
-          ></Button>
-          <Video
-            source={{
-              uri:
-                "https://firebasestorage.googleapis.com/v0/b/rescuemetest-4a629.appspot.com/o/videos%2FVID-20190918-WA0001.mp4?alt=media&token=4901ea2a-fd0c-4065-ac5d-30ac724b0258"
-            }}
-            rate={1.0}
-            volume={1.0}
-            isMuted={false}
-            resizeMode="cover"
-            useNativeControls
-            style={{ width: 300, height: 300 }}
-          />
+          <View>
+            <Image
+              source={require("../assets/images/logo/rescueMeLogoSmol.png")}
+              style={{
+                width: 40,
+                height: 40,
+                alignSelf: "center",
+                margin: 20
+              }}
+            ></Image>
+          </View>
         </ScrollView>
       );
     }
@@ -332,7 +431,64 @@ class DogProfile extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {}
+  detailTitle: {
+    color: "#a3a3a3",
+    fontSize: 18,
+    lineHeight: 19,
+    fontFamily: "poppins-semibold"
+  },
+  detailDescription: {
+    color: "#a3a3a3",
+    fontSize: 18,
+    lineHeight: 19,
+    fontFamily: "poppins-regular",
+    paddingBottom: 10
+  },
+  donationContainer: {
+    alignSelf: "stretch",
+    alignItems: "center"
+  },
+  donationButtons: {
+    flexDirection: "row"
+  },
+  donateButton: {
+    backgroundColor: "#f8789a",
+    marginBottom: 10,
+    borderRadius: 50,
+    overflow: "hidden",
+    padding: 20,
+    margin: 15,
+    width: 62
+  },
+  donateButtonText: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 17,
+    fontFamily: "poppins-semibold"
+  },
+  customDonation: { alignItems: "center" },
+  customDonationInput: {
+    alignItems: "center",
+    color: "#a3a3a3",
+    marginTop: 25,
+    borderBottomColor: "#c5c6ca",
+    borderBottomWidth: 2,
+    overflow: "hidden",
+    padding: 5,
+    fontSize: 20,
+    textAlign: "left",
+    fontFamily: "poppins-regular",
+    width: 200
+  },
+  customDonateButton: {
+    backgroundColor: "#f8789a",
+    marginBottom: 30,
+    borderRadius: 50,
+    overflow: "hidden",
+    padding: 10,
+    margin: 15,
+    width: 280
+  }
 });
 
 const mapStateToProps = state => ({ ...state });
