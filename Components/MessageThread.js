@@ -19,7 +19,6 @@ class MessageThread extends Component {
 
   componentDidMount() {
     const { messageId, id } = this.props.navigation.state.params;
-    console.log(messageId)
     messagesCollection
       .doc(messageId)
       .collection("messages")

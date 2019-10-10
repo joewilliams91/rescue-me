@@ -4,8 +4,57 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+import Firebase, { db } from "../../config/Firebase";
+const messagesCollection = db.collection("messages");
+const usersCollection = db.collection("users");
 
 class FooterSwipe extends Component {
+  superLike = () => {
+    const { dog } = this.props;
+    this.props.superLike()
+    this.createMessage(dog.centreId, dog.centreName, dog.name, dog.id)
+  };
+
+  createMessage = (centreId, centreName, dogName, dogId) => {
+  
+    const { id } = this.props;
+    
+    const name = this.props.name;
+    ;
+
+    try {
+      const query = messagesCollection
+        .where("centreId", "==", `${centreId}`)
+        .where("user", "==", `${id}`);
+
+      let querySnapshot = query.get().then(dataM => {
+        if (dataM.empty) {
+          const newMessage = messagesCollection.doc();
+          newMessage
+            .set({
+              centreId: centreId,
+              centreName: centreName,
+              dogName: dogName,
+              dogId: dogId,
+              user: id,
+              userName: name,
+              messageId: newMessage.id
+            })
+            .then(() => {
+               this.props.navigate(newMessage.id, id, name);
+              
+            });
+        } else {
+          dataM.forEach(doc => {
+            this.props.navigate(doc.id, id, name);
+          });
+        }
+      });
+    } catch (e) {
+      alert(e);
+    }
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -20,7 +69,7 @@ class FooterSwipe extends Component {
             }}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.superLike()}>
+        <TouchableOpacity onPress={() => this.superLike()}>
           <Image
             source={require("./superLike.png")}
             style={{

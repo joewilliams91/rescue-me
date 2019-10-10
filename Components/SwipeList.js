@@ -59,6 +59,7 @@ class SwipeList extends React.Component {
   currentDog = {};
 
   storeToLikedList(dog) {
+    console.log(dog, "------dog")
     this.setState(
       currentState => {
         const newDog = dog.id;
@@ -274,13 +275,22 @@ class SwipeList extends React.Component {
                   }&lon=${coordinates[1]}&radius=${radiusPref}}`
                 )
                 .then(({ data }) =>
-                  this.setState({ dogs: data.dogs, isLoading: false }, () => {})
+                  this.setState({ dogs: data.dogs, isLoading: false })
                 );
             }
           );
         });
     });
   }
+
+  navigate = (messageId, id, userName) => {
+    this.storeToLikedList(this.currentDog);
+    this.props.navigation.navigate("MessageThread", {
+      messageId,
+      id,
+      userName
+    });
+  };
 
   render() {
     const { currentUser, dogs, isLoading, currentIndex } = this.state;
@@ -302,6 +312,7 @@ class SwipeList extends React.Component {
                   return null;
                 } else if (i == currentIndex) {
                   this.currentDog = dog;
+
                   console.log(
                     "<-------- Inside the else statement that returns the TOP card"
                   );
@@ -494,10 +505,16 @@ class SwipeList extends React.Component {
               .reverse()}
           </View>
           <View>
+            {console.log("THIS>>>>>>>>", this.currentDog)}
             <FooterSwipe
               swipeLeft={this.swipeLeft}
               swipeRight={this.swipeRight}
               superLike={this.superLike}
+              dog={this.currentDog}
+              id={this.state.currentUserID}
+              name={this.props.user.name || this.props.user.d.firstName}
+              navigate={this.navigate}
+              storeToLikedList={this.storeToLikedList}
             />
           </View>
           <View>

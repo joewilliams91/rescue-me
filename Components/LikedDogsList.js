@@ -79,6 +79,8 @@ class LikedDogsList extends Component {
     }
   };
 
+  
+
   componentDidMount() {
     const { id } = this.props.user;
     usersCollection
