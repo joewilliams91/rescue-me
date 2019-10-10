@@ -9,9 +9,11 @@ import {
   TouchableOpacity,
   ScrollView,
   Text,
-  Button
+  Button,
+  View
 } from "react-native";
 import { bindActionCreators } from "redux";
+import { Icon } from 'react-native-elements';
 import { connect } from "react-redux";
 import {
   updateEmail,
@@ -33,8 +35,10 @@ import PhotoComponent from "./AddingComponents/PhotoComponent";
 import RadiusComponent from "./AddingComponents/RadiusComponent";
 import TelephoneComponent from "./AddingComponents/TelephoneComponent";
 import DescriptionComponent from "./AddingComponents/DescriptionComponent";
+import UploadComponent from "./AddingComponents/UploadComponent"
 class Register extends React.Component {
   state = {
+    userType: '',
     userId: "",
     firstName: "",
     surname: "",
@@ -98,8 +102,15 @@ class Register extends React.Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
+        const coordinates = [
+          position.coords.latitude,
+          position.coords.longitude
+        ];
+        this.props.updateLocation(coordinates);
         this.setState({
-          coordinates: [position.coords.latitude, position.coords.longitude]
+          userId: this.props.user.id,
+          userType: this.props.user.type,
+          coordinates
         });
       },
       error => Alert.alert(error.message),
@@ -108,7 +119,7 @@ class Register extends React.Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.user !== prevProps.user) {
-      console.log(this.props.user, "-----did mount ");
+      console.log(this.props.user, "-----did update ");
       this.setState({ userId: this.props.user.id });
     }
   }
@@ -189,7 +200,8 @@ class Register extends React.Component {
       genderOptions,
       radius,
       telephone,
-      description
+      description,
+      userType
     } = this.state;
     return (
       <ScrollView>
@@ -245,11 +257,32 @@ class Register extends React.Component {
           <Text style={styles.guideMessage}>
             Say Cheese! We need a picture for your profile please.
           </Text>
-
-          <PhotoComponent
-            user={userId}
-            addToPhotoArray={this.addToPhotoArray}
+          <View
+          style={{ flexDirection: 'row' }}
+          >
+          <Icon 
+          style={{ flex: 1 }}
+          name="camera"
+          type="font-awesome"
+          color="white"
+          onPress={() => this.props.navigation.navigate("PhotoComponent", {
+            user: userId,
+            userType,
+            addToPhotoArray: this.addToPhotoArray
+          })}
           />
+          <UploadComponent
+          addToPhotoArray={this.addToPhotoArray}
+          user={userId}
+          style={{ flex: 1 }} />
+          </View>
+        
+
+          {/* <PhotoComponent
+            user={userId}
+            userType={userType}
+            addToPhotoArray={this.addToPhotoArray}
+          /> */}
 
           <ActivityLevelRadioComponents
             options={activityOptions}

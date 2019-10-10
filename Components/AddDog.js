@@ -8,6 +8,7 @@ import {
   Text,
   Button
 } from "react-native";
+import { Icon } from 'react-native-elements';
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 import Firebase, { db } from "../config/Firebase.js";
@@ -23,6 +24,7 @@ import GoodWithDogsComponent from "./AddingComponents/GoodWithDogsComponent";
 import GoodWithChildrenComponent from "./AddingComponents/GoodWithChildrenComponent";
 import SizeComponent from "./AddingComponents/SizeComponent";
 import PhotoComponent from "./AddingComponents/PhotoComponent";
+import UploadComponent from "./AddingComponents/UploadComponent";
 class AddDog extends React.Component {
   state = {
     centreId: "",
@@ -76,8 +78,10 @@ class AddDog extends React.Component {
     });
   };
   componentDidMount() {
+    console.log(this.props.user.type)
     this.setState({
       centreId: this.props.user.id,
+      userType: this.props.user.type,
       coordinates: this.props.user.coordinates
     });
   }
@@ -145,6 +149,7 @@ class AddDog extends React.Component {
       goodWithOtherDogs,
       sizeOptions,
       exerciseOptions,
+      userType,
       size
     } = this.state;
     return (
@@ -183,11 +188,33 @@ class AddDog extends React.Component {
           <Text style={styles.guideMessage}>
             Woof woof! We need a pooch portrait please.
           </Text>     
-          <PhotoComponent
-            user={centreId}
-            addToPhotoArray={this.addToPhotoArray}
-            addToVideoArray={this.addToVideoArray}
+          <View
+          style={{ flexDirection: 'row' }}
+          >
+            <View 
+            style={{ margin: 15 }}>
+            <Icon 
+          size={50}
+          style={{ flex: 1 }}
+          name="camera"
+          type="font-awesome"
+          color="white"
+          onPress={() => this.props.navigation.navigate("PhotoComponent", {
+            user: centreId,
+            userType,
+            addToPhotoArray: this.addToPhotoArray,
+            addToVideoArray: this.addToVideoArray
+          })}
           />
+            </View>
+         
+          <UploadComponent
+          userType={userType}
+          addToVideoArray={this.addToVideoArray}
+          addToPhotoArray={this.addToPhotoArray}
+          user={centreId}
+          style={{ flex: 1, margin: 15 }} />
+          </View>
           <Text style={styles.guideMessage}>
             Some users might be looking for a specific gender.
           </Text>

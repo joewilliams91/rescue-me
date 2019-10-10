@@ -15,7 +15,6 @@ const DescriptionComponent = props => {
         style={styles.inputBox}
         multiline={true}
         allowFontScaling={true}
-        clearTextOnFocus={true}
         placeholderTextColor={"#c5c6ca"}
         onChangeText={text => updateDetails("description", text)}
         value={description}

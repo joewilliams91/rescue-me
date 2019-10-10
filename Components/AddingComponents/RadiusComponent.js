@@ -17,7 +17,7 @@ const RadiusComponent = props => {
         placeholderTextColor={"#c5c6ca"}
         maxLength={20}
         onChangeText={number => updateDetails("radius", number)}
-        value={radius}
+        value={radius.toString()}
       />
     </View>
   );
