@@ -1,7 +1,6 @@
 import React from "react";
-import { createSwitchNavigator, createAppContainer } from "react-navigation";
+import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { LinearGradient } from "expo-linear-gradient";
 import Login from "../Components/Login";
 import SignUp from "../Components/SignUp";
 import Register from "../Components/Register";
@@ -16,9 +15,10 @@ import CentreDogsList from "../Components/CentreDogsList";
 import MessageThread from "../Components/MessageThread";
 import RescueCentreDogProfile from "../Components/RescueCentreDogProfile";
 import InboxMessages from "../Components/InboxMessages";
-import CentreDashboard from "../Components/CentreDashboard";
 import PhotoComponent from "../Components/AddingComponents/PhotoComponent";
 import UploadComponent from "../Components/AddingComponents/UploadComponent"
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
+import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
 
 const StackNavigator = createStackNavigator(
   {
@@ -70,10 +70,6 @@ const StackNavigator = createStackNavigator(
     RescueCentreDogProfile: {
       screen: RescueCentreDogProfile
     },
-    CentreDashboard: {
-      screen: CentreDashboard
-    },
-
     CentreDogsList: {
       screen: CentreDogsList
     },
@@ -82,6 +78,12 @@ const StackNavigator = createStackNavigator(
     },
     UploadComponent: {
       screen: UploadComponent
+    },
+    HeaderMessagesInbox: {
+      screen: HeaderMessagesInbox
+    },
+    HeaderLikedList: {
+      screen: HeaderLikedList
     }
   },
   {

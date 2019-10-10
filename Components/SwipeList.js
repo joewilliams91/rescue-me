@@ -8,16 +8,24 @@ import {
   Animated,
   Dimensions,
   PanResponder,
-  Button
+  Button,
+  TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
 import axios from "axios";
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
+import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
+import FooterSwipe from "../Components/FooterComponents/FooterSwipe";
 import firebase from "firebase";
 import Firebase, { db } from "../config/Firebase.js";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+
 const { GeoFirestore } = require("geofirestore");
 const geofirestore = new GeoFirestore(db);
 const usersCollection = geofirestore.collection("users");
-
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -37,12 +45,18 @@ class SwipeList extends React.Component {
     }
   };
 
+  static navigationOptions = {
+    headerTransparent: true,
+    headerTintColor: "#6f6f6f",
+    headerRight: <HeaderMessagesInbox />,
+    headerTitle: <HeaderLikedList />
+  };
+
   componentDidUpdate() {
-    console.log("didupdate");
+    console.log("<-- Component Updated");
   }
 
   currentDog = {};
-  // currentIndex = 0;
 
   storeToLikedList(dog) {
     this.setState(
@@ -64,16 +78,16 @@ class SwipeList extends React.Component {
           .doc(currentUserID)
           .update({ likedDogs: likedDogs })
           .then(() => {
-            console.log("Update to liked list successful");
+            console.log("Added to liked list");
           })
-          .catch(console.log("Update unsuccessful"));
+          .catch(console.log("Not added to liked list"));
       }
     );
   }
 
   position = new Animated.ValueXY();
   rotate = this.position.x.interpolate({
-    inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+    inputRange: [-SCREEN_WIDTH / 1, 0, SCREEN_WIDTH / 2],
     outputRange: ["-30deg", "0deg", "10deg"],
     extrapolate: "clamp"
   });
@@ -86,6 +100,7 @@ class SwipeList extends React.Component {
       ...this.position.getTranslateTransform()
     ]
   };
+
   likedOpacity = this.position.x.interpolate({
     inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
     outputRange: [0, 0, 5],
@@ -98,56 +113,111 @@ class SwipeList extends React.Component {
   });
   superLikeOpacity = this.position.y.interpolate({
     inputRange: [-SCREEN_HEIGHT / 1, 0, SCREEN_HEIGHT / 1],
-    outputRange: [1, 0, 0],
+    outputRange: [3, 0, 0],
     extrapolate: "clamp"
   });
 
+  swipeLeft = () => {
+    Animated.timing(this.position, {
+      toValue: { x: -SCREEN_WIDTH - 200, y: SCREEN_HEIGHT + 100, duration: 0.5 }
+    }).start(() => {
+      this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+        this.position.setValue({ x: 0, y: 0 });
+      });
+    });
+  };
+
+  swipeRight = () => {
+    Animated.timing(this.position, {
+      toValue: { x: SCREEN_WIDTH + 100, y: SCREEN_HEIGHT + 100, duration: 0.5 }
+    }).start(() => {
+      this.storeToLikedList(this.currentDog);
+      this.setState(
+        currentState => ({
+          currentIndex: currentState.currentIndex + 1
+        }),
+        () => {
+          this.position.setValue({ x: 0, y: 0 });
+        }
+      );
+    });
+  };
+
+  superLike = () => {
+    Animated.timing(this.position, {
+      toValue: { y: -SCREEN_HEIGHT - 200, x: SCREEN_WIDTH + 10, duration: 0.5 }
+    }).start(() => {
+      this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+        this.position.setValue({ x: 0, y: 0 });
+      });
+    });
+  };
+
+  // The SWIPE animations are set up on component did mount
   componentDidMount() {
     this.PanResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderMove: (evt, gestureState) => {
         this.position.setValue({ x: gestureState.dx, y: gestureState.dy });
-        console.log("The Card has been picked up");
-      },
+        console.log("<== The Card has been picked up");
+      }, //*************/  This part listens for when a card has been touched, and works instantly, its keep a track of where on the screen the finger is with gesture state
       onPanResponderRelease: (evt, gestureState) => {
-        console.log("Card has been released");
+        //*************/  This part listens for when a card has been released, and works instantly
+        console.log("<==== Card has been released");
         if (gestureState.dx > 120) {
-          Animated.spring(
+          //*************/  This checks the figure of gesturestate on release, and if it's on a certain side of the screen, runs the animation function, this works quickly
+          Animated.timing(
+            // actual animation
             this.position,
             {
-              toValue: { x: SCREEN_WIDTH + 150, y: gestureState.dy }
+              toValue: {
+                x: SCREEN_WIDTH + 150,
+                y: gestureState.dy,
+                duration: 0.1
+              }
             },
-            console.log("<-- Just before the start part of the animation")
+            console.log("<======  Just before the start part of the animation")
           ).start(() => {
+            //*************/ This section is where it starts getting slow
+            console.log("<<======== Inside the start");
             this.storeToLikedList(this.currentDog);
+            const newArray = [...this.state.dogs];
+            console.log(newArray, "<------- newarray");
             this.setState(
+              //*************/ I believe its this triggering of re-render and the time it takes for the render to happen that causes the delay
               currentState => ({
                 currentIndex: currentState.currentIndex + 1
               }),
               () => {
                 this.position.setValue({ x: 0, y: 0 });
-                console.log("<-- Swiped Right - Dog ID"); // Swipe righty mctighty
+                console.log("<========== Swiped Right"); // Swipe righty mctighty
               }
             );
           });
         } else if (gestureState.dx < -120) {
-          Animated.spring(this.position, {
-            toValue: { x: -SCREEN_WIDTH - 200, y: gestureState.dy }
+          // Swipe left - dislike
+          Animated.timing(this.position, {
+            toValue: {
+              x: -SCREEN_WIDTH - 200,
+              y: gestureState.dy,
+              duration: 0.5
+            }
           }).start(() => {
-            // this.currentIndex += 1;
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
-              // console.log(this.dogID, "<-- Swiped Left - Dog ID"); // Swipe left hefty
             });
           });
         } else if (gestureState.dy < -300) {
-          Animated.spring(this.position, {
-            toValue: { y: -SCREEN_HEIGHT - 200, x: gestureState.dx }
+          // Swipe up - Superlike
+          Animated.duration(this.position, {
+            toValue: {
+              y: -SCREEN_HEIGHT - 200,
+              x: gestureState.dx,
+              duration: 0.5
+            }
           }).start(() => {
-            // this.currentIndex += 1;
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 });
-              // console.log(this.dogID, "<-- Superlike - Dog ID"); // swipe uppy super likey
             });
           });
         } else {
@@ -165,7 +235,7 @@ class SwipeList extends React.Component {
       const { currentUserID } = this.state;
 
       usersCollection
-        .doc(currentUserID) // Change the below baxk to currebntUserID IAN
+        .doc(currentUserID)
         .get()
         .then(user => {
           const {
@@ -196,12 +266,6 @@ class SwipeList extends React.Component {
                 hasChildren,
                 hasDogs
               } = this.state.user;
-              console.log(
-                hasChildren,
-                "<-----same answerrs?",
-                this.state.user,
-                "<----------The pissing user"
-              );
 
               return axios
                 .get(
@@ -210,9 +274,7 @@ class SwipeList extends React.Component {
                   }&lon=${coordinates[1]}&radius=${radiusPref}}`
                 )
                 .then(({ data }) =>
-                  this.setState({ dogs: data.dogs, isLoading: false }, () => {
-                    console.log(data.dogs);
-                  })
+                  this.setState({ dogs: data.dogs, isLoading: false }, () => {})
                 );
             }
           );
@@ -230,17 +292,19 @@ class SwipeList extends React.Component {
         </View>
       );
     } else {
-      console.log("Main Content");
+      console.log("<---- Inside our render");
       return (
         <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-          <View style={{ flex: 2, alignItems: "center" }}>
+          <View style={{ alignItems: "center", marginTop: hp("12") }}>
             {dogs
               .map((dog, i) => {
                 if (i < currentIndex) {
                   return null;
                 } else if (i == currentIndex) {
                   this.currentDog = dog;
-                  console.log("Top Card");
+                  console.log(
+                    "<-------- Inside the else statement that returns the TOP card"
+                  );
                   return (
                     <Animated.View
                       {...this.PanResponder.panHandlers}
@@ -249,8 +313,8 @@ class SwipeList extends React.Component {
                         this.rotateAndTranslate,
 
                         {
-                          height: SCREEN_HEIGHT - 250,
-                          width: SCREEN_WIDTH - 20,
+                          height: SCREEN_HEIGHT - hp("30"),
+                          width: SCREEN_WIDTH - wp("5"),
                           padding: 10
                         }
                       ]}
@@ -326,12 +390,12 @@ class SwipeList extends React.Component {
                       <Text
                         style={{
                           position: "absolute",
-                          bottom: 90,
+                          bottom: 25,
                           left: 40,
                           zIndex: 1000,
                           color: "white",
                           fontSize: 40,
-                          fontWeight: "800"
+                          fontFamily: "poppins-black"
                         }}
                       >
                         {dog.name}
@@ -347,24 +411,35 @@ class SwipeList extends React.Component {
                         }}
                         source={{ uri: dog.photos[0] }}
                       />
-                      <Button
+                      <TouchableOpacity
+                        style={styles.signUpbutton}
                         onPress={() =>
                           this.props.navigation.navigate("DogProfile", {
                             id: dog.id
                           })
                         }
-                        title="prof"
-                      ></Button>
+                      >
+                        <Image
+                          style={{
+                            zIndex: 1000,
+                            height: 30,
+                            width: 30,
+                            position: "absolute",
+                            bottom: 10
+                          }}
+                          source={require("../assets/images/profileInfo.png")}
+                        />
+                      </TouchableOpacity>
                     </Animated.View>
                   );
                 } else {
                   return (
-                    <Animated.View
+                    <View
                       key={i}
                       style={[
                         {
-                          height: SCREEN_HEIGHT - 250,
-                          width: SCREEN_WIDTH - 20,
+                          height: SCREEN_HEIGHT - hp("30"),
+                          width: SCREEN_WIDTH - wp("5"),
                           padding: 10,
                           position: "absolute"
                         }
@@ -383,24 +458,59 @@ class SwipeList extends React.Component {
                       <Text
                         style={{
                           position: "absolute",
-                          bottom: 90,
+                          bottom: 25,
                           left: 40,
+                          zIndex: 1000,
                           color: "white",
                           fontSize: 40,
-                          fontWeight: "800"
+                          fontFamily: "poppins-black"
                         }}
                       >
                         {dog.name}
                       </Text>
-                    </Animated.View>
+                      <TouchableOpacity
+                        style={styles.signUpbutton}
+                        onPress={() =>
+                          this.props.navigation.navigate("DogProfile", {
+                            id: dog.id
+                          })
+                        }
+                      >
+                        <Image
+                          style={{
+                            zIndex: 1000,
+                            height: 30,
+                            width: 30,
+                            position: "absolute",
+                            bottom: 10
+                          }}
+                          source={require("../assets/images/profileInfo.png")}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   );
                 }
               })
               .reverse()}
           </View>
-          <View style={{ height: 60 }}></View>
           <View>
-            <Text>Footer must go here</Text>
+            <FooterSwipe
+              swipeLeft={this.swipeLeft}
+              swipeRight={this.swipeRight}
+              superLike={this.superLike}
+            />
+          </View>
+          <View>
+            <Image
+              source={require("../assets/images/logo/rescueMeLogoSmol.png")}
+              style={{
+                width: 40,
+                height: 40,
+                alignSelf: "center",
+                textAlign: "center",
+                margin: 10
+              }}
+            ></Image>
           </View>
         </View>
       );
@@ -420,6 +530,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     padding: 10
+  },
+  signUpbutton: {
+    alignItems: "flex-end",
+    padding: 20,
+    position: "absolute",
+    bottom: 20,
+    right: 30
   }
 });
 

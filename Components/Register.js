@@ -102,10 +102,15 @@ class Register extends React.Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
+        const coordinates = [
+          position.coords.latitude,
+          position.coords.longitude
+        ];
+        this.props.updateLocation(coordinates);
         this.setState({
           userId: this.props.user.id,
           userType: this.props.user.type,
-          coordinates: [position.coords.latitude, position.coords.longitude]
+          coordinates
         });
       },
       error => Alert.alert(error.message),
