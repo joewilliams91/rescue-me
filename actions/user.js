@@ -60,13 +60,13 @@ export const signup = () => {
       }      
 
       const response = await Firebase.auth().createUserWithEmailAndPassword(
-        email,
+        email.trim(),
         password
       );
       if (response.user.uid) {
         const user = {
           id: response.user.uid,
-          email: email,
+          email: email.trim(),
           type: type
         };
 
@@ -83,10 +83,9 @@ export const login = () => {
     try {
       const { email, password } = getState().user;
       const response = await Firebase.auth().signInWithEmailAndPassword(
-        email,
+        email.trim(),
         password
       );
-      console.log(email, response.user.uid);
       dispatch(getUser(response.user.uid));
     } catch (e) {
       alert(e);
@@ -112,7 +111,6 @@ export const getUser = (uid, type) => {
 
       const fetchedUser = { ...user.data(), id: uid, type };
 
-      console.log(fetchedUser);
 
       dispatch({ type: LOGIN, payload: fetchedUser });
     } catch (e) {
