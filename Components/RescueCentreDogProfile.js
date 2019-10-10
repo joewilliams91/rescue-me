@@ -56,9 +56,9 @@ class RescueCentreDogProfile extends React.Component {
           goodWithChildren,
           goodWithOtherDogs,
           exerciseLevel,
-          videos
+          videos,
+          name
         } = dog.data();
-
 
         this.setState({
           id,
@@ -68,7 +68,8 @@ class RescueCentreDogProfile extends React.Component {
           description,
           goodWithChildren,
           goodWithOtherDogs,
-          exerciseLevel
+          exerciseLevel,
+          name
         });
       });
   }
@@ -95,7 +96,6 @@ class RescueCentreDogProfile extends React.Component {
       }
     );
   };
-
 
   addToVideoArray = url => {
     this.setState(
@@ -138,7 +138,7 @@ class RescueCentreDogProfile extends React.Component {
   };
 
   updateDetails = (type, updateDetail) => {
-    const {id} = this.state
+    const { id } = this.state;
     this.setState({ [type]: updateDetail });
     const dogToUpdate = dogsCollection.doc(id);
     dogToUpdate
@@ -151,28 +151,30 @@ class RescueCentreDogProfile extends React.Component {
       .catch(alert("Update unsuccessful"));
   };
 
-  deleteDog = () =>{
-     const { id } = this.state;
-     const centreId = this.props.user.id || this.props.user.d.id
-     const dogDelete = dogsCollection.doc(id).delete()
+  deleteDog = () => {
+    const { id } = this.state;
+    const centreId = this.props.user.id || this.props.user.d.id;
+    const dogDelete = dogsCollection.doc(id).delete();
 
-     const centre = centreCollection.doc(centreId).get().then(data => {
-       const availableDogs = data.availableDogs;
-       delete availableDogs[id]
+    const centre = centreCollection
+      .doc(centreId)
+      .get()
+      .then(data => {
+        const availableDogs = data.availableDogs;
+        delete availableDogs[id];
 
-       const centreToUpdate = centreCollection
-         .doc(centreId)
-         .update({
-           availableDogs: availableDogs
-         })
-         .then(() => {
-           alert("Delete successful");
-           this.props.navigation.navigate("CentreDogsList")
-         })
-         .catch(alert("Delete unsuccessful"));
-
-     })
-  }
+        const centreToUpdate = centreCollection
+          .doc(centreId)
+          .update({
+            availableDogs: availableDogs
+          })
+          .then(() => {
+            alert("Delete successful");
+            this.props.navigation.navigate("CentreDogsList");
+          })
+          .catch(alert("Delete unsuccessful"));
+      });
+  };
 
   render() {
     const {
@@ -184,7 +186,8 @@ class RescueCentreDogProfile extends React.Component {
       exerciseOptions,
       goodWithOptions,
       editDescription,
-      videos
+      videos,
+      name
     } = this.state;
     {
       return (
@@ -195,12 +198,15 @@ class RescueCentreDogProfile extends React.Component {
             end={[1.2, 0.1]}
             style={styles.gradient}
           >
-            <TouchableOpacity style={styles.deleteButton} onPress = {this.deleteDog}>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={this.deleteDog}
+            >
               <Text style={styles.signMeUpbuttonText}>
                 I have found a home !
               </Text>
             </TouchableOpacity>
-            <Text style={styles.guideMessage}>Edit media: </Text>
+            <Text style={styles.guideMessage}>{name} </Text>
             <UpdatePhotoComponent
               addToPhotoArray={this.addToPhotoArray}
               addToVideoArray={this.addToVideoArray}

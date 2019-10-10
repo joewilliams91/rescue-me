@@ -53,7 +53,7 @@ class Login extends React.Component {
             this.props.updateName(firstName || centreName);
             this.props.updateLocation(coords);
             if (this.props.user.type === "user") {
-              this.props.navigation.navigate("SwipeList");
+              this.props.navigation.navigate("InboxMessages");
             } else if (this.props.user.type === "centre") {
               this.props.navigation.navigate("CentreDogsList");
             }

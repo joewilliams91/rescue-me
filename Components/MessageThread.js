@@ -64,7 +64,7 @@ class MessageThread extends Component {
         .collection("messages")
         .add(message)
         .catch(error => {
-          alert("Message could not be sent")
+          alert("Message could not be sent");
         });
     }
   };
@@ -74,10 +74,22 @@ class MessageThread extends Component {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: "#f84d60"
+            backgroundColor: "#f84d60",
+            color: "#fff"
           },
           left: {
-            backgroundColor: "#c6c6c6"
+            backgroundColor: "#c6c6c6",
+            color: "#fffff"
+          }
+        }}
+        textStyle={{
+          left: {
+            color: "white"
+          }
+        }}
+        timeStamp={{
+          left: {
+            color: "white"
           }
         }}
       />
@@ -90,8 +102,6 @@ class MessageThread extends Component {
     const props = this.props.navigation.state.params;
     const { id, userName } = this.props.navigation.state.params;
 
-
-
     if (isLoading) {
       return <Text>Loading...</Text>;
     } else {
@@ -103,7 +113,7 @@ class MessageThread extends Component {
             user={{
               _id: id,
               name: userName
-            }}           
+            }}
             keyboardShouldPersistTaps="never"
             renderBubble={this.renderBubble}
           />
