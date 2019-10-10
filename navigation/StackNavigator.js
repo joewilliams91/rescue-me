@@ -15,11 +15,13 @@ import CentreDogsList from "../Components/CentreDogsList";
 import MessageThread from "../Components/MessageThread";
 import RescueCentreDogProfile from "../Components/RescueCentreDogProfile";
 import InboxMessages from "../Components/InboxMessages";
+
 import PhotoComponent from "../Components/AddingComponents/PhotoComponent";
 import UploadComponent from "../Components/AddingComponents/UploadComponent"
+
 import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
 import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
-
+import UserProfile from "../Components/UserProfile"
 const StackNavigator = createStackNavigator(
   {
     Login: {
@@ -84,10 +86,15 @@ const StackNavigator = createStackNavigator(
     },
     HeaderLikedList: {
       screen: HeaderLikedList
+    },
+    UserProfile: {
+      screen: UserProfile
     }
   },
   {
+
     initialRouteName: "SplashPage"
+
   }
 );
 

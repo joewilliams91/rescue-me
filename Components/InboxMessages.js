@@ -38,16 +38,49 @@ class InboxMessages extends Component {
           {chatRooms.map(chatRoom => {
             return (
               <View>
-                <Text>From:{chatRoom.userName}</Text>
-                <Text>Regarding:{chatRoom.dogName}</Text>
+                <TouchableOpacity
+                  onPress={
+                    this.props.user.type === "centre"
+                      ? this.props.navigation.navigate("UserProfile", {
+                          id: chatRoom.user
+                        })
+                      : () => {}
+                  }
+                >
+                  {" "}
+                  <Text>
+                    From:
+                    {this.props.user.type === "user"
+                      ? chatRoom.centreName
+                      : chatRoom.userName}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={
+                    this.props.user.type === "centre"
+                      ? this.props.navigation.navigate(
+                          "RescueCentreDogProfile",
+                          {
+                            id: chatRoom.dogId
+                          }
+                        )
+                      : this.props.navigation.navigate("DogProfile", {
+                          id: chatRoom.dogId
+                        })
+                  }
+                >
+                  <Text>Regarding:{chatRoom.dogName}</Text>
+                </TouchableOpacity>
+
                 <TouchableOpacity
                   onPress={() => {
                     this.props.navigation.navigate("MessageThread", {
                       messageId: chatRoom.messageId,
                       userName: chatRoom.userName,
                       id: id
-                    });}}>
-
+                    });
+                  }}
+                >
                   <Text>Link to the chat room here</Text>
                 </TouchableOpacity>
               </View>
@@ -88,6 +121,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps
-)(InboxMessages);
+export default connect(mapStateToProps)(InboxMessages);
