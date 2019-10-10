@@ -34,7 +34,7 @@ class LikedDogsList extends Component {
     headerTitle: <HeaderLikedList />
   };
 
-  createMessage = (centreId, centreName, dogName, dogId) => {
+  createMessage = (centreId, centreName, dogName, dogId, avatar) => {
     const { id } = this.state;
 
     const name = this.props.user.name || this.props.user.d.firstName;
@@ -53,6 +53,7 @@ class LikedDogsList extends Component {
               centreName: centreName,
               dogName: dogName,
               dogId: dogId,
+              avatar: avatar,
               user: id,
               userName: name,
               messageId: newMessage.id
@@ -206,7 +207,8 @@ class LikedDogsList extends Component {
                           dog.centreId,
                           dog.centreName,
                           dog.name,
-                          dog.dogId
+                          dog.dogId,
+                          dog.image
                         );
                       }}
                     >
