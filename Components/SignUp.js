@@ -11,6 +11,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { updateEmail, updatePassword, signup } from "../actions/user";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 class SignUp extends React.Component {
   state = {
     name: "",
@@ -18,9 +22,14 @@ class SignUp extends React.Component {
     password: ""
   };
 
+  static navigationOptions = {
+    headerTransparent: true,
+    headerTintColor: "#fff"
+  };
+
   handleSignUp = () => {
     const { type } = this.props.user;
-    console.log(type)
+    console.log(type);
     this.props.signup();
     if (type === "user") {
       this.props.navigation.navigate("Register");

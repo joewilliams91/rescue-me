@@ -13,7 +13,7 @@ import {
   View
 } from "react-native";
 import { bindActionCreators } from "redux";
-import { Icon } from 'react-native-elements';
+import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
 import {
   updateEmail,
@@ -22,6 +22,10 @@ import {
   updateLocation,
   updateName
 } from "../actions/user";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 import { LinearGradient } from "expo-linear-gradient";
 import HasDogRadioComponents from "./AddingComponents/HasDogRadioComponents";
 import HasChildrenRadioComponents from "./AddingComponents/HasChildrenRadioComponents";
@@ -35,10 +39,10 @@ import PhotoComponent from "./AddingComponents/PhotoComponent";
 import RadiusComponent from "./AddingComponents/RadiusComponent";
 import TelephoneComponent from "./AddingComponents/TelephoneComponent";
 import DescriptionComponent from "./AddingComponents/DescriptionComponent";
-import UploadComponent from "./AddingComponents/UploadComponent"
+import UploadComponent from "./AddingComponents/UploadComponent";
 class Register extends React.Component {
   state = {
-    userType: '',
+    userType: "",
     userId: "",
     firstName: "",
     surname: "",
@@ -79,6 +83,11 @@ class Register extends React.Component {
       { key: "Male", text: "Male" },
       { key: "Female", text: "Female" }
     ]
+  };
+
+  static navigationOptions = {
+    headerTransparent: true,
+    headerTintColor: "#fff"
   };
 
   updateDetails = (type, text) => {
@@ -257,26 +266,26 @@ class Register extends React.Component {
           <Text style={styles.guideMessage}>
             Say Cheese! We need a picture for your profile please.
           </Text>
-          <View
-          style={{ flexDirection: 'row' }}
-          >
-          <Icon 
-          style={{ flex: 1 }}
-          name="camera"
-          type="font-awesome"
-          color="white"
-          onPress={() => this.props.navigation.navigate("PhotoComponent", {
-            user: userId,
-            userType,
-            addToPhotoArray: this.addToPhotoArray
-          })}
-          />
-          <UploadComponent
-          addToPhotoArray={this.addToPhotoArray}
-          user={userId}
-          style={{ flex: 1 }} />
+          <View style={{ flexDirection: "row" }}>
+            <Icon
+              style={{ flex: 1 }}
+              name="camera"
+              type="font-awesome"
+              color="white"
+              onPress={() =>
+                this.props.navigation.navigate("PhotoComponent", {
+                  user: userId,
+                  userType,
+                  addToPhotoArray: this.addToPhotoArray
+                })
+              }
+            />
+            <UploadComponent
+              addToPhotoArray={this.addToPhotoArray}
+              user={userId}
+              style={{ flex: 1 }}
+            />
           </View>
-        
 
           {/* <PhotoComponent
             user={userId}

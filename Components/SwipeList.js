@@ -299,7 +299,7 @@ class SwipeList extends React.Component {
       console.log("<---- Inside our render");
       return (
         <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-          <View style={{ alignItems: "center", marginTop: hp("12") }}>
+          <View style={{ alignItems: "center" }}>
             {dogs
               .map((dog, i) => {
                 if (i < currentIndex) {

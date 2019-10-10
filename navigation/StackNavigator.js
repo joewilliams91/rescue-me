@@ -92,7 +92,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "LikedDogsList"
+    initialRouteName: "SplashPage"
   }
 );
 
