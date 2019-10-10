@@ -59,6 +59,7 @@ class SwipeList extends React.Component {
   currentDog = {};
 
   storeToLikedList(dog) {
+    console.log(dog, "------dog")
     this.setState(
       currentState => {
         const newDog = dog.id;
@@ -274,7 +275,7 @@ class SwipeList extends React.Component {
                   }&lon=${coordinates[1]}&radius=${radiusPref}}`
                 )
                 .then(({ data }) =>
-                  this.setState({ dogs: data.dogs, isLoading: false }, () => {})
+                  this.setState({ dogs: data.dogs, isLoading: false })
                 );
             }
           );
@@ -283,6 +284,7 @@ class SwipeList extends React.Component {
   }
 
   navigate = (messageId, id, userName) => {
+    this.storeToLikedList(this.currentDog);
     this.props.navigation.navigate("MessageThread", {
       messageId,
       id,
@@ -512,6 +514,7 @@ class SwipeList extends React.Component {
               id={this.state.currentUserID}
               name={this.props.user.name || this.props.user.d.firstName}
               navigate={this.navigate}
+              storeToLikedList={this.storeToLikedList}
             />
           </View>
           <View>

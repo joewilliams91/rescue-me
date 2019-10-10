@@ -6,18 +6,21 @@ import {
 } from "react-native-responsive-screen";
 import Firebase, { db } from "../../config/Firebase";
 const messagesCollection = db.collection("messages");
+const usersCollection = db.collection("users");
 
 class FooterSwipe extends Component {
   superLike = () => {
     const { dog } = this.props;
+    this.props.superLike()
     this.createMessage(dog.centreId, dog.centreName, dog.name, dog.id)
   };
 
   createMessage = (centreId, centreName, dogName, dogId) => {
+  
     const { id } = this.props;
     
     const name = this.props.name;
-    console.log("DATA", centreId, centreName, dogName, dogId, id, name);
+    ;
 
     try {
       const query = messagesCollection
