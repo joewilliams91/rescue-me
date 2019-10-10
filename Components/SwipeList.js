@@ -282,6 +282,14 @@ class SwipeList extends React.Component {
     });
   }
 
+  navigate = (messageId, id, userName) => {
+    this.props.navigation.navigate("MessageThread", {
+      messageId,
+      id,
+      userName
+    });
+  };
+
   render() {
     const { currentUser, dogs, isLoading, currentIndex } = this.state;
     if (isLoading) {
@@ -302,6 +310,7 @@ class SwipeList extends React.Component {
                   return null;
                 } else if (i == currentIndex) {
                   this.currentDog = dog;
+
                   console.log(
                     "<-------- Inside the else statement that returns the TOP card"
                   );
@@ -494,10 +503,15 @@ class SwipeList extends React.Component {
               .reverse()}
           </View>
           <View>
+            {console.log("THIS>>>>>>>>", this.currentDog)}
             <FooterSwipe
               swipeLeft={this.swipeLeft}
               swipeRight={this.swipeRight}
               superLike={this.superLike}
+              dog={this.currentDog}
+              id={this.state.currentUserID}
+              name={this.props.user.name || this.props.user.d.firstName}
+              navigate={this.navigate}
             />
           </View>
           <View>
