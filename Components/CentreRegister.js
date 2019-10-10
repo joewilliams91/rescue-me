@@ -35,6 +35,12 @@ class CentreRegister extends React.Component {
     charityNum: "",
     description: ""
   };
+
+  static navigationOptions = {
+    headerTransparent: true,
+    headerTintColor: "#fff"
+  };
+
   updateDetails = (type, text) => {
     this.setState({ [type]: text });
   };
@@ -134,7 +140,16 @@ class CentreRegister extends React.Component {
             charityNum={charityNum}
             updateDetails={this.updateDetails}
           />
-          <Text style={styles.guideMessage}>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 25,
+              padding: 15,
+              marginBottom: 15,
+              textAlign: "center",
+              fontFamily: "poppins-semibold"
+            }}
+          >
             Give us a little description about your centre. This will go onto
             your profile.
           </Text>
@@ -174,7 +189,8 @@ const styles = StyleSheet.create({
   heroMessage: {
     color: "white",
     fontSize: 30,
-    fontFamily: "poppins-bold"
+    fontFamily: "poppins-bold",
+    textAlign: "center"
   },
   guideMessage: {
     padding: 20,

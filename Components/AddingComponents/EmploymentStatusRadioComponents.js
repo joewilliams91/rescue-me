@@ -56,7 +56,8 @@ const styles = StyleSheet.create({
   },
   question: {
     color: "#fff",
-    fontSize: 17,
+    fontSize: 25,
+    padding: 10,
     marginBottom: 15,
     textAlign: "center",
     fontFamily: "poppins-semibold"

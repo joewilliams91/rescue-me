@@ -245,8 +245,10 @@ class Register extends React.Component {
             description={description}
             updateDetails={this.updateDetails}
           />
+          <View style={{ marginTop: 60, marginBottom: 60 }}>
+            <DOBComponent dob={dob} updateDetails={this.updateDetails} />
+          </View>
 
-          <DOBComponent dob={dob} updateDetails={this.updateDetails} />
           <TelephoneComponent
             telephone={telephone}
             updateDetails={this.updateDetails}
@@ -257,20 +259,44 @@ class Register extends React.Component {
             employmentStatus={employmentStatus}
             options={employmentOptions}
           />
-          <Text style={styles.guideMessage}>
-            Will you walk 500 miles? Give us a distance radius to look for dogs.
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 25,
+              padding: 15,
+              marginBottom: 15,
+              textAlign: "center",
+              fontFamily: "poppins-semibold"
+            }}
+          >
+            Will you walk 500 miles?{"\n"}Give us a distance radius to look for
+            dogs.
           </Text>
           <RadiusComponent radius={radius} updateDetails={this.updateDetails} />
 
-          <Text style={styles.guideMessage}>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 25,
+              padding: 15,
+              marginBottom: 15,
+              textAlign: "center",
+              fontFamily: "poppins-semibold"
+            }}
+          >
             Say Cheese! We need a picture for your profile please.
           </Text>
-          <View style={{ flexDirection: "row" }}>
-            <Icon
-              style={{ flex: 1 }}
-              name="camera"
-              type="font-awesome"
-              color="white"
+          <View
+            style={{
+              marginBottom: 100,
+              justifyContent: "center",
+              width: wp("90")
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                alignSelf: "center"
+              }}
               onPress={() =>
                 this.props.navigation.navigate("PhotoComponent", {
                   user: userId,
@@ -278,7 +304,10 @@ class Register extends React.Component {
                   addToPhotoArray: this.addToPhotoArray
                 })
               }
-            />
+            >
+              <Image source={require("../assets/images/take.png")} />
+            </TouchableOpacity>
+
             <UploadComponent
               addToPhotoArray={this.addToPhotoArray}
               user={userId}
@@ -366,10 +395,11 @@ const styles = StyleSheet.create({
   },
   heroMessage: {
     color: "white",
-    fontSize: 30,
-    fontFamily: "poppins-bold"
+    fontSize: 32,
+    fontFamily: "poppins-black"
   },
   guideMessage: {
+    marginTop: 60,
     padding: 20,
     textAlign: "center",
     color: "white",

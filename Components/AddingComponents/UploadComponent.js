@@ -1,11 +1,21 @@
 import React from "react";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
-import { View, Image, Alert, ActivityIndicator } from "react-native";
+import {
+  View,
+  Image,
+  Alert,
+  ActivityIndicator,
+  TouchableOpacity
+} from "react-native";
 import * as Permissions from "expo-permissions";
 import { Icon } from "react-native-elements";
 import * as firebase from "firebase/app";
 import "firebase/storage";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 
 export default class UploadComponent extends React.Component {
   state = {
@@ -25,15 +35,22 @@ export default class UploadComponent extends React.Component {
             />
           </View>
         )}
-        <View style={{ margin: 15 }}>
-          <Icon
-            style={{ flex: 1 }}
-            size={50}
-            name="file-picture-o"
-            type="font-awesome"
-            color="white"
+        <View
+          style={{
+            marginBottom: 30,
+            marginTop: 30,
+            justifyContent: "center",
+            width: wp("90")
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              alignSelf: "center"
+            }}
             onPress={() => this.pickMedia("images")}
-          />
+          >
+            <Image source={require("../../assets/images/upload.png")} />
+          </TouchableOpacity>
         </View>
 
         {this.props.userType === "centre" && (
