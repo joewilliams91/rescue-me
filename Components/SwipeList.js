@@ -76,11 +76,7 @@ class SwipeList extends React.Component {
         const { likedDogs } = user;
         const userToUpdate = usersCollection
           .doc(currentUserID)
-          .update({ likedDogs: likedDogs })
-          // .then(() => {
-          //   console.log("Added to liked list");
-          // })
-          // .catch(console.log("Not added to liked list"));
+          .update({ likedDogs: likedDogs });
       }
     );
   }
@@ -158,19 +154,16 @@ class SwipeList extends React.Component {
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderMove: (evt, gestureState) => {
         this.position.setValue({ x: gestureState.dx, y: gestureState.dy });
-      }, 
+      },
       onPanResponderRelease: (evt, gestureState) => {
         if (gestureState.dx > 120) {
-          Animated.timing(
-            this.position,
-            {
-              toValue: {
-                x: SCREEN_WIDTH + 150,
-                y: gestureState.dy,
-                duration: 0.1
-              }
-            },
-          ).start(() => {
+          Animated.timing(this.position, {
+            toValue: {
+              x: SCREEN_WIDTH + 150,
+              y: gestureState.dy,
+              duration: 0.1
+            }
+          }).start(() => {
             this.storeToLikedList(this.currentDog);
             const newArray = [...this.state.dogs];
             this.setState(
@@ -268,12 +261,14 @@ class SwipeList extends React.Component {
     });
   }
 
-  navigate = (messageId, id, userName) => {
+  navigate = (messageId, id, userName, avatar, centreName) => {
     this.storeToLikedList(this.currentDog);
     this.props.navigation.navigate("MessageThread", {
       messageId,
       id,
-      userName
+      userName,
+      avatar,
+      centreName
     });
   };
 
@@ -502,7 +497,6 @@ class SwipeList extends React.Component {
                 width: 40,
                 height: 40,
                 alignSelf: "center",
-                textAlign: "center",
                 margin: 10
               }}
             ></Image>

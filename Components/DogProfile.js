@@ -178,6 +178,7 @@ class DogProfile extends React.Component {
       const barWidth = SCREEN_WIDTH * 0.8;
       return (
         <ScrollView
+          showsVerticalScrollIndicator={false}
           key={dog.id}
           contentContainerStyle={{ alignItems: "center" }}
           style={[
@@ -314,20 +315,27 @@ class DogProfile extends React.Component {
             </View>
 
             <View style={{ alignItems: "center", paddingBottom: 30 }}>
-              {dog.videos && dog.videos.map(video =>{
-                return  <Video
-                source={{
-                  uri: video
-                }}
-                rate={1.0}
-                volume={1.0}
-                isMuted={false}
-                resizeMode="cover"
-                useNativeControls
-                style={{ width: 300, height: 200, borderRadius: 20, marginBottom: 10 }}
-              />
-              })}
-             
+              {dog.videos &&
+                dog.videos.map(video => {
+                  return (
+                    <Video
+                      source={{
+                        uri: video
+                      }}
+                      rate={1.0}
+                      volume={1.0}
+                      isMuted={false}
+                      resizeMode="cover"
+                      useNativeControls
+                      style={{
+                        width: 300,
+                        height: 200,
+                        borderRadius: 20,
+                        marginBottom: 10
+                      }}
+                    />
+                  );
+                })}
             </View>
             <View style={styles.donationContainer}>
               <Text

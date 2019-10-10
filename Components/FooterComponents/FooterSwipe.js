@@ -11,17 +11,20 @@ const usersCollection = db.collection("users");
 class FooterSwipe extends Component {
   superLike = () => {
     const { dog } = this.props;
-    this.props.superLike()
-    this.createMessage(dog.centreId, dog.centreName, dog.name, dog.id)
+    this.props.superLike();
+    this.createMessage(
+      dog.centreId,
+      dog.centreName,
+      dog.name,
+      dog.id,
+      dog.photos[0]
+    );
   };
 
-  createMessage = (centreId, centreName, dogName, dogId) => {
-  
+  createMessage = (centreId, centreName, dogName, dogId, avatar) => {
     const { id } = this.props;
-    
-    const name = this.props.name;
-    ;
 
+    const name = this.props.name;
     try {
       const query = messagesCollection
         .where("centreId", "==", `${centreId}`)
@@ -38,15 +41,15 @@ class FooterSwipe extends Component {
               dogId: dogId,
               user: id,
               userName: name,
-              messageId: newMessage.id
+              messageId: newMessage.id,
+              avatar: avatar
             })
             .then(() => {
-               this.props.navigate(newMessage.id, id, name);
-              
+              this.props.navigate(newMessage.id, id, name, avatar, centreName);
             });
         } else {
           dataM.forEach(doc => {
-            this.props.navigate(doc.id, id, name);
+            this.props.navigate(doc.id, id, name, avatar, centreName);
           });
         }
       });
@@ -77,7 +80,7 @@ class FooterSwipe extends Component {
               height: 30,
               alignSelf: "center",
               paddingTop: 4,
-              textAlign: "center",
+
               margin: 10
             }}
           />
@@ -89,7 +92,7 @@ class FooterSwipe extends Component {
               width: 50,
               height: 50,
               alignSelf: "center",
-              textAlign: "center",
+
               margin: 10
             }}
           />
