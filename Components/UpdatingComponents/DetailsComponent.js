@@ -1,10 +1,15 @@
 import React from "react";
 import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import {
   View,
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Text
+  Text,
+  Image
 } from "react-native";
 
 const DetailsComponent = props => {
@@ -18,8 +23,30 @@ const DetailsComponent = props => {
   } = props;
   {
     return (
-      <View style={styles.inputContainer}>
-        <Text style={styles.question}>Is the dog good with children?</Text>
+      <View
+        style={{
+          flex: 1,
+          marginTop: 20,
+          marginBottom: 40,
+          width: wp("85"),
+          justifyContent: "center",
+          borderRadius: 15,
+          backgroundColor: "white",
+          padding: wp("5")
+        }}
+      >
+        <Text
+          style={{
+            color: "#a3a3a3",
+            fontSize: 18,
+            lineHeight: 19,
+            fontFamily: "poppins-semibold",
+            paddingLeft: wp("2"),
+            textAlign: "left"
+          }}
+        >
+          Is the dog good with children?
+        </Text>
         {goodWithOptions.map(item => {
           return (
             <View key={item.key} style={styles.buttonContainer}>
@@ -76,7 +103,6 @@ const DetailsComponent = props => {
   }
 };
 
-
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
@@ -89,7 +115,7 @@ const styles = StyleSheet.create({
     width: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#fff",
+    borderColor: "#a3a3a3",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -97,26 +123,20 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: "#fff"
+    backgroundColor: "#a3a3a3"
   },
   value: {
-    color: "#fff",
+    color: "#a3a3a3",
     fontSize: 17,
     fontFamily: "poppins-regular"
   },
-  inputContainer: {
-    flex: 1,
-    marginTop: 20,
-    marginBottom: 40,
-    width: 250,
-    justifyContent: "center"
-  },
   question: {
-    color: "#fff",
-    fontSize: 17,
-    marginBottom: 15,
-    textAlign: "center",
-    fontFamily: "poppins-semibold"
+    color: "#a3a3a3",
+    fontSize: 18,
+    lineHeight: 19,
+    fontFamily: "poppins-semibold",
+    paddingLeft: wp("2"),
+    textAlign: "left"
   }
 });
 

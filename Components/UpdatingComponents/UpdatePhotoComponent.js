@@ -17,7 +17,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-export default class UpdatePhotoComponent extends React.Component {
+class UpdatePhotoComponent extends React.Component {
   state = {
     edit: false
   };
@@ -161,14 +161,12 @@ export default class UpdatePhotoComponent extends React.Component {
           >
             Upload new pictures or videos here!
           </Text>
-          <View style={{ alignSelf: "center" }}>
-            <View style={{ margin: 15 }}>
-              <Icon
-                size={50}
-                style={{ flex: 1 }}
-                name="camera"
-                type="font-awesome"
-                color="white"
+          <View>
+            <View style={{ margin: 15, flex: 1 }}>
+              <TouchableOpacity
+                style={{
+                  alignSelf: "center"
+                }}
                 onPress={() =>
                   this.props.navigation.navigate("PhotoComponent", {
                     user: centreId,
@@ -177,16 +175,23 @@ export default class UpdatePhotoComponent extends React.Component {
                     addToVideoArray
                   })
                 }
+              >
+                <Image
+                  source={require("../../assets/images/takePicture.png")}
+                />
+              </TouchableOpacity>
+              <UploadComponent
+                userType="centre"
+                addToVideoArray={addToVideoArray}
+                addToPhotoArray={addToPhotoArray}
+                user={centreId}
+                style={{
+                  flex: 1,
+                  margin: 15,
+                  alignSelf: "center"
+                }}
               />
             </View>
-
-            <UploadComponent
-              userType="centre"
-              addToVideoArray={addToVideoArray}
-              addToPhotoArray={addToPhotoArray}
-              user={centreId}
-              style={{ flex: 1, margin: 15 }}
-            />
           </View>
         </View>
 
@@ -286,3 +291,5 @@ const styles = StyleSheet.create({
     fontFamily: "poppins-regular"
   }
 });
+
+export default withNavigation(UpdatePhotoComponent);

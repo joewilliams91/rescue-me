@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Text,
-  Button
+  Button,
+  Image
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Firebase, { db } from "../config/Firebase.js";
@@ -207,82 +208,108 @@ class RescueCentreDogProfile extends React.Component {
     } = this.state;
     {
       return (
-        <ScrollView>
-          <LinearGradient
-            colors={["#f8789a", "#845efd"]}
-            start={[0.1, 1.5]}
-            end={[1.2, 0.1]}
-            style={styles.gradient}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ alignItems: "center" }}
+          style={[
+            {
+              height: hp("100"),
+              width: wp("100"),
+              backgroundColor: "#f5f5f5"
+            }
+          ]}
+        >
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#ef6c00",
+              marginTop: 50,
+              marginBottom: 50,
+              borderRadius: 25,
+              overflow: "hidden",
+              padding: 9,
+              textAlign: "center",
+              width: 280
+            }}
+            onPress={this.deleteDog}
           >
-            <TouchableOpacity
-              style={{
-                backgroundColor: "#ef6c00",
-                marginTop: 50,
-                marginBottom: 50,
-                borderRadius: 25,
-                overflow: "hidden",
-                padding: 9,
-                textAlign: "center",
-                width: 280
-              }}
-              onPress={this.deleteDog}
-            >
-              <Text
-                style={{
-                  color: "#fff",
-                  textAlign: "center",
-                  fontSize: 17,
-                  fontFamily: "poppins-semibold"
-                }}
-              >
-                Remove Dog
-              </Text>
-            </TouchableOpacity>
             <Text
               style={{
-                color: "#a3a3a3",
-                fontSize: 25,
+                color: "#fff",
+                textAlign: "center",
+                fontSize: 17,
                 fontFamily: "poppins-semibold"
               }}
             >
-              {name}
+              Remove Dog
             </Text>
-            <UpdatePhotoComponent
-              addToPhotoArray={this.addToPhotoArray}
-              addToVideoArray={this.addToVideoArray}
-              photos={photos}
-              videos={videos}
-              centreId={this.props.user.id}
-            />
-            <Text
+          </TouchableOpacity>
+          <Text
+            style={{
+              color: "#a3a3a3",
+              fontSize: 25,
+              fontFamily: "poppins-semibold"
+            }}
+          >
+            {name}
+          </Text>
+          <UpdatePhotoComponent
+            addToPhotoArray={this.addToPhotoArray}
+            addToVideoArray={this.addToVideoArray}
+            photos={photos}
+            videos={videos}
+            centreId={this.props.user.id}
+          />
+          <Text
+            style={{
+              color: "#a3a3a3",
+              fontSize: 18,
+              lineHeight: 19,
+              fontFamily: "poppins-semibold",
+              paddingLeft: wp("2"),
+              textAlign: "left"
+            }}
+          >
+            Description:
+          </Text>
+          <ViewDescriptionComponent
+            changeDescription={this.changeDescription}
+            description={description}
+            editDescription={editDescription}
+            toggleEdit={this.toggleEdit}
+            updateDescription={this.updateDescription}
+          />
+          <Text
+            style={{
+              color: "#a3a3a3",
+              fontSize: 18,
+              lineHeight: 19,
+              fontFamily: "poppins-semibold",
+              paddingLeft: wp("2"),
+              textAlign: "left"
+            }}
+          >
+            Update details:
+          </Text>
+          <DetailsComponent
+            updateDetails={this.updateDetails}
+            goodWithChildren={goodWithChildren}
+            goodWithOtherDogs={goodWithOtherDogs}
+            exerciseLevel={exerciseLevel}
+            goodWithOptions={goodWithOptions}
+            exerciseOptions={exerciseOptions}
+          />
+
+          <View>
+            <Image
+              source={require("../assets/images/logo/rescueMeLogoSmol.png")}
               style={{
-                color: "#a3a3a3",
-                fontSize: 18,
-                lineHeight: 19,
-                fontFamily: "poppins-semibold",
-                paddingLeft: wp("2"),
-                textAlign: "left"
+                width: 40,
+                height: 40,
+                alignSelf: "center",
+                margin: 20
               }}
-            >
-              Description:
-            </Text>
-            <ViewDescriptionComponent
-              changeDescription={this.changeDescription}
-              description={description}
-              editDescription={editDescription}
-              toggleEdit={this.toggleEdit}
-              updateDescription={this.updateDescription}
-            />
-            <Text style={styles.guideMessage}>Update details: </Text>
-            <DetailsComponent
-              updateDetails={this.updateDetails}
-              goodWithChildren={goodWithChildren}
-              goodWithOtherDogs={goodWithOtherDogs}
-              exerciseLevel={exerciseLevel}
-              goodWithOptions={goodWithOptions}
-              exerciseOptions={exerciseOptions}
-            />
-          </LinearGradient>
+            ></Image>
+          </View>
         </ScrollView>
       );
     }

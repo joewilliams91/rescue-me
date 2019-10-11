@@ -24,17 +24,28 @@ const ViewDescriptionComponent = props => {
     <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
       <View>
         {editDescription ? (
-          <TextInput
-            style={styles.inputText}
-            multiline={true}
-            placeholder="Add a short description"
-            onChangeText={text => changeDescription(text)}
-            value={description}
-          />
+          <View
+            style={{
+              width: wp("85"),
+              height: hp("40"),
+              flexDirection: "row",
+              borderRadius: 15,
+              backgroundColor: "white"
+            }}
+          >
+            <TextInput
+              style={styles.inputText}
+              multiline={true}
+              placeholder="Add a short description"
+              onChangeText={text => changeDescription(text)}
+              value={description}
+            />
+          </View>
         ) : (
           <View
             style={{
               width: wp("85"),
+              height: hp("20"),
               flexDirection: "row",
               borderRadius: 15,
               backgroundColor: "white"
@@ -56,7 +67,7 @@ const ViewDescriptionComponent = props => {
         <View style={{ alignItems: "center" }}>
           <TouchableOpacity
             style={{
-              backgroundColor: "white",
+              backgroundColor: "#00c066",
               marginBottom: 100,
               marginTop: hp("2"),
               borderRadius: 25,
@@ -103,7 +114,7 @@ const styles = StyleSheet.create({
     width: 280
   },
   signMeUpbuttonText: {
-    color: "#f8789a",
+    color: "#fff",
     textAlign: "center",
     fontSize: 17,
     fontFamily: "poppins-semibold"
@@ -115,7 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   inputText: {
-    color: "#fff",
+    color: "#a3a3a3",
     fontSize: 17,
     fontFamily: "poppins-regular",
     flex: 1,
@@ -125,11 +136,10 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   inputContainer: {
-    flex: 1,
-    marginTop: 20,
-    marginBottom: 40,
-    width: 250,
-    justifyContent: "center"
+    width: wp("85"),
+    flexDirection: "row",
+    borderRadius: 15,
+    backgroundColor: "white"
   },
   question: {
     color: "#fff",
