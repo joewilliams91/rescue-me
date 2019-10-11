@@ -72,9 +72,6 @@ const StackNavigator = createStackNavigator(
     RescueCentreDogProfile: {
       screen: RescueCentreDogProfile
     },
-    CentreDogsList: {
-      screen: CentreDogsList
-    },
     PhotoComponent: {
       screen: PhotoComponent
     },
@@ -92,7 +89,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "SplashPage"
+    initialRouteName: "CentreDogsList"
   }
 );
 

@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
 
 const firestore = firebase.firestore();
 const centresCollection = firestore.collection("centres");
@@ -10,6 +15,16 @@ class CentreDogsList extends Component {
   state = {
     availableDogs: "",
     isLoading: true
+  };
+
+  static navigationOptions = {
+    headerStyle: {
+      backgroundColor: "#f5f5f5",
+      borderBottomWidth: 0,
+      height: hp("10")
+    },
+    headerTintColor: "#6f6f6f",
+    headerRight: <HeaderMessagesInbox />
   };
 
   render() {
@@ -24,18 +39,41 @@ class CentreDogsList extends Component {
     } else {
       return (
         <ScrollView
-          style={{ backgroundColor: "#f5f5f5", flexDirection: "column" }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ alignItems: "center" }}
+          style={[
+            {
+              height: hp("100"),
+              width: wp("100"),
+              backgroundColor: "#f5f5f5"
+            }
+          ]}
         >
           <View>
             <Text
               style={{
-                color: "black",
-                fontSize: 30,
-                fontFamily: "poppins-black",
-                textAlign: "center"
+                color: "#747474",
+                fontSize: 40,
+                fontFamily: "poppins-semibold",
+                marginBottom: hp("1"),
+                marginTop: hp("1"),
+                paddingBottom: 0,
+                lineHeight: 42
               }}
             >
               Dashboard
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                color: "#747474",
+                fontSize: 30,
+                fontFamily: "poppins-semibold",
+                textAlign: "center"
+              }}
+            >
+              All {availableDogs.length} Dogs
             </Text>
           </View>
 
@@ -45,82 +83,83 @@ class CentreDogsList extends Component {
               justifyContent: "space-around"
             }}
           >
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate("AddDog");
-                }}
-              >
-                <Image
-                  style={{ width: 90, height: 61 }}
-                  source={require("../assets/images/addDog.png")}
-                />
-              </TouchableOpacity>
-            </View>
-            <View>
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 23,
-                  fontFamily: "poppins-black",
-                  textAlign: "center"
-                }}
-              >
-                All {availableDogs.length} Dogs
-              </Text>
-            </View>
-
-            <View
+            <TouchableOpacity
               style={{
-                flexDirection: "row",
-                justifyContent: "center"
+                backgroundColor: "#00c066",
+                marginTop: 20,
+                marginBottom: 10,
+                borderRadius: 15,
+                overflow: "hidden",
+                padding: 9,
+                textAlign: "center",
+                width: 280
+              }}
+              onPress={() => {
+                this.props.navigation.navigate("AddDog");
               }}
             >
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate("InboxMessages");
+              <Text
+                style={{
+                  color: "#fff",
+                  textAlign: "center",
+                  fontSize: 17,
+                  fontFamily: "poppins-semibold"
                 }}
               >
-                <Image
-                  style={{ width: 52, height: 52 }}
-                  source={require("../assets/images/chat.png")}
-                />
-              </TouchableOpacity>
-            </View>
+                Add Dog
+              </Text>
+            </TouchableOpacity>
           </View>
 
-          <View style={styles.column}>
+          <View style={styles.dogListContainer}>
             {availableDogs.map(dog => {
               return (
-                <View key={dog.dogId} style={styles.row}>
-                  <View>
-                    <Image source={{ uri: dog.image }} style={styles.image} />
-                  </View>
+                <TouchableOpacity
+                  style={styles.row}
+                  onPress={() => {
+                    this.props.navigation.navigate("RescueCentreDogProfile", {
+                      id: dog.dogId
+                    });
+                  }}
+                >
+                  <Image source={{ uri: dog.image }} style={styles.image} />
 
-                  <View style={styles.insideFieled}>
-                    <Text> {dog.name}</Text>
-                  </View>
-                  <View style={{ margin: 10 }}>
-                    <TouchableOpacity
-                      title="Enter the link here"
-                      onPress={() => {
-                        this.props.navigation.navigate(
-                          "RescueCentreDogProfile",
-                          {
-                            id: dog.dogId
-                          }
-                        );
+                  <View style={{ width: wp("50") }}>
+                    <Text
+                      style={{
+                        color: "#a3a3a3",
+                        fontSize: 18,
+                        lineHeight: 19,
+                        fontFamily: "poppins-regular"
                       }}
                     >
-                      <Image
-                        source={require("../assets/images/settings.png")}
-                        style={{ width: 45, height: 45, marginTop: 5 }}
-                      />
-                    </TouchableOpacity>
+                      {dog.name}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#a3a3a3",
+                        fontSize: 18,
+                        lineHeight: 19,
+                        fontFamily: "poppins-regular"
+                      }}
+                    >
+                      See Profile
+                    </Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             })}
+          </View>
+          <View>
+            <Image
+              source={require("../assets/images/logo/rescueMeLogoSmol.png")}
+              style={{
+                width: 40,
+                height: 40,
+                alignSelf: "center",
+                margin: 10
+              }}
+            ></Image>
           </View>
         </ScrollView>
       );
@@ -153,6 +192,15 @@ class CentreDogsList extends Component {
 }
 
 const styles = StyleSheet.create({
+  dogListContainer: {
+    width: wp("85"),
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    marginTop: hp("2"),
+    marginBottom: hp("1"),
+    paddingTop: wp("1"),
+    flexWrap: "nowrap"
+  },
   container: {
     justifyContent: "center",
     flexDirection: "column",
@@ -168,13 +216,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 10,
-    borderBottomWidth: 0.5
+    padding: 10
   },
   image: {
-    width: 115,
-    height: 115,
-    borderRadius: 60
+    width: 80,
+    height: 80,
+    borderRadius: 40
   }
 });
 
