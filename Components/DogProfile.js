@@ -25,7 +25,6 @@ import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
 
 const firestore = firebase.firestore();
 const dogsCollection = firestore.collection("dogs");
-
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 

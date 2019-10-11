@@ -11,6 +11,12 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import Firebase, { db } from "../config/Firebase.js";
 import { connect } from "react-redux";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
+
 const { GeoFirestore } = require("geofirestore");
 const geofirestore = new GeoFirestore(db);
 const dogsCollection = geofirestore.collection("dogs");
@@ -42,9 +48,19 @@ class RescueCentreDogProfile extends React.Component {
     ]
   };
 
+  static navigationOptions = {
+    headerStyle: {
+      backgroundColor: "#f5f5f5",
+      borderBottomWidth: 0,
+      height: hp("10")
+    },
+    headerTintColor: "#6f6f6f",
+    headerRight: <HeaderMessagesInbox />
+  };
+
   componentDidMount() {
     // const { id } = this.props.navigation.state.params;
-    const id = "DUS2SbN2Vd9SN5pxGxg2";
+    const id = "jLUAzKxfLX2IFFS0H86k";
 
     dogsCollection
       .doc(id)
@@ -199,14 +215,38 @@ class RescueCentreDogProfile extends React.Component {
             style={styles.gradient}
           >
             <TouchableOpacity
-              style={styles.deleteButton}
+              style={{
+                backgroundColor: "#ef6c00",
+                marginTop: 50,
+                marginBottom: 50,
+                borderRadius: 25,
+                overflow: "hidden",
+                padding: 9,
+                textAlign: "center",
+                width: 280
+              }}
               onPress={this.deleteDog}
             >
-              <Text style={styles.signMeUpbuttonText}>
-                I have found a home !
+              <Text
+                style={{
+                  color: "#fff",
+                  textAlign: "center",
+                  fontSize: 17,
+                  fontFamily: "poppins-semibold"
+                }}
+              >
+                Remove Dog
               </Text>
             </TouchableOpacity>
-            <Text style={styles.guideMessage}>{name} </Text>
+            <Text
+              style={{
+                color: "#a3a3a3",
+                fontSize: 25,
+                fontFamily: "poppins-semibold"
+              }}
+            >
+              {name}
+            </Text>
             <UpdatePhotoComponent
               addToPhotoArray={this.addToPhotoArray}
               addToVideoArray={this.addToVideoArray}
@@ -214,7 +254,18 @@ class RescueCentreDogProfile extends React.Component {
               videos={videos}
               centreId={this.props.user.id}
             />
-            <Text style={styles.guideMessage}>Description: </Text>
+            <Text
+              style={{
+                color: "#a3a3a3",
+                fontSize: 18,
+                lineHeight: 19,
+                fontFamily: "poppins-semibold",
+                paddingLeft: wp("2"),
+                textAlign: "left"
+              }}
+            >
+              Description:
+            </Text>
             <ViewDescriptionComponent
               changeDescription={this.changeDescription}
               description={description}
@@ -267,16 +318,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: "poppins-regular"
   },
-  deleteButton: {
-    backgroundColor: "white",
-    marginTop: 50,
-    marginBottom: 50,
-    borderRadius: 25,
-    overflow: "hidden",
-    padding: 9,
-    textAlign: "center",
-    width: 280
-  },
+
   signMeUpbutton: {
     backgroundColor: "white",
     marginBottom: 100,
@@ -285,12 +327,6 @@ const styles = StyleSheet.create({
     padding: 9,
     textAlign: "center",
     width: 280
-  },
-  signMeUpbuttonText: {
-    color: "#f8789a",
-    textAlign: "center",
-    fontSize: 17,
-    fontFamily: "poppins-semibold"
   }
 });
 const mapStateToProps = state => ({ ...state });
