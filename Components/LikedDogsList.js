@@ -87,7 +87,8 @@ class LikedDogsList extends Component {
   componentDidMount() {
     const { id } = this.props.user;
     usersCollection
-      .doc("CNZRmXLaILgwtkWyKu5tbHyV9OF3")
+      // .doc("CNZRmXLaILgwtkWyKu5tbHyV9OF3")
+      .doc(id)
       .get()
       .then(user => {
         const { likedDogs } = user.data().d;

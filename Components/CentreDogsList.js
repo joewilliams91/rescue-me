@@ -7,6 +7,7 @@ import {
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
+import { connect } from "react-redux";
 
 const firestore = firebase.firestore();
 const centresCollection = firestore.collection("centres");
@@ -14,7 +15,8 @@ const centresCollection = firestore.collection("centres");
 class CentreDogsList extends Component {
   state = {
     availableDogs: "",
-    isLoading: true
+    isLoading: true,
+    newDog: ""
   };
 
   static navigationOptions = {
@@ -166,10 +168,43 @@ class CentreDogsList extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.navigation.state.params) {
+      if (this.props.navigation.state.params.newDog !== this.state.newDog) {
+        this.setState({ newDog: this.props.navigation.state.params.newDog});
+        const { id } = this.props.user;
+        centresCollection
+          // .doc("iJvJHm5NBdQdaSMwieRQfZbR9us2") // back to id
+          .doc(id)
+          .get()
+          .then(centre => {
+            const { availableDogs } = centre.data().d;
+            let availableDogsList = [];
+    
+            for (let dog in availableDogs) {
+              const list = {};
+              list.dogId = availableDogs[dog].id;
+              list.name = availableDogs[dog].name;
+              list.image = availableDogs[dog].photos[0];
+    
+              availableDogsList.push(list);
+            }
+            this.setState({
+              availableDogs: availableDogsList,
+              isLoading: false,
+              newDog: this.props.navigation.state.params.newDog
+            });
+          });
+      }
+    }
+    
+  }
+
   componentDidMount() {
-    //Database Centre ID
+    const { id } = this.props.user;
     centresCollection
-      .doc("iJvJHm5NBdQdaSMwieRQfZbR9us2") // back to id
+      // .doc("iJvJHm5NBdQdaSMwieRQfZbR9us2") // back to id
+      .doc(id)
       .get()
       .then(centre => {
         const { availableDogs } = centre.data().d;
@@ -185,7 +220,7 @@ class CentreDogsList extends Component {
         }
         this.setState({
           availableDogs: availableDogsList,
-          isLoading: false
+          isLoading: false,
         });
       });
   }
@@ -226,4 +261,8 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CentreDogsList;
+const mapStateToProps = state => ({
+  ...state
+});
+export default connect(mapStateToProps)(CentreDogsList);
+

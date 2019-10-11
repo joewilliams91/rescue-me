@@ -60,8 +60,7 @@ class RescueCentreDogProfile extends React.Component {
   };
 
   componentDidMount() {
-    // const { id } = this.props.navigation.state.params;
-    const id = "jLUAzKxfLX2IFFS0H86k";
+    const { id } = this.props.navigation.state.params;
 
     dogsCollection
       .doc(id)

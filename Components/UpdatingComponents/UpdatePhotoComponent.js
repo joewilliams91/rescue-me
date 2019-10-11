@@ -17,6 +17,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from "react-native-responsive-screen";
+
 class UpdatePhotoComponent extends React.Component {
   state = {
     edit: false
