@@ -14,7 +14,7 @@ import { Icon } from 'react-native-elements';
 import UploadComponent from "../AddingComponents/UploadComponent";
 import { withNavigation } from 'react-navigation';
 
-export default class UpdatePhotoComponent extends React.Component {
+class UpdatePhotoComponent extends React.Component {
   state = {
     edit: false
   };
@@ -200,3 +200,5 @@ const styles = StyleSheet.create({
     fontFamily: "poppins-regular"
   },
 });
+
+export default withNavigation(UpdatePhotoComponent);

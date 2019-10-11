@@ -131,7 +131,7 @@ class AddDog extends React.Component {
       photos: photos,
       videos: videos,
       id: newDog.id
-    });
+    }).then(() => this.props.navigation.navigate("CentreDogsList", { newDog: newDog.id }))
   };
   render() {
     const {
