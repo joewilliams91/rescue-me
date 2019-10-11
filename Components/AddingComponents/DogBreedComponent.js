@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     marginTop: 5,
     marginBottom: 10,
-    borderBottomColor: "#c5c6ca",
+    borderBottomColor: "#fff",
     borderBottomWidth: 2,
     overflow: "hidden",
     padding: 12,
