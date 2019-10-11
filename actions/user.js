@@ -97,7 +97,7 @@ export const getUser = (uid, type) => {
   return async (dispatch, getState) => {
     try {
       const { type } = getState().user;
-
+      console.log(uid)
       const user =
         type === "user"
           ? await db

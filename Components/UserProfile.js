@@ -111,7 +111,7 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
-    // const { id } = this.props.navigation.state.params;
+    const { id } = this.props.navigation.state.params;
     this.PanResponder = PanResponder.create({
       onStartShouldSetPanResponder: (event, gestureState) => true,
       onStartShouldSetPanResponderCapture: (event, gestureState) => true,
@@ -127,8 +127,8 @@ class UserProfile extends React.Component {
       }
     });
     usersCollection
-      // .doc(id.replace(/ /g, ""))
-      .doc("CNZRmXLaILgwtkWyKu5tbHyV9OF3")
+      .doc(id.replace(/ /g, ""))
+      // .doc("CNZRmXLaILgwtkWyKu5tbHyV9OF3")
       .get()
       .then(user => {
         const userData = user.data();
