@@ -18,7 +18,7 @@ import InboxMessages from "../Components/InboxMessages";
 
 import PhotoComponent from "../Components/AddingComponents/PhotoComponent";
 import UploadComponent from "../Components/AddingComponents/UploadComponent";
-
+import UpdatePhotoComponent from "../Components/UpdatingComponents/UpdatePhotoComponent";
 import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
 import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
 import UserProfile from "../Components/UserProfile";
@@ -72,9 +72,6 @@ const StackNavigator = createStackNavigator(
     RescueCentreDogProfile: {
       screen: RescueCentreDogProfile
     },
-    CentreDogsList: {
-      screen: CentreDogsList
-    },
     PhotoComponent: {
       screen: PhotoComponent
     },
@@ -89,6 +86,9 @@ const StackNavigator = createStackNavigator(
     },
     UserProfile: {
       screen: UserProfile
+    },
+    UpdatePhotoComponent: {
+      screen: UpdatePhotoComponent
     }
   },
   {

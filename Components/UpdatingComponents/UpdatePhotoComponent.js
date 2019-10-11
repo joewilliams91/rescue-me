@@ -10,9 +10,13 @@ import {
   Button
 } from "react-native";
 import { Video } from "expo-av";
-import { Icon } from 'react-native-elements';
+import { Icon } from "react-native-elements";
 import UploadComponent from "../AddingComponents/UploadComponent";
-import { withNavigation } from 'react-navigation';
+import { withNavigation } from "react-navigation";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 
 class UpdatePhotoComponent extends React.Component {
   state = {
@@ -27,12 +31,31 @@ class UpdatePhotoComponent extends React.Component {
   };
 
   render() {
-    const { photos, videos, addToPhotoArray, addToVideoArray, centreId } = this.props;
+    const {
+      photos,
+      videos,
+      addToPhotoArray,
+      addToVideoArray,
+      centreId
+    } = this.props;
     const { edit } = this.state;
     return (
-      <View>
-        
-        <Text style={styles.value}>Photos: </Text>
+      <View
+        style={{
+          width: wp("85")
+        }}
+      >
+        <Text
+          style={{
+            color: "#a3a3a3",
+            fontSize: 18,
+            lineHeight: 19,
+            fontFamily: "poppins-semibold",
+            paddingLeft: wp("2")
+          }}
+        >
+          Photos:
+        </Text>
         <View
           style={{
             flexDirection: "row",
@@ -40,85 +63,154 @@ class UpdatePhotoComponent extends React.Component {
             justifyContent: "space-around"
           }}
         >
-          {photos && photos.map(photo => {
-            return (
-              <Image
-                style={{ width: 113, height: 113, borderRadius: 5, margin: 10 }}
-                source={{ uri: photo }}
-              />
-            );
-          })}
-        </View>
-        <Text style={styles.value}>Video: </Text>
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "space-around"
-          }}
-        >
-          {videos && videos.map(video => {
-            return (
-              <Video
-              rate={1.0}
-              volume={1.0}
-              isMuted={false}
-              resizeMode="cover"
-              useNativeControls
-              style={{ width: 300, height: 200, borderRadius: 20, marginBottom: 10 }}
-                source={{ uri: video }}
-              />
-            );
-          })}
-        </View>
-        <Text style={styles.guideMessage}>
-            Upload new pictures or videos here!
-          </Text>  
-        <View
-          style={{ alignSelf: 'center', flexDirection: 'row' }}
+          <View
+            style={{
+              width: wp("85"),
+              flexDirection: "row",
+              borderRadius: 15,
+              backgroundColor: "white"
+            }}
           >
-            <View 
-            style={{ margin: 15 }}>
-            <Icon 
-          size={50}
-          style={{ flex: 1 }}
-          name="camera"
-          type="font-awesome"
-          color="white"
-          onPress={() => this.props.navigation.navigate("PhotoComponent", {
-            user: centreId,
-            userType: "centre",
-            addToPhotoArray,
-            addToVideoArray
-          })}
-          />
-            </View>
-         
-          <UploadComponent
-          userType="centre"
-          addToVideoArray={addToVideoArray}
-          addToPhotoArray={addToPhotoArray}
-          user={centreId}
-          style={{ flex: 1, margin: 15 }} />
+            <ScrollView horizontal={true}>
+              {photos &&
+                photos.map(photo => {
+                  return (
+                    <Image
+                      style={{
+                        width: 100,
+                        height: 100,
+                        borderRadius: 50,
+                        margin: 12
+                      }}
+                      source={{ uri: photo }}
+                    />
+                  );
+                })}
+            </ScrollView>
           </View>
+        </View>
+        <View
+          style={{
+            width: wp("85"),
+            marginTop: hp("5")
+          }}
+        >
+          <Text
+            style={{
+              color: "#a3a3a3",
+              fontSize: 18,
+              lineHeight: 19,
+              fontFamily: "poppins-semibold",
+              paddingLeft: wp("2")
+            }}
+          >
+            Video:
+          </Text>
 
-        <View style={{flexDirection: "row", justifyContent: "center"}}>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "space-around"
+            }}
+          >
+            <View
+              style={{
+                width: wp("85"),
+                flexDirection: "row",
+                borderRadius: 15,
+                backgroundColor: "white"
+              }}
+            >
+              <ScrollView horizontal={true}>
+                {videos &&
+                  videos.map(video => {
+                    return (
+                      <Video
+                        rate={1.0}
+                        volume={1.0}
+                        isMuted={false}
+                        resizeMode="cover"
+                        useNativeControls
+                        style={{
+                          width: 250,
+                          height: 160,
+                          borderRadius: 15,
+                          margin: 12
+                        }}
+                        source={{ uri: video }}
+                      />
+                    );
+                  })}
+              </ScrollView>
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            marginTop: hp("4")
+          }}
+        >
+          <Text
+            style={{
+              color: "#a3a3a3",
+              fontSize: 18,
+              lineHeight: 19,
+              fontFamily: "poppins-semibold",
+              paddingLeft: wp("2")
+            }}
+          >
+            Upload new pictures or videos here!
+          </Text>
+          <View>
+            <View style={{ margin: 15, flex: 1 }}>
+              <TouchableOpacity
+                style={{
+                  alignSelf: "center"
+                }}
+                onPress={() =>
+                  this.props.navigation.navigate("PhotoComponent", {
+                    user: centreId,
+                    userType: "centre",
+                    addToPhotoArray,
+                    addToVideoArray
+                  })
+                }
+              >
+                <Image
+                  source={require("../../assets/images/takePicture.png")}
+                />
+              </TouchableOpacity>
+              <UploadComponent
+                userType="centre"
+                addToVideoArray={addToVideoArray}
+                addToPhotoArray={addToPhotoArray}
+                user={centreId}
+                style={{
+                  flex: 1,
+                  margin: 15,
+                  alignSelf: "center"
+                }}
+              />
+            </View>
+          </View>
+        </View>
+
+        {/* <View style={{ flexDirection: "row", justifyContent: "center" }}>
           {/* {edit && (
           <PhotoComponent
             addToVideoArray={addToVideoArray}
             addToPhotoArray={addToPhotoArray}
           />
-        )} */}
-        {/* <TouchableOpacity
+        )} */
+        /* <TouchableOpacity
           style={styles.signMeUpbutton}
           onPress={this.toggleEdit}
         >
           <Text style={styles.signMeUpbuttonText}>
             {edit ? "Done" : "Add new media"}
           </Text>
-        </TouchableOpacity> */}
-        </View>
-        
+        </TouchableOpacity> </View> */}
       </View>
     );
   }
@@ -198,7 +290,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontFamily: "poppins-regular"
-  },
+  }
 });
 
 export default withNavigation(UpdatePhotoComponent);

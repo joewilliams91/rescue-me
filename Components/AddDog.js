@@ -8,10 +8,14 @@ import {
   Text,
   Button
 } from "react-native";
-import { Icon } from 'react-native-elements';
+import { Icon } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 import Firebase, { db } from "../config/Firebase.js";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 import firebase from "firebase";
 const { GeoFirestore } = require("geofirestore");
 import DogNameComponent from "./AddingComponents/DogNameComponent";
@@ -25,6 +29,7 @@ import GoodWithChildrenComponent from "./AddingComponents/GoodWithChildrenCompon
 import SizeComponent from "./AddingComponents/SizeComponent";
 import PhotoComponent from "./AddingComponents/PhotoComponent";
 import UploadComponent from "./AddingComponents/UploadComponent";
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
 class AddDog extends React.Component {
   state = {
     centreId: "",
@@ -59,6 +64,16 @@ class AddDog extends React.Component {
       { key: 4, text: "4" },
       { key: 5, text: "5" }
     ]
+  };
+
+  static navigationOptions = {
+    headerStyle: {
+      backgroundColor: "#f5f5f5",
+      borderBottomWidth: 0,
+      height: hp("10")
+    },
+    headerTintColor: "#6f6f6f",
+    headerRight: <HeaderMessagesInbox />
   };
   updateDetails = (type, text) => {
     this.setState({ [type]: text });
@@ -111,7 +126,9 @@ class AddDog extends React.Component {
     const newDog = dogsCollection.doc();
     const newDogId = newDog.id;
     const centreName = this.props.user.name || this.props.user.d.name;
-    centreDoc.update({ ["availableDogs." + newDogId]: { name, photos, id: newDogId } });
+    centreDoc.update({
+      ["availableDogs." + newDogId]: { name, photos, id: newDogId }
+    });
     newDog.set({
       coordinates: new firebase.firestore.GeoPoint(
         coordinates[0],
@@ -160,59 +177,67 @@ class AddDog extends React.Component {
           style={styles.gradient}
         >
           <View>
-            <Text>
+            <Text
+              style={{
+                color: "#fff",
+                marginTop: hp("4"),
+                fontSize: 25,
+                lineHeight: 25,
+                fontFamily: "poppins-semibold"
+              }}
+            >
               Hi there ${centreId}! Please enter some information about your
               dog.
             </Text>
           </View>
-          <Text style={styles.guideMessage}>
-           Let's add a dog.
-          </Text>
+          <Text style={styles.guideMessage}>Let's add a dog.</Text>
           <DogNameComponent name={name} updateDetails={this.updateDetails} />
           <Text style={styles.guideMessage}>
-           From Alsatians to Zuchons, we look after all dogs.
+            From Alsatians to Zuchons, we look after all dogs.
           </Text>
           <DogBreedComponent breed={breed} updateDetails={this.updateDetails} />
           <Text style={styles.guideMessage}>
-            When was your dog born? Try to be as accurate as possible, but don't worry if you don't know.
+            When was your dog born? Try to be as accurate as possible, but don't
+            worry if you don't know.
           </Text>
           <DOBComponent updateDetails={this.updateDetails} dob={dob} />
           <Text style={styles.guideMessage}>
-            How would you describe your dog? Be creative and precise here; a good bio can win hearts.
+            How would you describe your dog? Be creative and precise here; a
+            good bio can win hearts.
           </Text>
           <DescriptionComponent
             description={description}
             updateDetails={this.updateDetails}
-          />    
+          />
           <Text style={styles.guideMessage}>
             Woof woof! We need a pooch portrait please.
-          </Text>     
-          <View
-          style={{ flexDirection: 'row' }}
-          >
-            <View 
-            style={{ margin: 15 }}>
-            <Icon 
-          size={50}
-          style={{ flex: 1 }}
-          name="camera"
-          type="font-awesome"
-          color="white"
-          onPress={() => this.props.navigation.navigate("PhotoComponent", {
-            user: centreId,
-            userType,
-            addToPhotoArray: this.addToPhotoArray,
-            addToVideoArray: this.addToVideoArray
-          })}
-          />
+          </Text>
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ margin: 15 }}>
+              <Icon
+                size={50}
+                style={{ flex: 1 }}
+                name="camera"
+                type="font-awesome"
+                color="white"
+                onPress={() =>
+                  this.props.navigation.navigate("PhotoComponent", {
+                    user: centreId,
+                    userType,
+                    addToPhotoArray: this.addToPhotoArray,
+                    addToVideoArray: this.addToVideoArray
+                  })
+                }
+              />
             </View>
-         
-          <UploadComponent
-          userType={userType}
-          addToVideoArray={this.addToVideoArray}
-          addToPhotoArray={this.addToPhotoArray}
-          user={centreId}
-          style={{ flex: 1, margin: 15 }} />
+
+            <UploadComponent
+              userType={userType}
+              addToVideoArray={this.addToVideoArray}
+              addToPhotoArray={this.addToPhotoArray}
+              user={centreId}
+              style={{ flex: 1, margin: 15 }}
+            />
           </View>
           <Text style={styles.guideMessage}>
             Some users might be looking for a specific gender.
@@ -223,7 +248,8 @@ class AddDog extends React.Component {
             updateDetails={this.updateDetails}
           />
           <Text style={styles.guideMessage}>
-            Dogs come in all shapes and sizes, and some just aren't what our users are looking for.
+            Dogs come in all shapes and sizes, and some just aren't what our
+            users are looking for.
           </Text>
           <SizeComponent
             options={sizeOptions}
@@ -231,7 +257,8 @@ class AddDog extends React.Component {
             updateDetails={this.updateDetails}
           />
           <Text style={styles.guideMessage}>
-            Some people work full time, while others might enjoy a challenge. Please help us to match users with dogs they can handle.
+            Some people work full time, while others might enjoy a challenge.
+            Please help us to match users with dogs they can handle.
           </Text>
           <ExerciseLevelComponent
             options={exerciseOptions}
@@ -255,9 +282,11 @@ class AddDog extends React.Component {
             goodWithChildren={goodWithChildren}
             updateDetails={this.updateDetails}
           />
-          
-          
-          <TouchableOpacity style={styles.signMeUpbutton} onPress={this.handleAdd}>
+
+          <TouchableOpacity
+            style={styles.signMeUpbutton}
+            onPress={this.handleAdd}
+          >
             <Text style={styles.signMeUpbuttonText}>Add dog!</Text>
           </TouchableOpacity>
         </LinearGradient>
@@ -284,16 +313,16 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   heroMessage: {
-    color: "white",
+    color: "#a3a3a3",
     fontSize: 30,
     fontFamily: "poppins-bold"
   },
   guideMessage: {
     padding: 20,
     textAlign: "center",
-    color: "white",
-    fontSize: 18,
-    fontFamily: "poppins-regular"
+    color: "#fff",
+    fontSize: 20,
+    fontFamily: "poppins-semibold"
   },
   signMeUpbutton: {
     backgroundColor: "white",

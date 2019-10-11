@@ -6,6 +6,12 @@ import firebase from "firebase";
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import KeyboardSpacer from "react-native-keyboard-spacer";
 import uuidv4 from "uuidv4";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import HeaderMessagesInbox from "../Components/HeaderComponents/HeaderMessagesInbox";
+import HeaderLikedList from "../Components/HeaderComponents/HeaderLikedList";
 
 const uuid = require("uuidv4").default;
 const messagesCollection = db.collection("messages");
@@ -14,7 +20,19 @@ class MessageThread extends Component {
   state = {
     messages: [],
     userId: "",
-    isLoading: true
+    isLoading: true,
+    avatarUrl: "poop"
+  };
+
+  static navigationOptions = {
+    headerStyle: {
+      backgroundColor: "#f5f5f5",
+      borderBottomWidth: 0,
+      height: hp("10")
+    },
+    headerTintColor: "#6f6f6f",
+    headerRight: <HeaderMessagesInbox />,
+    headerTitle: <HeaderLikedList />
   };
 
   componentDidMount() {
@@ -74,12 +92,10 @@ class MessageThread extends Component {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: "#f84d60",
-            color: "#fff"
+            backgroundColor: "#f84d60"
           },
           left: {
-            backgroundColor: "#c6c6c6",
-            color: "#fffff"
+            backgroundColor: "#c6c6c6"
           }
         }}
         textStyle={{
@@ -99,8 +115,12 @@ class MessageThread extends Component {
   render() {
     const { messages, isLoading } = this.state;
 
-    const props = this.props.navigation.state.params;
-    const { id, userName } = this.props.navigation.state.params;
+    const {
+      id,
+      userName,
+      avatar,
+      centreName
+    } = this.props.navigation.state.params;
 
     if (isLoading) {
       return <Text>Loading...</Text>;

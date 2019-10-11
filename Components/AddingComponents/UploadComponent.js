@@ -1,11 +1,22 @@
 import React from "react";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
-import { View, Image, Alert, ActivityIndicator } from "react-native";
+import {
+  View,
+  Image,
+  Alert,
+  ActivityIndicator,
+  TouchableOpacity,
+  Text
+} from "react-native";
 import * as Permissions from "expo-permissions";
 import { Icon } from "react-native-elements";
 import * as firebase from "firebase/app";
 import "firebase/storage";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 
 export default class UploadComponent extends React.Component {
   state = {
@@ -15,7 +26,7 @@ export default class UploadComponent extends React.Component {
 
   render() {
     return (
-      <View style={{ flexDirection: "row" }}>
+      <View>
         {this.state.uploading && (
           <View style={{ position: "absolute", zIndex: 1000 }}>
             <ActivityIndicator
@@ -25,29 +36,58 @@ export default class UploadComponent extends React.Component {
             />
           </View>
         )}
-        <View style={{ margin: 15 }}>
-          <Icon
-            style={{ flex: 1 }}
-            size={50}
-            name="file-picture-o"
-            type="font-awesome"
-            color="white"
-            onPress={() => this.pickMedia("images")}
-          />
-        </View>
 
-        {this.props.userType === "centre" && (
-          <View style={{ margin: 15 }}>
-            <Icon
-              style={{ flex: 1 }}
-              size={50}
-              name="folder-video"
-              type="entypo"
-              color="white"
-              onPress={() => this.pickMedia("videos")}
-            />
+        {this.props.userType === "user" && (
+          <View
+            style={{
+              marginBottom: 30,
+              marginTop: 30,
+              justifyContent: "center",
+              width: wp("90")
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                alignSelf: "center"
+              }}
+              onPress={() => this.pickMedia("images")}
+            >
+              <Image source={require("../../assets/images/upload.png")} />
+            </TouchableOpacity>
           </View>
         )}
+        <View
+          style={{
+            alignSelf: "center",
+            alignItems: "center",
+            marginTop: hp("1"),
+            justifyContent: "centre",
+            paddingLeft: wp("42.5")
+          }}
+        >
+          {this.props.userType === "centre" && (
+            <TouchableOpacity
+              style={{
+                width: wp("90"),
+                alignSelf: "center"
+              }}
+              onPress={() => this.pickMedia("images")}
+            >
+              <Image
+                source={require("../../assets/images/uploadPicture.png")}
+              />
+            </TouchableOpacity>
+          )}
+          <Text>{"\n"}</Text>
+          {this.props.userType === "centre" && (
+            <TouchableOpacity
+              style={{ width: wp("90"), alignSelf: "center" }}
+              onPress={() => this.pickMedia("videos")}
+            >
+              <Image source={require("../../assets/images/uploadVideo.png")} />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     );
   }

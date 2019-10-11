@@ -32,7 +32,8 @@ class LikedDogsList extends Component {
     headerStyle: {
       backgroundColor: "#f5f5f5",
       borderBottomWidth: 0,
-      height: hp("10")
+      height: hp("10"),
+      width: wp("100")
     },
     headerTintColor: "#6f6f6f",
     headerRight: <HeaderMessagesInbox />,
@@ -80,11 +81,8 @@ class LikedDogsList extends Component {
           });
         }
       });
-    } catch (e) {
-    }
+    } catch (e) {}
   };
-
-  
 
   componentDidMount() {
     const { id } = this.props.user;
@@ -126,126 +124,127 @@ class LikedDogsList extends Component {
     } else {
       return (
         <ScrollView
-          style={{
-            flex: 1,
-            backgroundColor: "#f5f5f5"
-          }}
+          showsVerticalScrollIndicator={false}
+          style={{ backgroundColor: "#f5f5f5", flex: 1 }}
         >
-          <View
-            style={{
-              marginTop: hp("2"),
-              alignItems: "center"
-            }}
-          >
-            <View
+          <View style={{ alignItems: "center" }}>
+            <Text
               style={{
-                alignItems: "center"
+                color: "#707070",
+                fontSize: 30,
+                fontFamily: "poppins-bold",
+                textAlign: "center"
               }}
             >
-              <Text
+              Dogs you've liked
+            </Text>
+            <View
+              style={{
+                marginTop: hp("2"),
+                alignItems: "center",
+                textAlign: "center",
+                width: wp("90"),
+                marginBottom: hp("1")
+              }}
+            >
+              <View
                 style={{
-                  color: "#707070",
-                  fontSize: 30,
-                  fontFamily: "poppins-bold",
-                  textAlign: "center"
+                  alignItems: "center"
                 }}
               >
-                Dogs you've liked
-              </Text>
+                <Text
+                  style={{
+                    color: "#a3a3a3",
+                    fontSize: 18,
+                    lineHeight: 19,
+                    fontFamily: "poppins-regular",
+                    textAlign: "center",
+                    padding: 20
+                  }}
+                >
+                  Here's a list of all the dogs you're interested in. {"\n"}
+                  {"\n"}Have a look through, think carefully about about which
+                  pupper would suit best, when you're ready, make your approach!
+                </Text>
+              </View>
 
-              <Text
-                style={{
-                  color: "#a3a3a3",
-                  fontSize: 18,
-                  lineHeight: 19,
-                  fontFamily: "poppins-regular",
-                  textAlign: "center",
-                  padding: 20
-                }}
-              >
-                Here's a list of all the dogs you're interested in. {"\n"}
-                {"\n"}Have a look through, think carefully about about which
-                pupper would suit best, when you're ready, make your approach!
-              </Text>
-            </View>
-
-            <View style={styles.container}>
-              {likedDogs.map(dog => {
-                return (
-                  <View key={dog.dogId}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.props.navigation.navigate("DogProfile", {
-                          id: dog.dogId
-                        });
-                      }}
-                    >
-                      <Image
-                        source={{ uri: dog.image }}
-                        style={{
-                          width: wp("42"),
-                          height: hp("28"),
-                          margin: wp("1"),
-                          marginTop: hp("2"),
-                          borderRadius: 10
+              <View style={styles.container}>
+                {likedDogs.map(dog => {
+                  return (
+                    <View key={dog.dogId}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          this.props.navigation.navigate("DogProfile", {
+                            id: dog.dogId
+                          });
                         }}
-                      />
-                    </TouchableOpacity>
-                    <Text
-                      style={{
-                        position: "absolute",
-                        bottom: 15,
-                        left: 10,
-                        zIndex: 1000,
-                        color: "white",
-                        fontSize: 26,
-                        fontFamily: "poppins-black"
-                      }}
-                      key={dog.dogId}
-                    >
-                      {dog.name}
-                    </Text>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        this.createMessage(
-                          dog.centreId,
-                          dog.centreName,
-                          dog.name,
-                          dog.dogId,
-                          dog.image
-                        );
-                      }}
-                    >
-                      <Image
-                        source={require("../assets/images/LikedMessage.png")}
+                      >
+                        <Image
+                          source={{ uri: dog.image }}
+                          style={{
+                            width: wp("42"),
+                            height: hp("28"),
+                            margin: wp("1"),
+                            marginTop: hp("2"),
+                            borderRadius: 10
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <Text
                         style={{
-                          width: 35,
-                          height: 35,
                           position: "absolute",
                           bottom: 15,
-                          right: 10,
-                          zIndex: 1000
+                          left: 10,
+                          zIndex: 1000,
+                          color: "white",
+                          fontSize: 26,
+                          fontFamily: "poppins-black"
                         }}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                );
-              })}
+                        key={dog.dogId}
+                      >
+                        {dog.name}
+                      </Text>
+                      <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                          this.createMessage(
+                            dog.centreId,
+                            dog.centreName,
+                            dog.name,
+                            dog.dogId,
+                            dog.image
+                          );
+                        }}
+                      >
+                        <Image
+                          source={require("../assets/images/LikedMessage.png")}
+                          style={{
+                            width: 35,
+                            height: 35,
+                            position: "absolute",
+                            bottom: 15,
+                            right: 10,
+                            zIndex: 1000
+                          }}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })}
+              </View>
             </View>
-          </View>
-          <View>
-            <Image
-              source={require("../assets/images/logo/rescueMeLogoSmol.png")}
-              style={{
-                width: 40,
-                height: 40,
-                alignSelf: "center",
-                textAlign: "center",
-                marginTop: hp("2"),
-                marginBottom: hp("3")
-              }}
-            ></Image>
+            <View>
+              <Image
+                source={require("../assets/images/logo/rescueMeLogoSmol.png")}
+                style={{
+                  width: 40,
+                  height: 40,
+                  alignSelf: "center",
+                  marginTop: hp("2"),
+                  marginBottom: hp("3")
+                }}
+              ></Image>
+            </View>
           </View>
         </ScrollView>
       );

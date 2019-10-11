@@ -86,14 +86,15 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flex: 1,
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 40,
     width: 250,
     justifyContent: "center"
   },
   question: {
     color: "#fff",
-    fontSize: 17,
+    fontSize: 25,
+    padding: 15,
     marginBottom: 15,
     textAlign: "center",
     fontFamily: "poppins-semibold"
