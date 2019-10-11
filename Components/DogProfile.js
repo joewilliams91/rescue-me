@@ -145,8 +145,7 @@ class DogProfile extends React.Component {
       }
     });
     dogsCollection
-      // .doc(id.replace(/ /g, ""))
-      .doc("DUS2SbN2Vd9SN5pxGxg2")
+      .doc(id.replace(/ /g, ""))
       .get()
       .then(dog => {
         const dogData = dog.data();
