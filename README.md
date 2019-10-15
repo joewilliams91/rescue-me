@@ -4,11 +4,11 @@
 
 Rescue Me is a responsive, Tinder-style mobile application designed to connect rescue dogs with potential dog owners, and built using React Native and Redux (front end), and Google Firebase/Cloud Functions (back end). Adopting Tinder's attractive swipe functionality, and combining it with algorithms developed for effectively matching a user's preferences/location with the database of available dogs, the application makes the task of looking for a new dog enjoyable and efficient. 
 
-###Rescue Centre
+### Rescue Centre
 
 The rescue centre signs up and provides some basic details about themselves, in addition to their location, the latter of which is important for our user algorithm (below). They then have the facility to add a dog, the input of which comprises a series of questions tailored for extracting information that is salient to a potential dog owner (are they good with children, are they good with dogs, exercise needs, etc), as well as photos/video. The centre can subsequently edit dog information, add more dogs and monitor their inbox. If they receive any messages, they can look at the user's profile before responding in real time chat.
 
-###User
+### User
 
 The user signs up and provides detais that can be easily mapped onto the aforementioned dog data (do they have children, do they have dogs, activity level, etc), as well a photo. The form also asks for the user's radius preferences which is integrated with their co-ordinates (obtained behind the scenes). This information is then used to invoke an algorithm on Google Cloud Functions, which will send back a list of dogs matching the user's criteria and within the user's chosen area. These dogs are then rendered one by one, allowing the user to swipe through and view individual dog profiles (like Tinder). 
 
@@ -23,14 +23,14 @@ In order to view and interact with the code, the instructions below must be foll
 
 The following must be installed on your mobile device in order to run this project on that device:
 
--Expo
+- Expo
 
 The following must be installed on your computer in order to run this project locally:
 
--Expo
--Node.js
--Node Package Manager (npm)
--git (a github account is also required)
+- Expo
+- Node.js
+- Node Package Manager (npm)
+- git (a github account is also required)
 
 ## Installing
 
