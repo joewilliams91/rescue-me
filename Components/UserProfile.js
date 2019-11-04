@@ -128,7 +128,6 @@ class UserProfile extends React.Component {
     });
     usersCollection
       .doc(id.replace(/ /g, ""))
-      // .doc("CNZRmXLaILgwtkWyKu5tbHyV9OF3")
       .get()
       .then(user => {
         const userData = user.data();

@@ -1,5 +1,9 @@
 # Rescue Me
 
+## Video Demo
+
+Please find a video demo at (https://rescue-me-video-demo.netlify.com/)
+
 ## Description
 
 Rescue Me is a responsive, Tinder-style mobile application designed to connect rescue dogs with potential dog owners, and built using React Native and Redux (front end), and Google Firebase/Cloud Functions (back end). Adopting Tinder's attractive swipe functionality, and combining it with algorithms developed for effectively matching a user's preferences/location with the database of available dogs, the application makes the task of looking for a new dog enjoyable and efficient. 
