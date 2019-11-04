@@ -1,25 +1,20 @@
 import React from "react";
 import {
-  View,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   Text,
-  Button,
   Image
 } from "react-native";
+import { KEY } from "react-native-dotenv";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import { updateLocation, updateName } from "../actions/user";
-import Firebase, { db } from "../config/Firebase.js";
+import { db } from "../config/Firebase.js";
 import firebase from "firebase";
 const {
-  GeoCollectionReference,
-  GeoFirestore,
-  GeoQuery,
-  GeoQuerySnapshot
+  GeoFirestore
 } = require("geofirestore");
 import TelephoneComponent from "./AddingComponents/TelephoneComponent";
 import DescriptionComponent from "./AddingComponents/DescriptionComponent";
@@ -48,7 +43,7 @@ class CentreRegister extends React.Component {
     const postcode = event.nativeEvent.text.replace(/ /g, "");
     try {
       fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=AIzaSyA0NPRN93V8yRyOeg4IPwPuy-qQAXDBf2Q`
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=${KEY}`
       )
         .then(response => response.json())
         .then(responseJson => {
